@@ -1,10 +1,13 @@
 package com.ps.gui;
 
 import java.awt.BorderLayout;
-import java.awt.CardLayout;
-import java.util.ArrayList;
+import java.awt.Color;
+import java.awt.GridLayout;
 import java.util.List;
 
+import javax.swing.BorderFactory;
+import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -14,6 +17,7 @@ import javax.swing.ListModel;
 import javax.swing.event.ListDataListener;
 
 import com.ps.common.Book;
+import com.ps.db.DbConnector;
 
 import de.jgrid.JGrid;
 
@@ -29,15 +33,15 @@ public class MainGUI extends JFrame {
                 setTitle("Easy Books");
                 setDefaultCloseOperation(EXIT_ON_CLOSE);
                 
-                final List<Book> bookList = new ArrayList<Book>();
-                bookList.add(new Book("La espada del destino", "Andrzej Sapkowski", "0"));
-                bookList.add(new Book("Destiny of the sword", "Jeremy Twigg", "1"));
-                bookList.add(new Book("Nathe the great and the Sticky Case", "Ugo Sanchez", "2"));
-                bookList.add(new Book("The Iron Hell", "Jack London", "3"));
-                bookList.add(new Book("The arrow of gold", "Joseph Conrad", "4"));
-                bookList.add(new Book("Bold Pursuit", "Zabrina Faiere", "5"));              
+                DbConnector db = null;
+                try {
+                    db = new DbConnector("db_file");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 
-                JGrid grid = new JGrid(new ListModel() {
+                final List<Book> bookList = db.getBooks();           
+                final JGrid grid = new JGrid(new ListModel() {
 
                         @Override
                         public void removeListDataListener(ListDataListener l) {
@@ -61,8 +65,29 @@ public class MainGUI extends JFrame {
                 grid.setUI(new EasyBooksUI());   
                 
                 // Columna derecha
-                JPanel panel1 = new JPanel();
-                panel1.add(new JButton("Test"));
+                JPanel panel1 = new JPanel(); //Box.createVerticalBox();
+                panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));  
+                
+                // TEST
+                JPanel t = new JPanel();
+                GridLayout layout = new GridLayout(4, 1);
+                layout.setVgap(5);
+                t.setLayout(layout);
+                final JButton b1 = new JButton("Inicio");
+                JButton b2 = new JButton("Mis libros");
+                JButton b3 = new JButton("Opciones");
+				b1.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, Color.GRAY));
+				b2.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, Color.GRAY));
+				b3.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, Color.GRAY));
+                t.add(b1);
+                t.add(b2);
+                t.add(b3);
+                t.add(Box.createHorizontalStrut(30));
+                panel1.add(t);
+                
+                PanelCursor pc = new PanelCursor(grid, bookList, db);
+                //pc.setVisible(false);
+                panel1.add(pc);
                 
                 // Barra de herramientas
                 JToolBar toolBar = new JToolBar("Still draggable");

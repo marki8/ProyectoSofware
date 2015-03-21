@@ -12,12 +12,12 @@ public class Book {
 
 	private BufferedImage cover;
 
-	public Book(String titel, String autor, String isbn) {
+	public Book(String titel, String autor, String path) {
 		this.titel = titel;
 		this.autor = autor;
 		try {
 			cover = ImageIO.read(getClass()
-					.getResource("/book" + isbn + ".jpg"));
+					.getResource(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
