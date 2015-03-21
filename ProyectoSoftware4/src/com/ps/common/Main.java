@@ -21,8 +21,7 @@ public class Main {
     	     char p[] = jpf.getPassword();
     	     String pass = new String(p);
 
-    	     com.ps.gui.Main window = new com.ps.gui.Main(usuario, pass);
-	         window.start();
+    	     new MainGUI().setVisible(true);;
        }
       catch (Exception e) { 
     	  e.printStackTrace(); 
