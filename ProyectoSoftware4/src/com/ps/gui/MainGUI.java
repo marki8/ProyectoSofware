@@ -1,12 +1,12 @@
 package com.ps.gui;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.CardLayout;
+import java.awt.Rectangle;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.List;
 
-import javax.swing.BorderFactory;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -41,7 +41,8 @@ public class MainGUI extends JFrame {
                 }
                 
                 final List<Book> bookList = db.getBooks();           
-                final JGrid grid = new JGrid(new ListModel() {
+                @SuppressWarnings("rawtypes")
+				final JGrid grid = new JGrid(new ListModel() {
 
                         @Override
                         public void removeListDataListener(ListDataListener l) {
@@ -59,46 +60,54 @@ public class MainGUI extends JFrame {
 
                         @Override
                         public void addListDataListener(ListDataListener l) {
-                        }
+                        }       
+                        
                 });
                 grid.setDefaultCellRenderer(new OpenLibraryGridRenderer());
-                grid.setUI(new EasyBooksUI());   
+                grid.setUI(new EasyBooksUI());
                 
+                final JPanel cards = new JPanel(new CardLayout());
+                cards.add(new JScrollPane(grid), "GRID");
+                //cards.add(new PanelBuyBook(), "TEST");                
+                grid.addMouseListener(new MouseAdapter() {
+                	
+                	final int xOffset = 50;
+					@Override
+					public void mouseClicked(MouseEvent arg0) {
+						if (arg0.getClickCount() == 2) {
+		                    int selectedIndex = grid.getSelectedIndex();
+		                    Rectangle r = grid.getCellBounds(selectedIndex);
+		                    try {
+								if (arg0.getX() > r.x + xOffset && arg0.getX() < r.x + r.width - xOffset) {
+									System.out.println("Seleccion "  + selectedIndex);
+									cards.add(new PanelBuyBook(bookList.get(selectedIndex)), "TEST");
+							        CardLayout cl = (CardLayout)(cards.getLayout());
+									cl.show(cards, "TEST");
+								}
+		                    } catch (Exception e) {}
+						}
+					}
+                });
+                
+
                 // Columna derecha
                 JPanel panel1 = new JPanel(); //Box.createVerticalBox();
                 panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));  
-                
-                // TEST
-                JPanel t = new JPanel();
-                GridLayout layout = new GridLayout(4, 1);
-                layout.setVgap(5);
-                t.setLayout(layout);
-                final JButton b1 = new JButton("Inicio");
-                JButton b2 = new JButton("Mis libros");
-                JButton b3 = new JButton("Opciones");
-				b1.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, Color.GRAY));
-				b2.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, Color.GRAY));
-				b3.setBorder(BorderFactory.createMatteBorder(1, 5, 1, 1, Color.GRAY));
-                t.add(b1);
-                t.add(b2);
-                t.add(b3);
-                t.add(Box.createHorizontalStrut(30));
-                panel1.add(t);
-                
-                PanelCursor pc = new PanelCursor(grid, bookList, db);
-                //pc.setVisible(false);
-                panel1.add(pc);
-                
+                            
+                panel1.add(new PanelButtons(cards));
+                panel1.add(new PanelAddBook(grid, bookList, db));
+
                 // Barra de herramientas
                 JToolBar toolBar = new JToolBar("Still draggable");
                 toolBar.add(new JButton("<"));
-                toolBar.add(new JButton(">"));    
+                JButton forward = new JButton(">");
+                toolBar.add(forward);            
                 
                 getContentPane().add(toolBar, BorderLayout.PAGE_START);
-                getContentPane().add(new JScrollPane(grid), BorderLayout.CENTER);
+                getContentPane().add(cards, BorderLayout.CENTER);
                 getContentPane().add(panel1, BorderLayout.EAST);
-                setExtendedState(JFrame.MAXIMIZED_BOTH);
-                //setSize(1066, 600);
+                //setExtendedState(JFrame.MAXIMIZED_BOTH);
+                setSize(1066, 600);
         }
         
         public static void main(String[] args) {
