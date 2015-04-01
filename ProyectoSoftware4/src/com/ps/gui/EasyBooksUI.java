@@ -32,8 +32,8 @@ public class EasyBooksUI extends GridUI {
                 grid.setHorizonztalMargin(0); // 18
                 grid.setVerticalMargin(25);    // 12
                 grid.setBorder(BorderFactory.createEmptyBorder(58, 0, 0, 0)); // 6, 0, 0, 0
-                grid.setSelectionBackground(null);
-                grid.setCellBackground(null);
+                grid.setSelectionBackground(Color.YELLOW);
+                grid.setCellBackground(Color.BLUE);
                 grid.setBackground(UIManager.getColor ("Panel.background"));
         }
         
@@ -57,7 +57,9 @@ public class EasyBooksUI extends GridUI {
         protected void paintCellBorder(Graphics g, JComponent c, int index,
                         Rectangle bounds, int leadIndex) {
                 // TODO Auto-generated method stub
+        	//super.paintCellBorder(g, c, index, new Rectangle(bounds.x + 50, bounds.y, 150, 250), leadIndex);
         	//super.paintCellBorder(g, c, index, bounds, leadIndex);
+
         }
         
         protected void paintCell(Graphics g, JComponent c, int index,

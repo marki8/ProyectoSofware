@@ -15,15 +15,15 @@ import com.ps.common.Book;
 import com.ps.db.DbConnector;
 
 
-public class PanelCursor extends JPanel  {
+public class PanelAddBook extends JPanel  {
 
 	private static final long serialVersionUID = 1L;
 	
-	public PanelCursor(final JGrid grid, final List<Book> bookList, final DbConnector db) {	
+	public PanelAddBook(final JGrid grid, final List<Book> bookList, final DbConnector db) {	
 		GridLayout layout = new GridLayout(20, 1);
 		layout.setHgap(5); layout.setVgap(5);
 		this.setLayout(layout);
-		this.setBorder(new TitledBorder(new EtchedBorder(), "AÃ±adir Libro"));
+		this.setBorder(new TitledBorder(new EtchedBorder(), "Añadir Libro"));
 		
 		
 	    JLabel labelTitle = new JLabel("Titulo: ");
@@ -41,7 +41,7 @@ public class PanelCursor extends JPanel  {
         this.add(labelPath);
         this.add(textFieldPath);
         
-        JButton buttonAdd = new JButton("AÃ±adir");
+        JButton buttonAdd = new JButton("Añadir");
         buttonAdd.addActionListener(new ActionListener() {
 
 			@Override
