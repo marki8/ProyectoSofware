@@ -9,12 +9,14 @@ public class Book {
 
 	private String titel;
 	private String autor;
+	private String path;
 
 	private BufferedImage cover;
 
 	public Book(String titel, String autor, String path) {
 		this.titel = titel;
 		this.autor = autor;
+		this.path = path;
 		try {
 			cover = ImageIO.read(getClass()
 					.getResource(path));
@@ -31,7 +33,11 @@ public class Book {
 		return autor;
 
 	}
-
+	
+	public String getPath() {
+		return path;
+	}
+	
 	public BufferedImage getCover() {
 		return cover;
 	}

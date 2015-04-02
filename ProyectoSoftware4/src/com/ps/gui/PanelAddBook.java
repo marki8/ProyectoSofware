@@ -14,34 +14,38 @@ import de.jgrid.JGrid;
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
 
-
 public class PanelAddBook extends JPanel  {
 
 	private static final long serialVersionUID = 1L;
+	private final JTextField textFieldTitle;
+	private final JTextField textFieldAutor;
+	private final JTextField textFieldPath;
+
 	
-	public PanelAddBook(final JGrid grid, final List<Book> bookList, final DbConnector db) {	
+	public PanelAddBook(final JGrid grid, final List<Book> bookList, final DbConnector db) {
+		
 		GridLayout layout = new GridLayout(20, 1);
 		layout.setHgap(5); layout.setVgap(5);
 		this.setLayout(layout);
-		this.setBorder(new TitledBorder(new EtchedBorder(), "Añadir Libro"));
+		this.setBorder(new TitledBorder(new EtchedBorder(), "Aï¿½adir Libro"));
 		
 		
 	    JLabel labelTitle = new JLabel("Titulo: ");
-	    final JTextField textFieldTitle = new JTextField("", 15);
+	    textFieldTitle = new JTextField("", 15);
         this.add(labelTitle);
         this.add(textFieldTitle);
         
 	    JLabel labelAutor = new JLabel("Autor: ");
-	    final JTextField textFieldAutor = new JTextField("", 15);
+	    textFieldAutor = new JTextField("", 15);
         this.add(labelAutor);
         this.add(textFieldAutor);
         
 	    JLabel labelPath = new JLabel("Ruta: ");
-	    final JTextField textFieldPath = new JTextField("", 15);
+	    textFieldPath = new JTextField("", 15);
         this.add(labelPath);
         this.add(textFieldPath);
         
-        JButton buttonAdd = new JButton("Añadir");
+        JButton buttonAdd = new JButton("Aï¿½adir");
         buttonAdd.addActionListener(new ActionListener() {
 
 			@Override
@@ -49,12 +53,26 @@ public class PanelAddBook extends JPanel  {
 				String title = textFieldTitle.getText();
 				String autor = textFieldAutor.getText();
 				String path = "/" + textFieldPath.getText();
-                bookList.add(new Book(title, autor, path)); 
-                db.addBook(title, autor, path);
+				int index = grid.getSelectedIndex();
+				Book newBook = new Book(title, autor, path);
+				if (!bookList.get(index).equals(newBook) && index >= 0) {
+	                bookList.set(index, newBook);
+	                //db.editBook(title, autor, path);
+				} 
+				else {
+	                bookList.add(newBook); 
+	                db.addBook(title, autor, path);
+				}
                 grid.repaint();
 			}
         });
         this.add(buttonAdd);
+	}
+	
+	public void setBook(String title, String autor, String path) {
+		textFieldTitle.setText(title);
+		textFieldAutor.setText(autor);
+		textFieldPath.setText(path.substring(1));
 	}
 
 }

@@ -2,7 +2,8 @@ package com.ps.gui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Rectangle;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.List;
@@ -10,107 +11,116 @@ import java.util.List;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
-import javax.swing.ListModel;
-import javax.swing.event.ListDataListener;
 
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
+import com.ps.gui.jgrid.EasyBooksUI;
+import com.ps.gui.jgrid.OpenLibraryGridRenderer;
+import com.ps.gui.jgrid.SelectionModel;
 
 import de.jgrid.JGrid;
 
-
 public class MainGUI extends JFrame {
 
-        /**
+	/**
          * 
          */
-        private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-        public MainGUI() {
-                setTitle("Easy Books");
-                setDefaultCloseOperation(EXIT_ON_CLOSE);
-                
-                DbConnector db = null;
-                try {
-                    db = new DbConnector("db_file");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-                
-                final List<Book> bookList = db.getBooks();           
-                @SuppressWarnings("rawtypes")
-				final JGrid grid = new JGrid(new ListModel() {
+	private DbConnector db = null;
+	private List<Book> bookList;
 
-                        @Override
-                        public void removeListDataListener(ListDataListener l) {
-                        }
+	public MainGUI() {
+		setTitle("Easy Books");
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-                        @Override
-                        public int getSize() {
-                                return bookList.size();
-                        }
+		try {
+			db = new DbConnector("db_file");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-                        @Override
-                        public Object getElementAt(int index) {
-                                return bookList.get(index);
-                        }
+		bookList = db.getBooks();
+		final JGrid grid = new JGrid(new SelectionModel(bookList));
+		grid.getCellRendererManager().setDefaultRenderer(new OpenLibraryGridRenderer());
+		//grid.setDefaultCellRenderer(new OpenLibraryGridRenderer());
+		grid.setUI(new EasyBooksUI());
 
-                        @Override
-                        public void addListDataListener(ListDataListener l) {
-                        }       
-                        
-                });
-                grid.setDefaultCellRenderer(new OpenLibraryGridRenderer());
-                grid.setUI(new EasyBooksUI());
-                
-                final JPanel cards = new JPanel(new CardLayout());
-                cards.add(new JScrollPane(grid), "GRID");
-                //cards.add(new PanelBuyBook(), "TEST");                
-                grid.addMouseListener(new MouseAdapter() {
-                	
-                	final int xOffset = 50;
-					@Override
-					public void mouseClicked(MouseEvent arg0) {
-						if (arg0.getClickCount() == 2) {
-		                    int selectedIndex = grid.getSelectedIndex();
-		                    Rectangle r = grid.getCellBounds(selectedIndex);
-		                    try {
-								if (arg0.getX() > r.x + xOffset && arg0.getX() < r.x + r.width - xOffset) {
-									System.out.println("Seleccion "  + selectedIndex);
-									cards.add(new PanelBuyBook(bookList.get(selectedIndex)), "TEST");
-							        CardLayout cl = (CardLayout)(cards.getLayout());
-									cl.show(cards, "TEST");
+		final JPanel cards = new JPanel(new CardLayout());
+		cards.add(new JScrollPane(grid), "GRID");
+		// cards.add(new PanelBuyBook(), "TEST");
+		
+		// Columna derecha
+		JPanel panel1 = new JPanel(); // Box.createVerticalBox();
+		panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));
+		panel1.add(new PanelButtons(cards));
+		final PanelAddBook pab = new PanelAddBook(grid, bookList, db);
+		panel1.add(pab);
+		
+		grid.addMouseListener(new MouseAdapter() {
+
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int selectedIndex = grid.getCellAt(arg0.getPoint());
+				if (selectedIndex >= 0) {
+					try {
+						final Book book = bookList.get(selectedIndex);
+						if (arg0.getButton() == MouseEvent.BUTTON1) { // Click izquierdo
+							if (arg0.getClickCount() == 2) {
+								System.out
+										.println("Seleccion " + selectedIndex);
+								cards.add(new PanelBuyBook(book), "TEST");
+								CardLayout cl = (CardLayout) (cards.getLayout());
+								cl.show(cards, "TEST");
+
+							} else {
+								pab.setBook(book.getTitel(), book.getAutor(),
+										book.getPath());
+							}
+
+						} else if (arg0.getButton() == MouseEvent.BUTTON3) { // Click derecho
+							JPopupMenu popup = new JPopupMenu();
+							JMenuItem m = new JMenuItem("Editar");
+							popup.add(m);
+							ActionListener al = new ActionListener() {
+								public void actionPerformed(ActionEvent e) {
+									pab.setBook(book.getTitel(),
+											book.getAutor(), book.getPath());
 								}
-		                    } catch (Exception e) {}
+							};
+							m.addActionListener(al);
+							m = new JMenuItem("Borrar");
+							popup.add(m);
+							popup.show(MainGUI.this, arg0.getX(), arg0.getY());
 						}
-					}
-                });
-                
 
-                // Columna derecha
-                JPanel panel1 = new JPanel(); //Box.createVerticalBox();
-                panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));  
-                            
-                panel1.add(new PanelButtons(cards));
-                panel1.add(new PanelAddBook(grid, bookList, db));
+					} catch (Exception e) {}
+				}
+				else {
+					grid.getSelectionModel().clearSelection();;
+				}
+			}
+		});
 
-                // Barra de herramientas
-                JToolBar toolBar = new JToolBar("Still draggable");
-                toolBar.add(new JButton("<"));
-                JButton forward = new JButton(">");
-                toolBar.add(forward);            
-                
-                getContentPane().add(toolBar, BorderLayout.PAGE_START);
-                getContentPane().add(cards, BorderLayout.CENTER);
-                getContentPane().add(panel1, BorderLayout.EAST);
-                //setExtendedState(JFrame.MAXIMIZED_BOTH);
-                setSize(1066, 600);
-        }
-        
-        public static void main(String[] args) {
-                new MainGUI().setVisible(true);
-        }
+		// Barra de herramientas
+		JToolBar toolBar = new JToolBar("Still draggable");
+		toolBar.add(new JButton("<"));
+		JButton forward = new JButton(">");
+		toolBar.add(forward);
+
+		getContentPane().add(toolBar, BorderLayout.PAGE_START);
+		getContentPane().add(cards, BorderLayout.CENTER);
+		getContentPane().add(panel1, BorderLayout.EAST);
+		// setExtendedState(JFrame.MAXIMIZED_BOTH);
+		setSize(1066, 600);
+	}
+
+	public static void main(String[] args) {
+		new MainGUI().setVisible(true);
+	}
 }
