@@ -1,4 +1,4 @@
-package com.ps.gui;
+package com.ps.gui.jgrid;
 
 import java.awt.Component;
 import java.awt.Graphics;
@@ -6,8 +6,8 @@ import java.awt.image.BufferedImage;
 
 import javax.swing.JComponent;
 
-import de.jgrid.GridCellRenderer;
 import de.jgrid.JGrid;
+import de.jgrid.renderer.GridCellRenderer;
 
 public class ImageGridRenderer extends JComponent implements GridCellRenderer {
 

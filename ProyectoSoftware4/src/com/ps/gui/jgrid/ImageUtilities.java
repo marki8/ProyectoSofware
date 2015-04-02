@@ -1,4 +1,4 @@
-package com.ps.gui;
+package com.ps.gui.jgrid;
 
 
 import java.awt.Graphics;
