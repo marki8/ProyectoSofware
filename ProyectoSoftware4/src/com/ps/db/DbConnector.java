@@ -85,6 +85,14 @@ public class DbConnector {
 		}
     }
     
+    public synchronized void deleteBook(String title, String autor, String path) {
+    	try {
+			update("DELETE FROM books WHERE title='" + title+ "' AND autor='"+autor+"' AND path='"+path+"'");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    }
+    
     public synchronized List<Book> getBooks() {
         Statement st = null;
         ResultSet rs = null;

@@ -27,7 +27,7 @@ public class PanelAddBook extends JPanel  {
 		GridLayout layout = new GridLayout(20, 1);
 		layout.setHgap(5); layout.setVgap(5);
 		this.setLayout(layout);
-		this.setBorder(new TitledBorder(new EtchedBorder(), "A�adir Libro"));
+		this.setBorder(new TitledBorder(new EtchedBorder(), "Anadir Libro"));
 		
 		
 	    JLabel labelTitle = new JLabel("Titulo: ");
@@ -45,7 +45,7 @@ public class PanelAddBook extends JPanel  {
         this.add(labelPath);
         this.add(textFieldPath);
         
-        JButton buttonAdd = new JButton("A�adir");
+        JButton buttonAdd = new JButton("Anadir");
         buttonAdd.addActionListener(new ActionListener() {
 
 			@Override
@@ -67,6 +67,22 @@ public class PanelAddBook extends JPanel  {
 			}
         });
         this.add(buttonAdd);
+        
+        JButton buttonDelete = new JButton("Borrar");
+        buttonDelete.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				String title = textFieldTitle.getText();
+				String autor = textFieldAutor.getText();
+				String path = "/" + textFieldPath.getText();
+	            db.deleteBook(title, autor, path);
+				int index = grid.getSelectedIndex();
+	            bookList.remove(index);
+                grid.repaint();
+			}
+        });
+        this.add(buttonDelete);
 	}
 	
 	public void setBook(String title, String autor, String path) {
