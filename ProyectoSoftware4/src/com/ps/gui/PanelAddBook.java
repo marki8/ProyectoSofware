@@ -50,19 +50,21 @@ public class PanelAddBook extends JPanel  {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
 				String title = textFieldTitle.getText();
 				String autor = textFieldAutor.getText();
 				String path = "/" + textFieldPath.getText();
 				int index = grid.getSelectedIndex();
 				Book newBook = new Book(title, autor, path);
-				if (!bookList.get(index).equals(newBook) && index >= 0) {
+				if(index==-1) {
+	                bookList.add(newBook); 
+	                db.addBook(title, autor, path);
+				}				
+				else if (!bookList.get(index).equals(newBook) && index >= 0) {
 	                bookList.set(index, newBook);
 	                //db.editBook(title, autor, path);
 				} 
-				else {
-	                bookList.add(newBook); 
-	                db.addBook(title, autor, path);
-				}
+				
                 grid.repaint();
 			}
         });
