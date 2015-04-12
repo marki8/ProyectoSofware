@@ -78,8 +78,8 @@ public class PanelAddBook extends JPanel  {
 				String title = textFieldTitle.getText();
 				String autor = textFieldAutor.getText();
 				String path = "/" + textFieldPath.getText();
-	            db.deleteBook(title, autor, path);
 				int index = grid.getSelectedIndex();
+	            db.deleteBook(title, autor, path);
 	            bookList.remove(index);
                 grid.repaint();
 			}
@@ -91,6 +91,13 @@ public class PanelAddBook extends JPanel  {
 		textFieldTitle.setText(title);
 		textFieldAutor.setText(autor);
 		textFieldPath.setText(path.substring(1));
+	}
+	
+	public void deleteBook(String title, String autor, String path,final JGrid grid, final List<Book> bookList, final DbConnector db) {
+		db.deleteBook(title, autor, path);
+		int index = grid.getSelectedIndex();
+        bookList.remove(index);
+        grid.repaint();
 	}
 
 }

@@ -96,6 +96,13 @@ public class MainGUI extends JFrame {
 							m.addActionListener(al);
 							m = new JMenuItem("Borrar");
 							popup.add(m);
+							ActionListener a = new ActionListener() {
+								public void actionPerformed(ActionEvent e) {
+									pab.deleteBook(book.getTitel(),
+											book.getAutor(), book.getPath(), grid, bookList, db);
+								}
+							};
+							m.addActionListener(a);
 							popup.show(MainGUI.this, arg0.getX(), arg0.getY());
 						}
 

@@ -1,3 +1,0 @@
-/*C2*/SET SCHEMA PUBLIC
-INSERT INTO BOOKS VALUES(25,'aaaa','aaaa','/book2.jpg')
-COMMIT
