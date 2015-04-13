@@ -79,7 +79,15 @@ public class DbConnector {
     
     public synchronized void addBook(String title, String autor, String path) {
     	try {
-			update("INSERT INTO books(title,autor,path) VALUES('" + title + "','" + title + "','" + path + "')");
+			update("INSERT INTO books(title,autor,path) VALUES('" + title + "','" + autor + "','" + path + "')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+    }
+    
+    public synchronized void addBookBuy(String user, String password, int id) {
+    	try {
+			update("INSERT INTO users(id,password,bookBuy) VALUES('" + user + "','" + password + "','" + id + "')");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -105,7 +113,28 @@ public class DbConnector {
 
 	        bookList = new ArrayList<Book>();
 	        for (; rs.next(); ) {
-	        	bookList.add(new Book(rs.getString(2), rs.getString(3), rs.getString(4)));
+	        	bookList.add(new Book(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4)));
+	        }
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+        
+        return bookList;
+    }
+    
+    public synchronized List<Book> getBooksBuy(String user) {
+        Statement st = null;
+        ResultSet rs = null;
+        List<Book> bookList = null;
+
+        try {
+			st = conn.createStatement();
+	        rs = st.executeQuery("SELECT bookBuy FROM users WHERE id="+user); 
+	        st.close();
+
+	        bookList = new ArrayList<Book>();
+	        for (; rs.next(); ) {
+	        	bookList.add(new Book(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4)));
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -175,11 +204,24 @@ public class DbConnector {
             //
             // by declaring the id column IDENTITY, the db will automatically
             // generate unique values for new rows- useful for row keys
-            //db.update(
-               // "CREATE TABLE sample_table ( id INTEGER IDENTITY, str_col VARCHAR(256), num_col INTEGER)");
-            db.update(
-                "CREATE TABLE books ( id INTEGER IDENTITY, title VARCHAR(256), autor VARCHAR(256), path VARCHAR(256))");
+            db.update("CREATE TABLE books ( id INTEGER IDENTITY, title VARCHAR(256), autor VARCHAR(256), path VARCHAR(256))");
         } catch (SQLException ex2) {
+
+            //ignore
+            //ex2.printStackTrace();  // second time we run program
+            //  should throw execption since table
+            // already there
+            //
+            // this will have no effect on the db
+        }
+        try {
+
+            //make an empty table
+            //
+            // by declaring the id column IDENTITY, the db will automatically
+            // generate unique values for new rows- useful for row keys
+            db.update("CREATE TABLE users ( id VARCHAR, password VARCHAR(256), bookBuy INTEGER(3), FOREIGN KEY(bookBuy) REFERENCES books(id))");
+        } catch (SQLException ex3) {
 
             //ignore
             //ex2.printStackTrace();  // second time we run program

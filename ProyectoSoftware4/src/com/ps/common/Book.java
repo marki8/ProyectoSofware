@@ -7,14 +7,17 @@ import javax.imageio.ImageIO;
 
 public class Book {
 
-	private String titel;
+	private int id;
+	private String title;
 	private String autor;
 	private String path;
 
 	private BufferedImage cover;
 
-	public Book(String titel, String autor, String path) {
-		this.titel = titel;
+	public Book(int id,String title, String autor, String path) {
+		
+		this.id=id;
+		this.title = title;
 		this.autor = autor;
 		this.path = path;
 		try {
@@ -25,8 +28,11 @@ public class Book {
 		}
 	}
 
-	public String getTitel() {
-		return titel;
+	public int getId() {
+		return id;
+	}
+	public String getTitle() {
+		return title;
 	}
 
 	public String getAutor() {

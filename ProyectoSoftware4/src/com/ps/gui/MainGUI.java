@@ -74,12 +74,12 @@ public class MainGUI extends JFrame {
 							if (arg0.getClickCount() == 2) {
 								System.out
 										.println("Seleccion " + selectedIndex);
-								cards.add(new PanelBuyBook(book), "TEST");
+								cards.add(new PanelBuyBook(book,db), "TEST");
 								CardLayout cl = (CardLayout) (cards.getLayout());
 								cl.show(cards, "TEST");
 
 							} else {
-								pab.setBook(book.getTitel(), book.getAutor(),
+								pab.setBook(book.getTitle(), book.getAutor(),
 										book.getPath());
 							}
 
@@ -89,7 +89,7 @@ public class MainGUI extends JFrame {
 							popup.add(m);
 							ActionListener al = new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
-									pab.setBook(book.getTitel(),
+									pab.setBook(book.getTitle(),
 											book.getAutor(), book.getPath());
 								}
 							};
@@ -98,7 +98,7 @@ public class MainGUI extends JFrame {
 							popup.add(m);
 							ActionListener a = new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
-									pab.deleteBook(book.getTitel(),
+									pab.deleteBook(book.getTitle(),
 											book.getAutor(), book.getPath(), grid, bookList, db);
 								}
 							};

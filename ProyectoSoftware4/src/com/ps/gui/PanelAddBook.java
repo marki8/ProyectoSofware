@@ -17,6 +17,7 @@ import com.ps.db.DbConnector;
 public class PanelAddBook extends JPanel  {
 
 	private static final long serialVersionUID = 1L;
+	private final JTextField textFieldId;
 	private final JTextField textFieldTitle;
 	private final JTextField textFieldAutor;
 	private final JTextField textFieldPath;
@@ -29,7 +30,11 @@ public class PanelAddBook extends JPanel  {
 		this.setLayout(layout);
 		this.setBorder(new TitledBorder(new EtchedBorder(), "Anadir Libro"));
 		
-		
+		JLabel labelId = new JLabel("Id: ");
+		textFieldId = new JTextField("", 15);
+        this.add(labelId);
+        this.add(textFieldId);
+        
 	    JLabel labelTitle = new JLabel("Titulo: ");
 	    textFieldTitle = new JTextField("", 15);
         this.add(labelTitle);
@@ -51,11 +56,12 @@ public class PanelAddBook extends JPanel  {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
+				int id = Integer.parseInt(textFieldId.getText());
 				String title = textFieldTitle.getText();
 				String autor = textFieldAutor.getText();
 				String path = "/" + textFieldPath.getText();
 				int index = grid.getSelectedIndex();
-				Book newBook = new Book(title, autor, path);
+				Book newBook = new Book(id,title, autor, path);
 				if(index==-1) {
 	                bookList.add(newBook); 
 	                db.addBook(title, autor, path);

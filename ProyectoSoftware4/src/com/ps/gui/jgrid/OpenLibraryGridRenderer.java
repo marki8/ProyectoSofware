@@ -41,7 +41,7 @@ public class OpenLibraryGridRenderer extends JComponent implements GridCellRende
 	@Override
 	public String getToolTipText() {
 		if (book != null) {
-			return book.getTitel();
+			return book.getTitle();
 		}
 		return super.getToolTipText();
 	}
@@ -101,7 +101,7 @@ public class OpenLibraryGridRenderer extends JComponent implements GridCellRende
 			shape.addPoint(startX - coverImage.getWidth() / 20, coverImage.getHeight() / 20);
 
 			g2.setFont(new Font("Helvetica", Font.BOLD, 12));
-			g2.drawString(book.getTitel(), startX, getHeight() - 24);
+			g2.drawString(book.getTitle(), startX, getHeight() - 24);
 			g2.setFont(new Font("HelveticaLight", Font.PLAIN, 10));
 			g2.drawString(book.getAutor(), startX, getHeight() - 10);
 			g2.fill(shape);
