@@ -76,26 +76,36 @@ public class DbConnector {
         // and try to execute some other query before the result set has been
         // completely examined.
     }
-    
-    public synchronized void addBook(String title, String autor, String path) {
+    /**
+     * Añadir libros a la base de datos.
+     */
+    public synchronized void addBook(String title, String autor, String path, String editorial) {
+    	
     	try {
-			update("INSERT INTO books(title,autor,path) VALUES('" + title + "','" + autor + "','" + path + "')");
+			update("INSERT INTO book(title,autor,path,editorial) VALUES('" + title + "','" + autor + "','" + path + "','" + editorial + "','" + "')");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
     }
-    
+    /**
+     * Método para añadir usuarios
+     * @param user, @param password
+     */
     public synchronized void addBookBuy(String user, String password, int id) {
+    	
     	try {
-			update("INSERT INTO users(id,password,bookBuy) VALUES('" + user + "','" + password + "','" + id + "')");
+			update("INSERT INTO users(email,password) VALUES('" + user + "','" + password + "')");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
     }
-    
+    /**
+     * Método de eliminación de libros.
+     */
     public synchronized void deleteBook(String title, String autor, String path) {
+    	
     	try {
-			update("DELETE FROM books WHERE title='" + title+ "' AND autor='"+autor+"' AND path='"+path+"'");
+			update("DELETE FROM book WHERE title='" + title+ "' AND autor='"+autor+"' AND path='"+path+"'");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -108,12 +118,12 @@ public class DbConnector {
 
         try {
 			st = conn.createStatement();
-	        rs = st.executeQuery("SELECT * FROM books"); 
+	        rs = st.executeQuery("SELECT * FROM book"); 
 	        st.close();
 
 	        bookList = new ArrayList<Book>();
 	        for (; rs.next(); ) {
-	        	bookList.add(new Book(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4)));
+	        	bookList.add(new Book(rs.getString(1),rs.getString(2), rs.getString(3), rs.getString(4)));
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -121,7 +131,7 @@ public class DbConnector {
         
         return bookList;
     }
-    
+   /**  Esto es puta mierda de momento xDD
     public synchronized List<Book> getBooksBuy(String user) {
         Statement st = null;
         ResultSet rs = null;
@@ -134,7 +144,7 @@ public class DbConnector {
 
 	        bookList = new ArrayList<Book>();
 	        for (; rs.next(); ) {
-	        	bookList.add(new Book(rs.getInt(1),rs.getString(2), rs.getString(3), rs.getString(4)));
+	        	bookList.add(new Book(rs.getString(1),rs.getString(2), rs.getString(3), rs.getString(4)));
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -142,7 +152,7 @@ public class DbConnector {
         
         return bookList;
     }
-
+*/
 
 //use for SQL commands CREATE, DROP, INSERT and UPDATE
     public synchronized void update(String expression) throws SQLException {
@@ -186,69 +196,73 @@ public class DbConnector {
         }
     }                                       //void dump( ResultSet rs )
 
+    /**
+     * Método main, creación de las bases de datos de libros.
+     */
     public static void main(String[] args) {
 
         DbConnector db = null;
 
         try {
-            db = new DbConnector("db_file");
+            db = new DbConnector("db_file"); //Archivo de las bases de datos.
         } catch (Exception ex1) {
             ex1.printStackTrace();    // could not start db
 
             return;                   // bye bye
         }
-
         try {
-
-            //make an empty table
-            //
-            // by declaring the id column IDENTITY, the db will automatically
-            // generate unique values for new rows- useful for row keys
-            db.update("CREATE TABLE books ( id INTEGER IDENTITY, title VARCHAR(256), autor VARCHAR(256), path VARCHAR(256))");
+        	//Creación de la primera tabla, guardaremos los libros de la base de datos.
+            db.update("CREATE TABLE book (title VARCHAR(256), autor VARCHAR(256), path VARCHAR(256), editorial VARCHAR(256), PRIMARY KEY (title))");
         } catch (SQLException ex2) {
-
-            //ignore
-            //ex2.printStackTrace();  // second time we run program
-            //  should throw execption since table
-            // already there
-            //
-            // this will have no effect on the db
-        }
+        	System.out.println("Error 1");
+         }
+        
         try {
-
-            //make an empty table
-            //
-            // by declaring the id column IDENTITY, the db will automatically
-            // generate unique values for new rows- useful for row keys
-            db.update("CREATE TABLE users ( id VARCHAR, password VARCHAR(256), bookBuy INTEGER(3), FOREIGN KEY(bookBuy) REFERENCES books(id))");
+        	//Creación de la segunda tabla, esta vez de usuarios. 
+            db.update("CREATE TABLE users (email VARCHAR(256), password VARCHAR(256), PRIMARY KEY (email))");
         } catch (SQLException ex3) {
-
-            //ignore
-            //ex2.printStackTrace();  // second time we run program
-            //  should throw execption since table
-            // already there
-            //
-            // this will have no effect on the db
+        	System.out.println("Error 2");
         }
-
+        
         try {
+        	//Creación de la tercera tabla, en la cual disponemos los libros comprados por cada usuario y la posible puntuacion de estos. 
+            db.update("CREATE TABLE posee (email VARCHAR(256), title VARCHAR(256), puntuacion int, foreign key (email) references users(email),foreign key (title) references book(title))");
+        } catch (SQLException ex3) {
+        	System.out.println("Error 3");
 
-            // add some rows - will create duplicates if run more then once
-            // the id column is automatically generated
-//            db.update(
-//                "INSERT INTO books(title,autor,path) VALUES('La espada del destino', 'Andrzej Sapkowski', '/book0.jpg')");
-//            db.update(
-//            	"INSERT INTO books(title,autor,path) VALUES('Destiny of the sword', 'Jeremy Twigg', '/book1.jpg')");
-//            db.update(
-//                "INSERT INTO books(title,autor,path) VALUES('Nathe the great and the Sticky Case', 'Ugo Sanchez', '/book2.jpg')");
-//            db.update(
-//                "INSERT INTO books(title,autor,path) VALUES('The Iron Hell', 'Jack London', '/book3.jpg')");
-//            db.update(
-//                "INSERT INTO books(title,autor,path) VALUES('The arrow of gold', 'Joseph Conrad', '/book4.jpg')");
-//            db.update(
-//                "INSERT INTO books(title,autor,path) VALUES('Bold Pursuit', 'Zabrina Faiere', '/book5.jpg')");
+        }
+      
+        try {
+/*
+            //Insertamos libros
+           db.update(
+               "INSERT INTO book(title,autor,path,editorial) VALUES('La espada del destino', 'Andrzej Sapkowski', '/book0.jpg', 'mevaisacomerlapolla')");
+            db.update(
+            	"INSERT INTO book(title,autor,path,editorial) VALUES('Destiny of the sword', 'Jeremy Twigg', '/book1.jpg', 'mevaisacomerlapolla')");
+            db.update(
+                "INSERT INTO book(title,autor,path,editorial) VALUES('Nathe the great and the Sticky Case', 'Ugo Sanchez', '/book2.jpg', 'mevaisacomerlapolla')");
+            db.update(
+                "INSERT INTO book(title,autor,path,editorial) VALUES('The Iron Hell', 'Jack London', '/book3.jpg', 'mevaisacomerlapolla')");
+            db.update(
+                "INSERT INTO book(title,autor,path,editorial) VALUES('The arrow of gold', 'Joseph Conrad', '/book4.jpg', 'mevaisacomerlapolla')");
+            db.update(
+                "INSERT INTO book(title,autor,path,editorial) VALUES('Bold Pursuit', 'Zabrina Faiere', '/book5.jpg', 'mevaisacomerlapolla')");
+            
+            //Insertamos usuarios
+            db.update(
+                    "INSERT INTO users(email,password) VALUES('javilachupa', 'pene')");
+            db.update(
+                    "INSERT INTO users(email,password) VALUES('rafalachupa', 'pene')");
+            db.update(
+                    "INSERT INTO users(email,password) VALUES('marcolachupa', 'pene')");
+            db.update(
+                    "INSERT INTO users(email,password) VALUES('joselachupa', 'pene')");
+            db.update(
+                    "INSERT INTO users(email,password) VALUES('pedromola', 'pene')");        
+           
 
-
+ */       
+      
             // do a query
             //db.query(" DELETE FROM sample_table WHERE str_col='Ford'");
             db.query("SELECT * FROM books");
@@ -256,7 +270,9 @@ public class DbConnector {
             // at end of program
             db.shutdown();
         } catch (SQLException ex3) {
+        	System.out.println("Error 4");
             ex3.printStackTrace();
+            
         }
     }    // main()
 }    // class Testdb

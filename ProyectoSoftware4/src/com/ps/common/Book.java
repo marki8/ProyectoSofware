@@ -7,19 +7,19 @@ import javax.imageio.ImageIO;
 
 public class Book {
 
-	private int id;
 	private String title;
 	private String autor;
 	private String path;
+	private String editorial;
 
 	private BufferedImage cover;
 
-	public Book(int id,String title, String autor, String path) {
+	public Book(String title, String autor, String path, String Editorial) {
 		
-		this.id=id;
 		this.title = title;
 		this.autor = autor;
 		this.path = path;
+		this.editorial= Editorial;
 		try {
 			cover = ImageIO.read(getClass()
 					.getResource(path));
@@ -28,9 +28,6 @@ public class Book {
 		}
 	}
 
-	public int getId() {
-		return id;
-	}
 	public String getTitle() {
 		return title;
 	}
@@ -47,4 +44,9 @@ public class Book {
 	public BufferedImage getCover() {
 		return cover;
 	}
+	
+	public String getEdi() {
+		return editorial;
+	}
+	
 }
