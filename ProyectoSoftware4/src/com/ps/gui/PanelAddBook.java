@@ -64,7 +64,7 @@ public class PanelAddBook extends JPanel  {
 				Book newBook = new Book(title, autor, path, editorial);
 				if(index==-1) {
 	                bookList.add(newBook); 
-	                db.addBook(title, autor, path, null);
+	                db.addBook(title, autor, path, editorial);
 				}				
 				else if (!bookList.get(index).equals(newBook) && index >= 0) {
 	                bookList.set(index, newBook);
@@ -93,7 +93,8 @@ public class PanelAddBook extends JPanel  {
         this.add(buttonDelete);
 	}
 	
-	public void setBook(String title, String autor, String path) {
+	public void setBook(String editorial,String title, String autor, String path) {
+		textFieldEditorial.setText(editorial);
 		textFieldTitle.setText(title);
 		textFieldAutor.setText(autor);
 		textFieldPath.setText(path.substring(1));

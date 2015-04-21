@@ -52,7 +52,6 @@ SET SCHEMA PUBLIC
 INSERT INTO BOOK VALUES('Destiny of the sword','Jeremy Twigg','/book1.jpg','mevaisacomerlapolla')
 INSERT INTO BOOK VALUES('La espada del destino','Andrzej Sapkowski','/book0.jpg','mevaisacomerlapolla')
 INSERT INTO BOOK VALUES('Nathe the great and the Sticky Case','Ugo Sanchez','/book2.jpg','mevaisacomerlapolla')
-INSERT INTO BOOK VALUES('The Iron Hell','Jack London','/book3.jpg','mevaisacomerlapolla')
 INSERT INTO BOOK VALUES('The arrow of gold','Joseph Conrad','/book4.jpg','mevaisacomerlapolla')
 INSERT INTO USERS VALUES('javilachupa','pene')
 INSERT INTO USERS VALUES('joselachupa','pene')

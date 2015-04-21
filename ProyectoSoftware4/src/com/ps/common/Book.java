@@ -45,7 +45,7 @@ public class Book {
 		return cover;
 	}
 	
-	public String getEdi() {
+	public String getEditorial() {
 		return editorial;
 	}
 	
