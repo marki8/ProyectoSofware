@@ -77,18 +77,18 @@ public class DbConnector {
         // completely examined.
     }
     /**
-     * Añadir libros a la base de datos.
+     * Aï¿½adir libros a la base de datos.
      */
     public synchronized void addBook(String title, String autor, String path, String editorial) {
     	
     	try {
-			update("INSERT INTO book(title,autor,path,editorial) VALUES('" + title + "','" + autor + "','" + path + "','" + editorial + "','" + "')");
+			update("INSERT INTO book(title,autor,path,editorial) VALUES('" + title + "','" + autor + "','" + path + "','" + editorial + "')");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
     }
     /**
-     * Método para añadir usuarios
+     * Mï¿½todo para aï¿½adir usuarios
      * @param user, @param password
      */
     public synchronized void addBookBuy(String user, String password, int id) {
@@ -100,7 +100,7 @@ public class DbConnector {
 		}
     }
     /**
-     * Método de eliminación de libros.
+     * Mï¿½todo de eliminaciï¿½n de libros.
      */
     public synchronized void deleteBook(String title, String autor, String path) {
     	
@@ -197,7 +197,7 @@ public class DbConnector {
     }                                       //void dump( ResultSet rs )
 
     /**
-     * Método main, creación de las bases de datos de libros.
+     * Mï¿½todo main, creaciï¿½n de las bases de datos de libros.
      */
     public static void main(String[] args) {
 
@@ -211,21 +211,21 @@ public class DbConnector {
             return;                   // bye bye
         }
         try {
-        	//Creación de la primera tabla, guardaremos los libros de la base de datos.
-            db.update("CREATE TABLE book (title VARCHAR(256), autor VARCHAR(256), path VARCHAR(256), editorial VARCHAR(256), PRIMARY KEY (title))");
+        	//Creaciï¿½n de la primera tabla, guardaremos los libros de la base de datos.
+            db.update("CREATE TABLE book (title VARCHAR(256), autor VARCHAR(256), path VARCHAR(256), editorial VARCHAR(256), PRIMARY KEY (title, autor))");
         } catch (SQLException ex2) {
         	System.out.println("Error 1");
          }
         
         try {
-        	//Creación de la segunda tabla, esta vez de usuarios. 
+        	//Creaciï¿½n de la segunda tabla, esta vez de usuarios. 
             db.update("CREATE TABLE users (email VARCHAR(256), password VARCHAR(256), PRIMARY KEY (email))");
         } catch (SQLException ex3) {
         	System.out.println("Error 2");
         }
         
         try {
-        	//Creación de la tercera tabla, en la cual disponemos los libros comprados por cada usuario y la posible puntuacion de estos. 
+        	//Creaciï¿½n de la tercera tabla, en la cual disponemos los libros comprados por cada usuario y la posible puntuacion de estos. 
             db.update("CREATE TABLE posee (email VARCHAR(256), title VARCHAR(256), puntuacion int, foreign key (email) references users(email),foreign key (title) references book(title))");
         } catch (SQLException ex3) {
         	System.out.println("Error 3");
@@ -233,7 +233,7 @@ public class DbConnector {
         }
       
         try {
-/*
+
             //Insertamos libros
            db.update(
                "INSERT INTO book(title,autor,path,editorial) VALUES('La espada del destino', 'Andrzej Sapkowski', '/book0.jpg', 'mevaisacomerlapolla')");
@@ -259,13 +259,10 @@ public class DbConnector {
                     "INSERT INTO users(email,password) VALUES('joselachupa', 'pene')");
             db.update(
                     "INSERT INTO users(email,password) VALUES('pedromola', 'pene')");        
-           
-
- */       
-      
+          
             // do a query
             //db.query(" DELETE FROM sample_table WHERE str_col='Ford'");
-            db.query("SELECT * FROM books");
+            //db.query("SELECT * FROM book");
 
             // at end of program
             db.shutdown();
@@ -274,5 +271,5 @@ public class DbConnector {
             ex3.printStackTrace();
             
         }
-    }    // main()
-}    // class Testdb
+    }
+}    

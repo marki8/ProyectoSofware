@@ -29,11 +29,6 @@ public class PanelAddBook extends JPanel  {
 		layout.setHgap(5); layout.setVgap(5);
 		this.setLayout(layout);
 		this.setBorder(new TitledBorder(new EtchedBorder(), "Anadir Libro"));
-		
-		JLabel labelEditorial = new JLabel("Editorial: ");
-		textFieldEditorial = new JTextField("", 15);
-        this.add(labelEditorial);
-        this.add(textFieldEditorial);
         
 	    JLabel labelTitle = new JLabel("Titulo: ");
 	    textFieldTitle = new JTextField("", 15);
@@ -44,6 +39,11 @@ public class PanelAddBook extends JPanel  {
 	    textFieldAutor = new JTextField("", 15);
         this.add(labelAutor);
         this.add(textFieldAutor);
+        
+		JLabel labelEditorial = new JLabel("Editorial: ");
+		textFieldEditorial = new JTextField("", 15);
+        this.add(labelEditorial);
+        this.add(textFieldEditorial);
         
 	    JLabel labelPath = new JLabel("Ruta: ");
 	    textFieldPath = new JTextField("", 15);
@@ -100,7 +100,7 @@ public class PanelAddBook extends JPanel  {
 		textFieldPath.setText(path.substring(1));
 	}
 	
-	public void deleteBook(String title, String autor, String path,final JGrid grid, final List<Book> bookList, final DbConnector db) {
+	public void deleteBook(String title, String autor, String path, final JGrid grid, final List<Book> bookList, final DbConnector db) {
 		db.deleteBook(title, autor, path);
 		int index = grid.getSelectedIndex();
         bookList.remove(index);

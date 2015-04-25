@@ -14,15 +14,14 @@ public class Book {
 
 	private BufferedImage cover;
 
-	public Book(String title, String autor, String path, String Editorial) {
+	public Book(String title, String autor, String path, String editorial) {
 		
 		this.title = title;
 		this.autor = autor;
 		this.path = path;
-		this.editorial= Editorial;
+		this.editorial= editorial;
 		try {
-			cover = ImageIO.read(getClass()
-					.getResource(path));
+			cover = ImageIO.read(getClass().getResource(path));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
