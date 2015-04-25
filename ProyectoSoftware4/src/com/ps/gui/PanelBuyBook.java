@@ -1,8 +1,10 @@
 package com.ps.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -14,13 +16,16 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
+import javax.swing.SpringLayout;
 import javax.swing.SwingConstants;
 
 import com.ps.common.Book;
@@ -83,16 +88,38 @@ public class PanelBuyBook extends JPanel {
 		
 		// Panel Derecho
 		JPanel rightPanel = new JPanel();
+		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 		rightPanel.setMinimumSize(minimumSize);
+		
+		JPanel title_autor = new JPanel();
+		title_autor.setLayout(new BoxLayout(title_autor, BoxLayout.Y_AXIS));
+		//title_autor.setAlignmentY(LEFT_ALIGNMENT);
 
 		JLabel title = new JLabel(book.getTitle());
 		title.setFont(new Font("Arial", Font.BOLD, 20));
-		rightPanel.add(title, BorderLayout.WEST);
+		title.setAlignmentX(Component.LEFT_ALIGNMENT);
+		title_autor.add(title);
+
 		JLabel autor = new JLabel(book.getAutor());
 		autor.setFont(new Font("Arial", Font.PLAIN, 16));
-		rightPanel.add(autor, BorderLayout.WEST);
-		
-		
+		autor.setAlignmentX(Component.LEFT_ALIGNMENT);
+		title_autor.add(autor);
+		rightPanel.add(title_autor);
+	
+		rightPanel.add(Box.createRigidArea(new Dimension(0, 20)));
+
+		// Pestañas de descripcion y valoraciones
+		JTabbedPane tabbedPane = new JTabbedPane();
+		JPanel desc = new JPanel();
+		desc.setLayout(new BoxLayout(desc, BoxLayout.Y_AXIS));
+		JLabel d = new JLabel("Descripción del libro"); 
+		d.setFont(new Font("Arial", Font.BOLD, 16));
+		desc.add(d, LEFT_ALIGNMENT);
+		JPanel val = new JPanel();
+		tabbedPane.addTab("Detalles", null, desc,"Descripcion");
+		tabbedPane.addTab("Valoraciones", null, val, "Valoraciones");
+		rightPanel.add(tabbedPane);
+
 		// Split Pane
 		final JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, 
                 leftPanel, rightPanel );
