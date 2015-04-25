@@ -4,6 +4,7 @@ package com.ps.common;
 //import javax.swing.JOptionPane;
 //import javax.swing.JPasswordField;
 
+import com.ps.db.DbConnector;
 import com.ps.gui.*;
 
 public class Main {
@@ -11,8 +12,15 @@ public class Main {
 	 * @param args
 	 * @throws SiguienteException 
 	 */
+	
+	private static DbConnector db = null;
+
 	public static void main(String[] args) throws SiguienteException {
-       try {
+       try { try {
+  			db = new DbConnector("db_file");
+  		} catch (Exception e) {
+  			e.printStackTrace();
+  		}
 //    	     String usuario = (String)JOptionPane.showInputDialog(null,
 //    	    			"Usuario:","Login",JOptionPane.PLAIN_MESSAGE);
 //    	     JPasswordField jpf = new JPasswordField();
@@ -20,8 +28,14 @@ public class Main {
 //    	     JOptionPane.showConfirmDialog (null, new Object[]{titulo, jpf}, "contrasena", JOptionPane.PLAIN_MESSAGE);
 //    	     char p[] = jpf.getPassword();
 //    	     String pass = new String(p);
-
-    	     new MainGUI().setVisible(true);;
+    	   	if(db.userExist("pedromola", "pene")){
+    	   		System.out.println("BIEEEEN");
+    	   		new MainGUI().setVisible(true);;
+    	   	}
+    	   	else{
+    	   		System.out.println("MAAAL");
+    	   	}
+    	     
        }
       catch (Exception e) { 
     	  e.printStackTrace(); 

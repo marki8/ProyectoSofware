@@ -20,6 +20,8 @@ public class PanelAddBook extends JPanel  {
 	private final JTextField textFieldEditorial;
 	private final JTextField textFieldTitle;
 	private final JTextField textFieldAutor;
+	private final JTextField textFieldPrecio;
+	private final JTextField textFieldDescripcion;
 	private final JTextField textFieldPath;
 
 	
@@ -45,6 +47,16 @@ public class PanelAddBook extends JPanel  {
         this.add(labelEditorial);
         this.add(textFieldEditorial);
         
+        JLabel labelPrecio = new JLabel("Precio: ");
+		textFieldPrecio = new JTextField("", 15);
+        this.add(labelPrecio);
+        this.add(textFieldPrecio);
+        
+        JLabel labelDescripcion = new JLabel("Descripcion: ");
+		textFieldDescripcion = new JTextField("", 15);
+        this.add(labelDescripcion);
+        this.add(textFieldDescripcion);
+        
 	    JLabel labelPath = new JLabel("Ruta: ");
 	    textFieldPath = new JTextField("", 15);
         this.add(labelPath);
@@ -57,11 +69,13 @@ public class PanelAddBook extends JPanel  {
 			public void actionPerformed(ActionEvent e) {
 				
 				String editorial =textFieldEditorial.getText();
+				int precio =Integer.parseInt(textFieldPrecio.getText());
+				String descripcion =textFieldDescripcion.getText();
 				String title = textFieldTitle.getText();
 				String autor = textFieldAutor.getText();
 				String path = "/" + textFieldPath.getText();
 				int index = grid.getSelectedIndex();
-				Book newBook = new Book(title, autor, path, editorial);
+				Book newBook = new Book(title, autor, path, editorial,precio,descripcion);
 				if(index==-1) {
 	                bookList.add(newBook); 
 	                db.addBook(title, autor, path, editorial);
@@ -93,10 +107,12 @@ public class PanelAddBook extends JPanel  {
         this.add(buttonDelete);
 	}
 	
-	public void setBook(String editorial,String title, String autor, String path) {
+	public void setBook(String editorial,String title, String autor, int precio,String descripcion,String path) {
 		textFieldEditorial.setText(editorial);
 		textFieldTitle.setText(title);
 		textFieldAutor.setText(autor);
+		textFieldPrecio.setText(Integer.toString(precio));
+		textFieldDescripcion.setText(descripcion);
 		textFieldPath.setText(path.substring(1));
 	}
 	
