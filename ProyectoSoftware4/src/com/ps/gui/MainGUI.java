@@ -72,9 +72,10 @@ public class MainGUI extends JFrame {
 						final Book book = bookList.get(selectedIndex);
 						if (arg0.getButton() == MouseEvent.BUTTON1) { // Click izquierdo
 							if (arg0.getClickCount() == 2) {
-								System.out
-										.println("Seleccion " + selectedIndex);
-								cards.add(new PanelBuyBook(book,db), "TEST");
+								System.out.println("Seleccion " + selectedIndex);
+								PanelBuyBook pbb = new PanelBuyBook(book, db, grid);
+								//pbb.setMinimumSize(grid.getPreferredSize());
+								cards.add(pbb, "TEST");
 								CardLayout cl = (CardLayout) (cards.getLayout());
 								cl.show(cards, "TEST");
 
