@@ -11,15 +11,21 @@ public class Book {
 	private String autor;
 	private String path;
 	private String editorial;
+	private int precio;
+	private String descripcion;
+
+	
 
 	private BufferedImage cover;
 
-	public Book(String title, String autor, String path, String editorial) {
+	public Book(String title, String autor, String path, String editorial,int precio,String descripcion) {
 		
 		this.title = title;
 		this.autor = autor;
 		this.path = path;
 		this.editorial= editorial;
+		this.descripcion=descripcion;
+		this.precio=precio;
 		try {
 			cover = ImageIO.read(getClass().getResource(path));
 		} catch (IOException e) {
@@ -47,5 +53,21 @@ public class Book {
 	public String getEditorial() {
 		return editorial;
 	}
+	
+	public String getDescripcion() {
+		return descripcion;
+	}
+
+	public void setDescripcion(String descripcion) {
+		this.descripcion = descripcion;
+	}
+	public int getPrecio() {
+		return precio;
+	}
+
+	public void setPrecio(int precio) {
+		this.precio = precio;
+	}
+
 	
 }

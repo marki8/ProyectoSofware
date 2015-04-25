@@ -80,7 +80,7 @@ public class MainGUI extends JFrame {
 								cl.show(cards, "TEST");
 
 							} else {
-								pab.setBook(book.getEditorial(),book.getTitle(), book.getAutor(),
+								pab.setBook(book.getEditorial(),book.getTitle(), book.getAutor(),book.getPrecio(),book.getDescripcion(),
 										book.getPath());
 							}
 
@@ -90,8 +90,8 @@ public class MainGUI extends JFrame {
 							popup.add(m);
 							ActionListener al = new ActionListener() {
 								public void actionPerformed(ActionEvent e) {
-									pab.setBook(book.getEditorial(),book.getTitle(),
-											book.getAutor(), book.getPath());
+									pab.setBook(book.getEditorial(),book.getTitle(), book.getAutor(),book.getPrecio(),book.getDescripcion(),
+											book.getPath());
 								}
 							};
 							m.addActionListener(al);

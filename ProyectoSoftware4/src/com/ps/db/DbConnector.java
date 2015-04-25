@@ -91,10 +91,10 @@ public class DbConnector {
      * M�todo para a�adir usuarios
      * @param user, @param password
      */
-    public synchronized void addBookBuy(String user, String password, int id) {
+    public synchronized void addBookBuy(String user, String titulo) {
     	
     	try {
-			update("INSERT INTO users(email,password) VALUES('" + user + "','" + password + "')");
+			update("INSERT INTO posee(email,title) VALUES('" + user + "','" + titulo + "')");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -110,6 +110,29 @@ public class DbConnector {
 			e.printStackTrace();
 		}
     }
+    /**
+     * Metodo para comprobar si el usuario existe en la BD.
+     */
+ public synchronized boolean userExist(String user, String pass) {
+     Statement st = null;
+     ResultSet rs = null;
+     boolean respuesta=false;
+
+    	try {
+    		st = conn.createStatement();
+	        rs = st.executeQuery("SELECT * FROM users WHERE email='"+user+"' AND password='"+pass+"'");
+	        st.close();
+	        rs.next();
+	        if (rs.getString(1).isEmpty()){
+	        	respuesta=false;
+	        }
+	        else{
+	        	respuesta=true;
+	        }
+		} catch (SQLException e) {
+		}
+		return respuesta;
+    }
     
     public synchronized List<Book> getBooks() {
         Statement st = null;
@@ -123,7 +146,7 @@ public class DbConnector {
 
 	        bookList = new ArrayList<Book>();
 	        for (; rs.next(); ) {
-	        	bookList.add(new Book(rs.getString(1),rs.getString(2), rs.getString(3), rs.getString(4)));
+	        	bookList.add(new Book(rs.getString(1),rs.getString(2), rs.getString(3), rs.getString(4),rs.getInt(5),rs.getString(6)));
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -212,7 +235,7 @@ public class DbConnector {
         }
         try {
         	//Creaci�n de la primera tabla, guardaremos los libros de la base de datos.
-            db.update("CREATE TABLE book (title VARCHAR(256), autor VARCHAR(256), path VARCHAR(256), editorial VARCHAR(256), PRIMARY KEY (title, autor))");
+            db.update("CREATE TABLE book (title VARCHAR(256), autor VARCHAR(256), path VARCHAR(256), editorial VARCHAR(256),precio NUMERIC(5, 2),descripcion VARCHAR(500), PRIMARY KEY (title, autor))");
         } catch (SQLException ex2) {
         	System.out.println("Error 1");
          }
@@ -226,7 +249,7 @@ public class DbConnector {
         
         try {
         	//Creaci�n de la tercera tabla, en la cual disponemos los libros comprados por cada usuario y la posible puntuacion de estos. 
-            db.update("CREATE TABLE posee (email VARCHAR(256), title VARCHAR(256), puntuacion int, foreign key (email) references users(email),foreign key (title) references book(title))");
+            db.update("CREATE TABLE posee (email VARCHAR(256), title VARCHAR(256), puntuacion int, foreign key (email) references users(email),foreign key(title) references book(title)");
         } catch (SQLException ex3) {
         	System.out.println("Error 3");
 
@@ -236,17 +259,17 @@ public class DbConnector {
 
             //Insertamos libros
            db.update(
-               "INSERT INTO book(title,autor,path,editorial) VALUES('La espada del destino', 'Andrzej Sapkowski', '/book0.jpg', 'mevaisacomerlapolla')");
+               "INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('La espada del destino', 'Andrzej Sapkowski', '/book0.jpg', 'mevaisacomerlapolla',(11.99),'VIVA')");
             db.update(
-            	"INSERT INTO book(title,autor,path,editorial) VALUES('Destiny of the sword', 'Jeremy Twigg', '/book1.jpg', 'mevaisacomerlapolla')");
+            	"INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Destiny of the sword', 'Jeremy Twigg', '/book1.jpg', 'mevaisacomerlapolla',(71.99),'VIVA')");
             db.update(
-                "INSERT INTO book(title,autor,path,editorial) VALUES('Nathe the great and the Sticky Case', 'Ugo Sanchez', '/book2.jpg', 'mevaisacomerlapolla')");
+                "INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Nathe the great and the Sticky Case', 'Ugo Sanchez', '/book2.jpg', 'mevaisacomerlapolla',(51.99),'VIVA')");
             db.update(
-                "INSERT INTO book(title,autor,path,editorial) VALUES('The Iron Hell', 'Jack London', '/book3.jpg', 'mevaisacomerlapolla')");
+                "INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('The Iron Hell', 'Jack London', '/book3.jpg', 'mevaisacomerlapolla',(14.99),'VIVA')");
             db.update(
-                "INSERT INTO book(title,autor,path,editorial) VALUES('The arrow of gold', 'Joseph Conrad', '/book4.jpg', 'mevaisacomerlapolla')");
+                "INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('The arrow of gold', 'Joseph Conrad', '/book4.jpg', 'mevaisacomerlapolla',(13.99),'VIVA')");
             db.update(
-                "INSERT INTO book(title,autor,path,editorial) VALUES('Bold Pursuit', 'Zabrina Faiere', '/book5.jpg', 'mevaisacomerlapolla')");
+                "INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Bold Pursuit', 'Zabrina Faiere', '/book5.jpg', 'mevaisacomerlapolla',(12.99),'VIVA')");
             
             //Insertamos usuarios
             db.update(
