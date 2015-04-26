@@ -44,7 +44,6 @@ public class PanelBuyBook extends JPanel {
                 panelIzquierdo(book, db), panelDerecho(book, db, grid) );
 		pane.setOneTouchExpandable(true);
 		pane.setDividerLocation((book.getAutor().length() + 7)*10);
-		System.out.println((book.getAutor().length() + 7)*10);
 		pane.setEnabled(false);
 		pane.setDividerSize(0);
 		pane.setPreferredSize(grid.getPreferredSize());
@@ -138,7 +137,7 @@ public class PanelBuyBook extends JPanel {
 	 * @param db
 	 * @return
 	 */
-	private JPanel panelDerecho(Book book, DbConnector db, JGrid grid) {
+	private JPanel panelDerecho(final Book book, DbConnector db, final JGrid grid) {
 		JPanel rightPanel = new JPanel();
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 		rightPanel.setMinimumSize(new Dimension(200, 50));
@@ -159,19 +158,35 @@ public class PanelBuyBook extends JPanel {
 		rightPanel.add(Box.createRigidArea(new Dimension(0, 20)));
 
 		// Panel de detalles
-		JPanel desc = new JPanel();
+		final JPanel desc = new JPanel();
 		desc.setLayout(new BoxLayout(desc, BoxLayout.Y_AXIS));
 		JLabel d1 = new JLabel("Descripción del libro"); 
 		d1.setFont(new Font("Arial", Font.BOLD, 16));
 		desc.add(d1, LEFT_ALIGNMENT);
 		desc.add(Box.createRigidArea(new Dimension(0, 20)));
-		System.out.println(desc.getPreferredSize().getWidth());
-		String description = String.format("<html><div style=\"width:%dpx;\">%s</div><html>", 
-				(int) grid.getPreferredSize().getWidth() - (book.getAutor().length() + 7)*10 - 50, 
-				book.getDescripcion());
+		int width = (int) grid.getPreferredSize().getWidth() - (book.getAutor().length() + 7)*11;
+		String description = String.format("<html><div WIDTH=%d>%s</div><html>", width, book.getDescripcion());
 		JLabel d2 = new JLabel(description);
 		d2.setFont(new Font("Arial", Font.PLAIN, 12));
 		desc.add(d2, LEFT_ALIGNMENT);
+		
+        this.addComponentListener(new ComponentAdapter() {
+            public void componentResized(ComponentEvent e) {
+        		desc.removeAll();
+        		
+        		JLabel d1 = new JLabel("Descripción del libro"); 
+        		d1.setFont(new Font("Arial", Font.BOLD, 16));
+        		desc.add(d1, LEFT_ALIGNMENT);
+        		
+        		desc.add(Box.createRigidArea(new Dimension(0, 20)));
+
+            	int width = (int) grid.getPreferredSize().getWidth() - (book.getAutor().length() + 7)*11;
+        		String description = String.format("<html><div WIDTH=%d>%s</div><html>", width, book.getDescripcion());
+        		JLabel d2 = new JLabel(description);
+        		d2.setFont(new Font("Arial", Font.PLAIN, 12));
+        		desc.add(d2, LEFT_ALIGNMENT);
+            }
+        });
 
 		// Panel de valoraciones
 		JPanel val = new JPanel();
