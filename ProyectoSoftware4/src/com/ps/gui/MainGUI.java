@@ -6,6 +6,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -16,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
@@ -39,81 +44,60 @@ public class MainGUI extends JFrame {
 		setTitle("Easy Books");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
+		// Evento para cerrar la ventana y la base de datos
+		WindowAdapter exitListener = new WindowAdapter() {
+			public void windowClosing(WindowEvent e) {
+				try {
+					db.shutdown();
+				} catch (SQLException e1) {
+					e1.printStackTrace();
+				}
+				System.exit(0);
+			}
+		};
+		addWindowListener(exitListener);
+
+		// Configuramos el Look & Feel para que cada S0 use su propia GUI
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		} catch (ClassNotFoundException e1) {
+			e1.printStackTrace();
+		} catch (InstantiationException e1) {
+			e1.printStackTrace();
+		} catch (IllegalAccessException e1) {
+			e1.printStackTrace();
+		} catch (UnsupportedLookAndFeelException e1) {
+			e1.printStackTrace();
+		}
+
+		// Iniciamos la base de datos
 		try {
 			db = new DbConnector("db_file");
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
+		// Grid de libros
 		bookList = db.getBooks();
 		final JGrid grid = new JGrid(new SelectionModel(bookList));
-		grid.getCellRendererManager().setDefaultRenderer(new OpenLibraryGridRenderer());
-		//grid.setDefaultCellRenderer(new OpenLibraryGridRenderer());
+		grid.getCellRendererManager().setDefaultRenderer(
+				new OpenLibraryGridRenderer());
+		// grid.setDefaultCellRenderer(new OpenLibraryGridRenderer());
 		grid.setUI(new EasyBooksUI());
 
 		final JPanel cards = new JPanel(new CardLayout());
 		cards.add(new JScrollPane(grid), "GRID");
 		// cards.add(new PanelBuyBook(), "TEST");
-		
+
 		// Columna derecha
 		JPanel panel1 = new JPanel(); // Box.createVerticalBox();
 		panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));
 		panel1.add(new PanelButtons(cards));
 		final PanelAddBook pab = new PanelAddBook(grid, bookList, db);
 		panel1.add(pab);
-		
-		grid.addMouseListener(new MouseAdapter() {
 
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				int selectedIndex = grid.getCellAt(arg0.getPoint());
-				if (selectedIndex >= 0) {
-					try {
-						final Book book = bookList.get(selectedIndex);
-						if (arg0.getButton() == MouseEvent.BUTTON1) { // Click izquierdo
-							if (arg0.getClickCount() == 2) {
-								System.out.println("Seleccion " + selectedIndex);
-								PanelBuyBook pbb = new PanelBuyBook(book, db, grid);
-								//pbb.setMinimumSize(grid.getPreferredSize());
-								cards.add(pbb, "TEST");
-								CardLayout cl = (CardLayout) (cards.getLayout());
-								cl.show(cards, "TEST");
-
-							} else {
-								pab.setBook(book.getEditorial(),book.getTitle(), book.getAutor(),book.getPrecio(),book.getDescripcion(),
-										book.getPath());
-							}
-
-						} else if (arg0.getButton() == MouseEvent.BUTTON3) { // Click derecho
-							JPopupMenu popup = new JPopupMenu();
-							JMenuItem m = new JMenuItem("Editar");
-							popup.add(m);
-							ActionListener al = new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									pab.setBook(book.getEditorial(),book.getTitle(), book.getAutor(),book.getPrecio(),book.getDescripcion(),
-											book.getPath());
-								}
-							};
-							m.addActionListener(al);
-							m = new JMenuItem("Borrar");
-							popup.add(m);
-							ActionListener a = new ActionListener() {
-								public void actionPerformed(ActionEvent e) {
-									pab.deleteBook(book.getTitle(),
-											book.getAutor(), book.getPath(), grid, bookList, db);
-								}
-							};
-							m.addActionListener(a);
-							popup.show(MainGUI.this, arg0.getX(), arg0.getY());
-						}
-
-					} catch (Exception e) {}
-				}
-				else {
-					grid.getSelectionModel().clearSelection();;
-				}
-			}
-		});
+		// Listener de eventos del raton para el grid de libros
+		grid.addMouseListener(MouseListener(grid, cards, pab));
 
 		// Barra de herramientas
 		JToolBar toolBar = new JToolBar("Still draggable");
@@ -131,4 +115,91 @@ public class MainGUI extends JFrame {
 	public static void main(String[] args) {
 		new MainGUI().setVisible(true);
 	}
+
+	/**
+	 * 
+	 * @param grid
+	 * @param cards
+	 * @param pab
+	 * @return
+	 */
+	private MouseAdapter MouseListener(final JGrid grid, final JPanel cards,
+			final PanelAddBook pab) {
+		MouseAdapter ma = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				int selectedIndex = grid.getCellAt(arg0.getPoint());
+				if (selectedIndex >= 0) {
+					final Book book = bookList.get(selectedIndex);
+					if (arg0.getButton() == MouseEvent.BUTTON1) { // Clic izquierdo
+						if (arg0.getClickCount() == 2) { // Doble clic izquierdo
+							System.out.println("Seleccion " + selectedIndex);
+							cards.add(new PanelBuyBook(book, db, grid), "TEST");
+							CardLayout cl = (CardLayout) (cards.getLayout());
+							cl.show(cards, "TEST");
+
+						} else {
+							pab.setBook(book.getEditorial(), book.getTitle(),
+									book.getAutor(), book.getPrecio(),
+									book.getDescripcion(), book.getPath());
+						}
+
+					} else if (arg0.getButton() == MouseEvent.BUTTON3) { // Clic derecho
+						JPopupMenu popup = new JPopupMenu();
+						// Editar
+						JMenuItem m = new JMenuItem("Editar");
+						popup.add(m);
+						m.addActionListener(setBook(grid, book, pab));
+						// Borrar
+						m = new JMenuItem("Borrar");
+						popup.add(m);
+						m.addActionListener(deleteBook(grid, book, pab));
+						popup.show(MainGUI.this, arg0.getX(), arg0.getY());
+					}
+				} else { // Si no se hace clic en ningun libro, se deselecciona
+							// todo
+					grid.getSelectionModel().clearSelection();
+				}
+			}
+		};
+		return ma;
+	}
+
+	/**
+	 * 
+	 * @param grid
+	 * @param book
+	 * @param pab
+	 * @return
+	 */
+	private ActionListener setBook(final JGrid grid, final Book book,
+			final PanelAddBook pab) {
+		ActionListener al = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pab.setBook(book.getEditorial(), book.getTitle(),
+						book.getAutor(), book.getPrecio(),
+						book.getDescripcion(), book.getPath());
+			}
+		};
+		return al;
+	}
+
+	/**
+	 * 
+	 * @param grid
+	 * @param book
+	 * @param pab
+	 * @return
+	 */
+	private ActionListener deleteBook(final JGrid grid, final Book book,
+			final PanelAddBook pab) {
+		ActionListener al = new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				pab.deleteBook(book.getTitle(), book.getAutor(),
+						book.getPath(), grid, bookList, db);
+			}
+		};
+		return al;
+	}
+
 }
