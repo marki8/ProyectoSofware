@@ -30,7 +30,7 @@ public class Main {
 //    	     String pass = new String(p);
     	   	if(db.userExist("pedromola", "pene")){
     	   		System.out.println("BIEEEEN");
-    	   		new MainGUI().setVisible(true);;
+    	   		new MainGUI(1).setVisible(true);;
     	   	}
     	   	else{
     	   		System.out.println("MAAAL");
