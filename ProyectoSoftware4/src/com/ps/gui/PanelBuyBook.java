@@ -51,7 +51,7 @@ public class PanelBuyBook extends JPanel {
 		
         this.addComponentListener(new ComponentAdapter() {
             public void componentResized(ComponentEvent e) {
-                System.out.println(grid.getPreferredSize());
+                System.out.println(grid.getWidth());
         		pane.setPreferredSize(new Dimension(grid.getWidth(), 600));
             }
         });
