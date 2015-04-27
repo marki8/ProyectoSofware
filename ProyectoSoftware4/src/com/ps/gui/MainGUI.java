@@ -2,6 +2,10 @@ package com.ps.gui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Color;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -20,6 +24,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JToolBar;
 import javax.swing.UIManager;
+import javax.swing.UIManager.LookAndFeelInfo;
 import javax.swing.UnsupportedLookAndFeelException;
 
 import com.ps.common.Book;
@@ -58,16 +63,26 @@ public class MainGUI extends JFrame {
 		addWindowListener(exitListener);
 
 		// Configuramos el Look & Feel para que cada S0 use su propia GUI
+//		try {
+//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+//		} catch (ClassNotFoundException e1) {
+//			e1.printStackTrace();
+//		} catch (InstantiationException e1) {
+//			e1.printStackTrace();
+//		} catch (IllegalAccessException e1) {
+//			e1.printStackTrace();
+//		} catch (UnsupportedLookAndFeelException e1) {
+//			e1.printStackTrace();
+//		}
 		try {
-			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-		} catch (ClassNotFoundException e1) {
-			e1.printStackTrace();
-		} catch (InstantiationException e1) {
-			e1.printStackTrace();
-		} catch (IllegalAccessException e1) {
-			e1.printStackTrace();
-		} catch (UnsupportedLookAndFeelException e1) {
-			e1.printStackTrace();
+			UIManager.put("Panel.background", Color.WHITE);
+			UIManager.put("nimbusBase", Color.WHITE);
+			UIManager.put("nimbusBlueGrey", Color.WHITE);
+			UIManager.put("control", Color.WHITE); 
+		    UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+
+		} catch (Exception e) {
+		    e.printStackTrace();
 		}
 
 		// Iniciamos la base de datos
@@ -97,15 +112,24 @@ public class MainGUI extends JFrame {
 		panel1.add(pab);
 
 		// Listener de eventos del raton para el grid de libros
-		grid.addMouseListener(MouseListener(grid, cards, pab));
+		grid.addMouseListener(MouseListener(grid, cards, pab, panel1));
 
 		// Barra de herramientas
-		JToolBar toolBar = new JToolBar("Still draggable");
+		JToolBar toolBar = new JToolBar("Barra de herramientas");
+		toolBar.setOpaque(true);
+		toolBar.setBackground(Color.BLACK);
 		toolBar.add(new JButton("<"));
 		JButton forward = new JButton(">");
 		toolBar.add(forward);
+		JButton init = new JButton("Inicio");
+		toolBar.add(init);
+		JButton purchases = new JButton("Mis Compras");
+		toolBar.add(purchases);
+		JButton options = new JButton("Opciones");
+		toolBar.add(options);
 
-		getContentPane().add(toolBar, BorderLayout.PAGE_START);
+		//getContentPane().setBackground( Color.WHITE );
+		getContentPane().add(new PanelToolBar(), BorderLayout.PAGE_START);
 		getContentPane().add(cards, BorderLayout.CENTER);
 		getContentPane().add(panel1, BorderLayout.EAST);
 		// setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -121,10 +145,11 @@ public class MainGUI extends JFrame {
 	 * @param grid
 	 * @param cards
 	 * @param pab
+	 * @param panel1 
 	 * @return
 	 */
 	private MouseAdapter MouseListener(final JGrid grid, final JPanel cards,
-			final PanelAddBook pab) {
+			final PanelAddBook pab, final JPanel panel1) {
 		MouseAdapter ma = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -136,6 +161,7 @@ public class MainGUI extends JFrame {
 							System.out.println("Seleccion " + selectedIndex);
 							cards.add(new PanelBuyBook(book, db, grid), "TEST");
 							CardLayout cl = (CardLayout) (cards.getLayout());
+							//panel1.setVisible(false);
 							cl.show(cards, "TEST");
 
 						} else {
@@ -201,5 +227,4 @@ public class MainGUI extends JFrame {
 		};
 		return al;
 	}
-
 }
