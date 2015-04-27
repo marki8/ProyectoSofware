@@ -5,10 +5,21 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+
+import com.ps.common.Book;
+import com.ps.db.DbConnector;
+import com.ps.gui.jgrid.EasyBooksUI;
+import com.ps.gui.jgrid.OpenLibraryGridRenderer;
+import com.ps.gui.jgrid.SelectionModel;
+
+import de.jgrid.JGrid;
 
 public class PanelButtons extends JPanel {
 	
@@ -20,7 +31,7 @@ public class PanelButtons extends JPanel {
 	final String MyBooks = "Mis Libros";
 	final String Options = "Opciones";
 	
-	public PanelButtons(final JPanel cards) {
+	public PanelButtons(final JPanel cards,final DbConnector db,final List<Book> bookList,final JGrid grid) {
 		
         GridLayout layout = new GridLayout(4, 1);
         layout.setVgap(5);
@@ -43,6 +54,9 @@ public class PanelButtons extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+                bookList.clear();
+				bookList.addAll(db.getBooks());
+				grid.repaint();
 		        CardLayout cl = (CardLayout)(cards.getLayout());
 		        cl.next(cards);
 			}
@@ -52,7 +66,12 @@ public class PanelButtons extends JPanel {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				
+                bookList.clear();
+                //bookList.addAll(db.getBooksBuy("ejemplo"));
+                bookList.add(new Book("a","a","/book0.jpg","a",25,"a"));
+                grid.repaint();
+                CardLayout cl = (CardLayout)(cards.getLayout());
+		        cl.next(cards);
 			}
         });
         

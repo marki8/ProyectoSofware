@@ -13,6 +13,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BoxLayout;
@@ -29,6 +30,10 @@ import javax.swing.UnsupportedLookAndFeelException;
 
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
+import com.ps.gui.PanelAddBook;
+import com.ps.gui.PanelButtons;
+import com.ps.gui.PanelBuyBook;
+import com.ps.gui.PanelToolBar;
 import com.ps.gui.jgrid.EasyBooksUI;
 import com.ps.gui.jgrid.OpenLibraryGridRenderer;
 import com.ps.gui.jgrid.SelectionModel;
@@ -38,8 +43,8 @@ import de.jgrid.JGrid;
 public class MainGUI extends JFrame {
 
 	/**
-         * 
-         */
+	 * 
+	 */
 	private static final long serialVersionUID = 1L;
 
 	private DbConnector db = null;
@@ -107,7 +112,7 @@ public class MainGUI extends JFrame {
 		// Columna derecha
 		JPanel panel1 = new JPanel(); // Box.createVerticalBox();
 		panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));
-		panel1.add(new PanelButtons(cards));
+		panel1.add(new PanelButtons(cards, db,bookList,grid));
 		final PanelAddBook pab = new PanelAddBook(grid, bookList, db);
 		panel1.add(pab);
 
@@ -156,7 +161,8 @@ public class MainGUI extends JFrame {
 				int selectedIndex = grid.getCellAt(arg0.getPoint());
 				if (selectedIndex >= 0) {
 					final Book book = bookList.get(selectedIndex);
-					if (arg0.getButton() == MouseEvent.BUTTON1) { // Clic izquierdo
+					if (arg0.getButton() == MouseEvent.BUTTON1) { // Clic
+						// izquierdo
 						if (arg0.getClickCount() == 2) { // Doble clic izquierdo
 							System.out.println("Seleccion " + selectedIndex);
 							cards.add(new PanelBuyBook(book, db, grid), "TEST");
@@ -170,7 +176,8 @@ public class MainGUI extends JFrame {
 									book.getDescripcion(), book.getPath());
 						}
 
-					} else if (arg0.getButton() == MouseEvent.BUTTON3) { // Clic derecho
+					} else if (arg0.getButton() == MouseEvent.BUTTON3) { // Clic
+						// derecho
 						JPopupMenu popup = new JPopupMenu();
 						// Editar
 						JMenuItem m = new JMenuItem("Editar");
@@ -183,7 +190,7 @@ public class MainGUI extends JFrame {
 						popup.show(MainGUI.this, arg0.getX(), arg0.getY());
 					}
 				} else { // Si no se hace clic en ningun libro, se deselecciona
-							// todo
+					// todo
 					grid.getSelectionModel().clearSelection();
 				}
 			}

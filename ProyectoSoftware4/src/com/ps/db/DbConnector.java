@@ -154,7 +154,7 @@ public class DbConnector {
         
         return bookList;
     }
-   /**  Esto es puta mierda de momento xDD
+    
     public synchronized List<Book> getBooksBuy(String user) {
         Statement st = null;
         ResultSet rs = null;
@@ -162,12 +162,12 @@ public class DbConnector {
 
         try {
 			st = conn.createStatement();
-	        rs = st.executeQuery("SELECT bookBuy FROM users WHERE id="+user); 
+	        rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion FROM book b,users u,posee p WHERE u.email=p.email AND b.title=p.title"); 
 	        st.close();
 
 	        bookList = new ArrayList<Book>();
 	        for (; rs.next(); ) {
-	        	bookList.add(new Book(rs.getString(1),rs.getString(2), rs.getString(3), rs.getString(4)));
+	        	bookList.add(new Book(rs.getString(1),rs.getString(2), rs.getString(3), rs.getString(4),Integer.parseInt(rs.getString(5)),rs.getString(6)));
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -175,7 +175,6 @@ public class DbConnector {
         
         return bookList;
     }
-*/
 
 //use for SQL commands CREATE, DROP, INSERT and UPDATE
     public synchronized void update(String expression) throws SQLException {
