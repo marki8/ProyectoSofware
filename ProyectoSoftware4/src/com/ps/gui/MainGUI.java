@@ -41,7 +41,7 @@ public class MainGUI extends JFrame {
 	private DbConnector db = null;
 	private List<Book> bookList;
 
-	public MainGUI(int opcion) {
+	public MainGUI() {
 		setTitle("Easy Books");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -114,7 +114,7 @@ public class MainGUI extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new MainGUI(1).setVisible(true);
+		new MainGUI().setVisible(true);
 	}
 
 	/**
