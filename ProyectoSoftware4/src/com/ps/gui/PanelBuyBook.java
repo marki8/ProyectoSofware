@@ -27,6 +27,7 @@ import javax.swing.SwingUtilities;
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
 import com.ps.gui.jgrid.ImageUtilities;
+import com.ps.mail.SendMailTLS;
 
 import de.jgrid.JGrid;
 
@@ -90,6 +91,8 @@ public class PanelBuyBook extends JPanel {
 				String user = "user";
 				String titulo = book.getTitle();
 				db.addBookBuy(user, titulo);
+				SendMailTLS mail=new SendMailTLS("user",titulo);
+				mail.send();
 			}
 		});
 		b1.setFont(new Font("Arial", Font.BOLD, 14));
