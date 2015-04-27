@@ -1,6 +1,7 @@
 package com.ps.gui;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
@@ -8,6 +9,7 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.Action;
@@ -18,6 +20,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
+import com.ps.common.Book;
+import com.ps.db.DbConnector;
+
+import de.jgrid.JGrid;
+
 public class PanelToolBar extends JToolBar implements Action{
 	
 	/**
@@ -25,7 +32,7 @@ public class PanelToolBar extends JToolBar implements Action{
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public PanelToolBar() {
+	public PanelToolBar(final JPanel cards,final DbConnector db,final List<Book> bookList,final JGrid grid) {
 		//setLayout(new BorderLayout(10, 10));
 		
 		setName("Barra de herramientas");
@@ -67,6 +74,39 @@ public class PanelToolBar extends JToolBar implements Action{
 		options.addActionListener(optionsButton());
 		b2.add(options);
 		add(b2, BorderLayout.CENTER);
+		
+		 init.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+	                bookList.clear();
+					bookList.addAll(db.getBooks());
+					grid.repaint();
+			        CardLayout cl = (CardLayout)(cards.getLayout());
+			        cl.next(cards);
+				}
+	        });
+	        
+	        purchases.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+	                bookList.clear();
+	                //bookList.addAll(db.getBooksBuy("ejemplo"));
+	                bookList.add(new Book("a","a","/book0.jpg","a",25,"a"));
+	                grid.repaint();
+	                CardLayout cl = (CardLayout)(cards.getLayout());
+			        cl.next(cards);
+				}
+	        });
+	        
+	        options.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					
+				}
+	        });
 		
 		// Barra de busqueda
         JPanel search = new JPanel();

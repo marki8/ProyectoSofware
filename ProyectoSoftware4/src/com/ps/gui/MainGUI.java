@@ -111,8 +111,8 @@ public class MainGUI extends JFrame {
 
 		// Columna derecha
 		JPanel panel1 = new JPanel(); // Box.createVerticalBox();
-		panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));
-		panel1.add(new PanelButtons(cards, db,bookList,grid));
+//		panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));
+//		panel1.add(new PanelButtons(cards, db,bookList,grid));
 		final PanelAddBook pab = new PanelAddBook(grid, bookList, db);
 		panel1.add(pab);
 
@@ -134,7 +134,7 @@ public class MainGUI extends JFrame {
 		toolBar.add(options);
 
 		//getContentPane().setBackground( Color.WHITE );
-		getContentPane().add(new PanelToolBar(), BorderLayout.PAGE_START);
+		getContentPane().add(new PanelToolBar(cards, db,bookList,grid), BorderLayout.PAGE_START);
 		getContentPane().add(cards, BorderLayout.CENTER);
 		getContentPane().add(panel1, BorderLayout.EAST);
 		// setExtendedState(JFrame.MAXIMIZED_BOTH);

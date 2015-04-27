@@ -22,8 +22,8 @@ public class SendMailTLS {
 
 	public void send() {
 
-		final String username = "javiermiguel93@gmail.com";
-		final String password = "";
+		final String username = "easybooksps@gmail.com";
+		final String password = "ps20142015";
 
 		Properties props = new Properties();
 		props.put("mail.smtp.auth", "true");
@@ -41,12 +41,12 @@ public class SendMailTLS {
 		try {
 
 			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("javiermiguel93@gmail.com"));
+			message.setFrom(new InternetAddress("easybooksps@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("javiermiguel93@gmail.com"));
 			message.setSubject("Compra del libro: "+titulo);
 			message.setText("Apreciado cliente,"
-					+ "\n\n Usted ha comprado el libro "+titulo);
+					+ "\n\nUsted ha comprado el libro "+titulo);
 
 			Transport.send(message);
 			
