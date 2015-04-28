@@ -50,7 +50,7 @@ public class MainGUI extends JFrame {
 	private DbConnector db = null;
 	private List<Book> bookList;
 
-	public MainGUI() {
+	public MainGUI(int opcion) {
 		setTitle("Easy Books");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -68,26 +68,26 @@ public class MainGUI extends JFrame {
 		addWindowListener(exitListener);
 
 		// Configuramos el Look & Feel para que cada S0 use su propia GUI
-//		try {
-//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//		} catch (ClassNotFoundException e1) {
-//			e1.printStackTrace();
-//		} catch (InstantiationException e1) {
-//			e1.printStackTrace();
-//		} catch (IllegalAccessException e1) {
-//			e1.printStackTrace();
-//		} catch (UnsupportedLookAndFeelException e1) {
-//			e1.printStackTrace();
-//		}
+		//		try {
+		//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+		//		} catch (ClassNotFoundException e1) {
+		//			e1.printStackTrace();
+		//		} catch (InstantiationException e1) {
+		//			e1.printStackTrace();
+		//		} catch (IllegalAccessException e1) {
+		//			e1.printStackTrace();
+		//		} catch (UnsupportedLookAndFeelException e1) {
+		//			e1.printStackTrace();
+		//		}
 		try {
 			UIManager.put("Panel.background", Color.WHITE);
 			UIManager.put("nimbusBase", Color.WHITE);
 			UIManager.put("nimbusBlueGrey", Color.WHITE);
 			UIManager.put("control", Color.WHITE); 
-		    UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+			UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
 
 		} catch (Exception e) {
-		    e.printStackTrace();
+			e.printStackTrace();
 		}
 
 		// Iniciamos la base de datos
@@ -109,12 +109,15 @@ public class MainGUI extends JFrame {
 		cards.add(new JScrollPane(grid), "GRID");
 		// cards.add(new PanelBuyBook(), "TEST");
 
+
 		// Columna derecha
 		JPanel panel1 = new JPanel(); // Box.createVerticalBox();
-//		panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));
-//		panel1.add(new PanelButtons(cards, db,bookList,grid));
+		//		panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));
+		//		panel1.add(new PanelButtons(cards, db,bookList,grid));
 		final PanelAddBook pab = new PanelAddBook(grid, bookList, db);
-		panel1.add(pab);
+		if(opcion==1){
+			panel1.add(pab);
+		}
 
 		// Listener de eventos del raton para el grid de libros
 		grid.addMouseListener(MouseListener(grid, cards, pab, panel1));
@@ -141,9 +144,9 @@ public class MainGUI extends JFrame {
 		setSize(1066, 600);
 	}
 
-	public static void main(String[] args) {
-		new MainGUI().setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		new MainGUI(1).setVisible(true);
+//	}
 
 	/**
 	 * 

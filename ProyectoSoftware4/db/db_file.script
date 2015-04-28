@@ -1,4 +1,4 @@
-SET DATABASE UNIQUE NAME HSQLDB4CFF5A6EAE
+SET DATABASE UNIQUE NAME HSQLDB4D00687F2D
 SET DATABASE GC 0
 SET DATABASE DEFAULT RESULT MEMORY ROWS 0
 SET DATABASE EVENT LOG LEVEL 0
@@ -53,8 +53,5 @@ INSERT INTO BOOK VALUES('La espada del destino','Andrzej Sapkowski','/book0.jpg'
 INSERT INTO BOOK VALUES('Nathe the great and the Sticky Case','Ugo Sanchez','/book2.jpg','mevaisacomerlapolla',51.99,'VIVA')
 INSERT INTO BOOK VALUES('The Iron Hell','Jack London','/book3.jpg','mevaisacomerlapolla',14.99,'VIVA')
 INSERT INTO BOOK VALUES('The arrow of gold','Joseph Conrad','/book4.jpg','mevaisacomerlapolla',13.99,'VIVA')
-INSERT INTO USERS VALUES('612109@unizar.es','b')
-INSERT INTO USERS VALUES('649003@unizar.es','d')
 INSERT INTO USERS VALUES('650010@unizar.es','a')
-INSERT INTO USERS VALUES('650435@unizar.es','c')
-INSERT INTO USERS VALUES('652062@unizar.es','e')
+INSERT INTO USERS VALUES('admin','nimda')
