@@ -3,6 +3,7 @@ package com.ps.gui.jgrid;
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -36,8 +37,8 @@ public class EasyBooksUI extends GridUI {
 		}
 		grid.setFixedCellDimension(250); // 120
 		grid.setHorizonztalMargin(0); // 18
-		grid.setVerticalMargin(25); // 12
-		grid.setBorder(BorderFactory.createEmptyBorder(58, 0, 0, 0)); // 6, 0,
+		grid.setVerticalMargin(12); // 12
+		grid.setBorder(BorderFactory.createEmptyBorder(20, 0, 0, 0)); // 6, 0,
 																		// 0, 0
 		grid.setSelectionBackground(Color.YELLOW);
 		grid.setCellBackground(Color.BLUE);
@@ -46,17 +47,25 @@ public class EasyBooksUI extends GridUI {
 
 	@Override
 	public void paint(Graphics g, JComponent c) {
-		int height = 0;
-		int width = 0;
+//		int height = 0;
+//		int width = 0;
+//
+//		while (height < c.getHeight()) {
+//			width = 0;
+//			while (width < c.getWidth()) {
+//				g.drawImage(backgroundImage, width, height, null);
+//				width = width + backgroundImage.getWidth();
+//			}
+//			height = height + backgroundImage.getHeight();
+//		}
+		Graphics2D g2 = (Graphics2D)g.create();
+	    g2.setPaint(new GradientPaint(0, 0, new Color(200, 200, 200), 0, 200, new Color(241, 241, 241)));
+	    g2.fillRect(0, 0, c.getWidth(), c.getHeight());
+	    g2.dispose();
+//		g.setFont(new Font("Helvetica", Font.BOLD, 20));
+//		g.setColor(Color.BLACK);
+//		g.drawString("Catalogo", 10, 10);
 
-		while (height < c.getHeight()) {
-			width = 0;
-			while (width < c.getWidth()) {
-				g.drawImage(backgroundImage, width, height, null);
-				width = width + backgroundImage.getWidth();
-			}
-			height = height + backgroundImage.getHeight();
-		}
 		super.paint(g, c);
 	}
 
@@ -67,42 +76,42 @@ public class EasyBooksUI extends GridUI {
 		// super.paintCellBorder(g, c, index, new Rectangle(bounds.x + 50,
 		// bounds.y, 150, 250), leadIndex);
 		//super.paintCellBorder(g, c, index, bounds, leadIndex);
-		boolean isSelected = grid.getSelectionModel().isSelectedIndex(index);
-		if (isSelected) {
-			Graphics2D g2 = (Graphics2D) g.create();
-			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
-
-			Rectangle spotlightRect = new Rectangle(bounds.getLocation(),bounds.getSize());
-			spotlightRect.y = spotlightRect.y - 58;
-
-			int lightHeight = spotlightRect.height - (spotlightRect.height / 5); // 10
-			int topWidth = (spotlightRect.width / 5); // 10
-			int lightWidth = (spotlightRect.width / 10); // 20
-
-			Polygon shape = new Polygon();
-			shape.addPoint(spotlightRect.x + (spotlightRect.width / 2) - (topWidth / 2), spotlightRect.y);
-			shape.addPoint(spotlightRect.x + lightWidth, spotlightRect.y + lightHeight);
-			shape.addPoint(spotlightRect.x + spotlightRect.width - lightWidth, spotlightRect.y + lightHeight);
-			shape.addPoint(spotlightRect.x + (spotlightRect.width / 2) + (topWidth / 2), spotlightRect.y);
-
-			g2.setStroke(new BasicStroke(1.5f));
-			g2.setPaint(new GradientPaint(spotlightRect.x, spotlightRect.y,
-					new Color(255, 255, 255, 130), spotlightRect.x,
-					spotlightRect.y - 5 + lightHeight, new Color(255, 255, 255, 0)));
-			g2.fill(shape);
-			g2.draw(shape);
-
-			RadialGradientPaint radialGradient = new RadialGradientPaint(
-					new Point(spotlightRect.x + (spotlightRect.width / 2),
-							spotlightRect.y), lightHeight / 2, new float[] {
-							0.0f, 1.0f }, new Color[] {
-							new Color(255, 255, 255),
-							new Color(255, 255, 255, 0) });
-			g2.setPaint(radialGradient);
-			g2.fill(shape);
-
-			g2.dispose();
-		}
+//		boolean isSelected = grid.getSelectionModel().isSelectedIndex(index);
+//		if (isSelected) {
+//			Graphics2D g2 = (Graphics2D) g.create();
+//			g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING,RenderingHints.VALUE_ANTIALIAS_ON);
+//
+//			Rectangle spotlightRect = new Rectangle(bounds.getLocation(),bounds.getSize());
+//			spotlightRect.y = spotlightRect.y - 58;
+//
+//			int lightHeight = spotlightRect.height - (spotlightRect.height / 5); // 10
+//			int topWidth = (spotlightRect.width / 5); // 10
+//			int lightWidth = (spotlightRect.width / 10); // 20
+//
+//			Polygon shape = new Polygon();
+//			shape.addPoint(spotlightRect.x + (spotlightRect.width / 2) - (topWidth / 2), spotlightRect.y);
+//			shape.addPoint(spotlightRect.x + lightWidth, spotlightRect.y + lightHeight);
+//			shape.addPoint(spotlightRect.x + spotlightRect.width - lightWidth, spotlightRect.y + lightHeight);
+//			shape.addPoint(spotlightRect.x + (spotlightRect.width / 2) + (topWidth / 2), spotlightRect.y);
+//
+//			g2.setStroke(new BasicStroke(1.5f));
+//			g2.setPaint(new GradientPaint(spotlightRect.x, spotlightRect.y,
+//					new Color(255, 255, 255, 130), spotlightRect.x,
+//					spotlightRect.y - 5 + lightHeight, new Color(255, 255, 255, 0)));
+//			g2.fill(shape);
+//			g2.draw(shape);
+//
+//			RadialGradientPaint radialGradient = new RadialGradientPaint(
+//					new Point(spotlightRect.x + (spotlightRect.width / 2),
+//							spotlightRect.y), lightHeight / 2, new float[] {
+//							0.0f, 1.0f }, new Color[] {
+//							new Color(255, 255, 255),
+//							new Color(255, 255, 255, 0) });
+//			g2.setPaint(radialGradient);
+//			g2.fill(shape);
+//
+//			g2.dispose();
+//		}
 
 	}
 

@@ -31,6 +31,7 @@ public class PanelToolBar extends JToolBar implements Action{
 		setName("Barra de herramientas");
 		setOpaque(true);
 		setFloatable(false);
+		setBorder(BorderFactory.createLineBorder(Color.black));
 		setLayout(new BorderLayout(10, 10));
 		
         JPanel b1 = new JPanel();
@@ -103,7 +104,8 @@ public class PanelToolBar extends JToolBar implements Action{
 
 	    g2.setPaint(new GradientPaint(0, 0, new Color(90, 90, 90), 0, getHeight(), new Color(76, 76, 76)));
 	    g2.fillRect(0, 0, getWidth(), getHeight());
-
+	    g2.setColor(Color.BLACK);
+		g2.drawRect(-1, -1, getWidth() + 1, getHeight());
 	    g2.dispose();
 	}
 	

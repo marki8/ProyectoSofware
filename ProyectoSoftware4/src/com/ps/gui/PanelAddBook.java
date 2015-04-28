@@ -23,6 +23,7 @@ public class PanelAddBook extends JPanel  {
 	private final JTextField textFieldPrecio;
 	private final JTextField textFieldDescripcion;
 	private final JTextField textFieldPath;
+	private JButton buttonAdd;
 
 	
 	public PanelAddBook(final JGrid grid, final List<Book> bookList, final DbConnector db) {
@@ -62,7 +63,7 @@ public class PanelAddBook extends JPanel  {
         this.add(labelPath);
         this.add(textFieldPath);
         
-        JButton buttonAdd = new JButton("Anadir");
+        buttonAdd = new JButton("Anadir");
         buttonAdd.addActionListener(new ActionListener() {
 
 			@Override
@@ -121,6 +122,10 @@ public class PanelAddBook extends JPanel  {
 		int index = grid.getSelectedIndex();
         bookList.remove(index);
         grid.repaint();
+	}
+	
+	public void setAddModifyText(String s) {
+		buttonAdd.setText(s);
 	}
 
 }

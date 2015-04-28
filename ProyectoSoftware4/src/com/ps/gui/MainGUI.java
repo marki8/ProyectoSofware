@@ -80,10 +80,6 @@ public class MainGUI extends JFrame {
 //			e1.printStackTrace();
 //		}
 		try {
-			UIManager.put("Panel.background", Color.WHITE);
-			UIManager.put("nimbusBase", Color.WHITE);
-			UIManager.put("nimbusBlueGrey", Color.WHITE);
-			UIManager.put("control", Color.WHITE); 
 		    UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
 
 		} catch (Exception e) {
@@ -106,7 +102,10 @@ public class MainGUI extends JFrame {
 		grid.setUI(new EasyBooksUI());
 
 		final JPanel cards = new JPanel(new CardLayout());
-		cards.add(new JScrollPane(grid), "GRID");
+		cards.setBorder(null);
+		JScrollPane jsp = new JScrollPane(grid);
+		jsp.setBorder(null);
+		cards.add(jsp, "GRID");
 		// cards.add(new PanelBuyBook(), "TEST");
 
 		// Columna derecha
@@ -114,24 +113,11 @@ public class MainGUI extends JFrame {
 		panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));
 		panel1.add(new PanelButtons(cards, db,bookList,grid));
 		final PanelAddBook pab = new PanelAddBook(grid, bookList, db);
+		//panel1.setVisible(false);
 		panel1.add(pab);
 
 		// Listener de eventos del raton para el grid de libros
 		grid.addMouseListener(MouseListener(grid, cards, pab, panel1));
-
-		// Barra de herramientas
-		JToolBar toolBar = new JToolBar("Barra de herramientas");
-		toolBar.setOpaque(true);
-		toolBar.setBackground(Color.BLACK);
-		toolBar.add(new JButton("<"));
-		JButton forward = new JButton(">");
-		toolBar.add(forward);
-		JButton init = new JButton("Inicio");
-		toolBar.add(init);
-		JButton purchases = new JButton("Mis Compras");
-		toolBar.add(purchases);
-		JButton options = new JButton("Opciones");
-		toolBar.add(options);
 
 		//getContentPane().setBackground( Color.WHITE );
 		getContentPane().add(new PanelToolBar(), BorderLayout.PAGE_START);
@@ -171,6 +157,7 @@ public class MainGUI extends JFrame {
 							cl.show(cards, "TEST");
 
 						} else {
+							pab.setAddModifyText("Modificar");
 							pab.setBook(book.getEditorial(), book.getTitle(),
 									book.getAutor(), book.getPrecio(),
 									book.getDescripcion(), book.getPath());
@@ -191,6 +178,7 @@ public class MainGUI extends JFrame {
 					}
 				} else { // Si no se hace clic en ningun libro, se deselecciona
 					// todo
+					pab.setAddModifyText("Anadir");
 					grid.getSelectionModel().clearSelection();
 				}
 			}

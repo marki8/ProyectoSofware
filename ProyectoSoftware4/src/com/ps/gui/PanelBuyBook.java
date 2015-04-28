@@ -1,8 +1,12 @@
 package com.ps.gui;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
@@ -78,6 +82,12 @@ public class PanelBuyBook extends JPanel {
 		// Escala proporcional al tamaño de la imagen
 		Scale scale = scale(img.getWidth(), img.getHeight());
 		BufferedImage scaled = ImageUtilities.getOptimalScalingImage(img, scale.w, scale.h);
+		// Borde alrededor de la imagen
+        Graphics2D g = scaled.createGraphics();
+        g.setColor(Color.BLACK);
+		g.drawRect(0, 0, scaled.getWidth(), scaled.getHeight());
+		g.dispose();
+		
 		JLabel j = new JLabel();
 		j.setIcon(new ImageIcon(scaled));
 		leftPanel.add(j, BorderLayout.WEST);
@@ -139,6 +149,7 @@ public class PanelBuyBook extends JPanel {
 	 */
 	private JPanel panelDerecho(final Book book, DbConnector db, final JGrid grid) {
 		JPanel rightPanel = new JPanel();
+		rightPanel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10 ,10));
 		rightPanel.setLayout(new BoxLayout(rightPanel, BoxLayout.Y_AXIS));
 		rightPanel.setMinimumSize(new Dimension(200, 50));
 		
@@ -218,6 +229,16 @@ public class PanelBuyBook extends JPanel {
 		
 		return new Scale(width, height);
 
+	}
+	
+	@Override
+	protected void paintComponent(Graphics g) {
+	    Graphics2D g2 = (Graphics2D)g.create();
+
+	    g2.setPaint(new GradientPaint(0, 0, new Color(200, 200, 200), 0, 200, new Color(241, 241, 241)));
+	    g2.fillRect(0, 0, getWidth(), getHeight());
+
+	    g2.dispose();
 	}
 	
 	public class Scale {

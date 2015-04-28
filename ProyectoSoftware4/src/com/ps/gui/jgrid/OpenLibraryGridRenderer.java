@@ -13,6 +13,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 
 import com.ps.common.Book;
+import com.ps.gui.DropShadow;
 
 import de.jgrid.JGrid;
 import de.jgrid.renderer.GridCellRenderer;
@@ -76,38 +77,40 @@ public class OpenLibraryGridRenderer extends JComponent implements GridCellRende
 					RenderingHints.VALUE_INTERPOLATION_BICUBIC);
 			BufferedImage coverImage = ImageUtilities.getOptimalScalingImage(
 					book.getCover(), width, height);
-			g2.setStroke(new BasicStroke(2.5f));
+			//g2.setStroke(new BasicStroke(2.5f));
 
-			if (isSelected) {
-				g2.setColor(new Color(0, 0, 0, 160));
-			} else {
-				g2.setColor(new Color(0, 0, 0, 100));
-			}
+//			if (isSelected) {
+//				g2.setColor(new Color(0, 0, 0, 160));
+//			} else {
+//				g2.setColor(new Color(0, 0, 0, 100));
+//			}
 
-			g2.fillOval(startX - 8, coverImage.getHeight() - 8, coverImage.getWidth() + 16, 8);
-			Polygon shape = new Polygon();
+//			g2.fillOval(startX - 8, coverImage.getHeight() - 8, coverImage.getWidth() + 16, 8);
+//			Polygon shape = new Polygon();
 
 			// Sombra inferior
-			shape.addPoint(startX - 8, coverImage.getHeight() - 2);
-			shape.addPoint(startX - 8 + coverImage.getWidth() + 16, coverImage.getHeight() - 2);
-
-			// Sombra izquierda
-			shape.addPoint(startX + coverImage.getWidth() + coverImage.getWidth() / 20,
-					coverImage.getHeight() / 20);
-			shape.addPoint(startX + coverImage.getWidth(), 3);
-
-			// Sombra derecha
-			shape.addPoint(startX, 2);
-			shape.addPoint(startX - coverImage.getWidth() / 20, coverImage.getHeight() / 20);
+//			shape.addPoint(startX - 8, coverImage.getHeight() - 2);
+//			shape.addPoint(startX - 8 + coverImage.getWidth() + 16, coverImage.getHeight() - 2);
+//
+//			// Sombra izquierda
+//			shape.addPoint(startX + coverImage.getWidth() + coverImage.getWidth() / 20,
+//					coverImage.getHeight() / 20);
+//			shape.addPoint(startX + coverImage.getWidth(), 3);
+//
+//			// Sombra derecha
+//			shape.addPoint(startX, 2);
+//			shape.addPoint(startX - coverImage.getWidth() / 20, coverImage.getHeight() / 20);
 
 			g2.setFont(new Font("Helvetica", Font.BOLD, 12));
 			g2.drawString(book.getTitle(), startX, getHeight() - 24);
 			g2.setFont(new Font("HelveticaLight", Font.PLAIN, 10));
 			g2.drawString(book.getAutor(), startX, getHeight() - 10);
-			g2.fill(shape);
+//			g2.fill(shape);
 
-			g2.setColor(new Color(0, 0, 0, 160)); // 80
-			g2.setStroke(new BasicStroke(1.6f)); // 0.8f
+//			g2.setColor(new Color(0, 0, 0, 160)); // 80
+//			g2.setStroke(new BasicStroke(1.6f)); // 0.8f
+			DropShadow ds = new DropShadow(coverImage);
+			ds.paintShadow(g, startX, 0);
 			g2.drawImage(coverImage, startX, 0, null);
 			g2.drawRect(startX, 0, coverImage.getWidth(),coverImage.getHeight());
 
