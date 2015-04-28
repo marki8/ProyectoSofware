@@ -10,9 +10,9 @@ import com.ps.gui.*;
 public class Main {
 	/**
 	 * @param args
-	 * @throws SiguienteException 
+	 * @throws SiguienteException
 	 */
-	
+
 	private static DbConnector db = null;
 
 	public static void main(String[] args) throws SiguienteException {
@@ -28,9 +28,9 @@ public class Main {
 //    	     JOptionPane.showConfirmDialog (null, new Object[]{titulo, jpf}, "contrasena", JOptionPane.PLAIN_MESSAGE);
 //    	     char p[] = jpf.getPassword();
 //    	     String pass = new String(p);
-    	   	if(db.userExist("pedromola", "pene")){
+    	   	if(db.userExist("612109@unizar.es", "b")){
     	   		System.out.println("BIEEEEN");
-    	   		new MainGUI().setVisible(true);;
+    	   		new MainGUI(0).setVisible(true);;
     	   	}
     	   	else{
     	   		System.out.println("MAAAL");

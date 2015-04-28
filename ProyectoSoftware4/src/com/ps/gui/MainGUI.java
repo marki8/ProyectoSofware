@@ -50,7 +50,7 @@ public class MainGUI extends JFrame {
 	private DbConnector db = null;
 	private List<Book> bookList;
 
-	public MainGUI() {
+	public MainGUI(int opcion) {
 		setTitle("Easy Books");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -113,8 +113,9 @@ public class MainGUI extends JFrame {
 //		panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));
 //		panel1.add(new PanelButtons(cards, db,bookList,grid));
 		final PanelAddBook pab = new PanelAddBook(grid, bookList, db);
-		//panel1.setVisible(false);
+		panel1.setVisible(false);
 		panel1.add(pab);
+		if (opcion == 1) panel1.setVisible(true);
 
 		// Listener de eventos del raton para el grid de libros
 		grid.addMouseListener(MouseListener(grid, cards, pab, panel1));
@@ -128,7 +129,7 @@ public class MainGUI extends JFrame {
 	}
 
 	public static void main(String[] args) {
-		new MainGUI().setVisible(true);
+		new MainGUI(1).setVisible(true);
 	}
 
 	/**
