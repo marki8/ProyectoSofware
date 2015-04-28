@@ -88,9 +88,11 @@ public class PanelBuyBook extends JPanel {
 		b1.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String user = "user";
+				String user = "650010@unizar.es";
 				String titulo = book.getTitle();
-				db.addBookBuy(user, titulo);
+				String autor= book.getAutor();
+				int puntuacion=0;
+				db.addBookBuy(user, titulo,autor,puntuacion);
 				SendMailTLS mail=new SendMailTLS("user",titulo);
 				mail.send();
 			}

@@ -91,10 +91,10 @@ public class DbConnector {
      * M�todo para a�adir usuarios
      * @param user, @param password
      */
-    public synchronized void addBookBuy(String user, String titulo) {
+    public synchronized void addBookBuy(String user, String titulo,String autor,int puntuacion) {
     	
     	try {
-			update("INSERT INTO posee(email,title) VALUES('" + user + "','" + titulo + "')");
+			update("INSERT INTO posee(email ,title , autor , puntuacion) VALUES('" + user + "','" + titulo + "','" + autor+"','" + puntuacion+"')");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -162,12 +162,12 @@ public class DbConnector {
 
         try {
 			st = conn.createStatement();
-	        rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion FROM book b,users u,posee p WHERE u.email=p.email AND b.title=p.title"); 
+	        rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion FROM book b,users u,posee p WHERE u.email=p.email AND b.title=p.title AND b.autor=p.autor"); 
 	        st.close();
 
 	        bookList = new ArrayList<Book>();
 	        for (; rs.next(); ) {
-	        	bookList.add(new Book(rs.getString(1),rs.getString(2), rs.getString(3), rs.getString(4),Integer.parseInt(rs.getString(5)),rs.getString(6)));
+	        	bookList.add(new Book(rs.getString(1),rs.getString(2), rs.getString(3), rs.getString(4),rs.getInt(5),rs.getString(6)));
 	        }
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -248,7 +248,7 @@ public class DbConnector {
         
         try {
         	//Creaci�n de la tercera tabla, en la cual disponemos los libros comprados por cada usuario y la posible puntuacion de estos. 
-            db.update("CREATE TABLE posee (email VARCHAR(256), title VARCHAR(256), puntuacion int, foreign key (email) references users(email),foreign key(title) references book(title)");
+            db.update("CREATE TABLE posee (email VARCHAR(256), title VARCHAR(256), autor VARCHAR(256), puntuacion NUMERIC(5, 2), foreign key (email) references users(email),foreign key(title,autor) references book(title,autor))");
         } catch (SQLException ex3) {
         	System.out.println("Error 3");
 
@@ -272,15 +272,15 @@ public class DbConnector {
             
             //Insertamos usuarios
             db.update(
-                    "INSERT INTO users(email,password) VALUES('javilachupa', 'pene')");
+                    "INSERT INTO users(email,password) VALUES('650010@unizar.es', 'a')");
             db.update(
-                    "INSERT INTO users(email,password) VALUES('rafalachupa', 'pene')");
+                    "INSERT INTO users(email,password) VALUES('612109@unizar.es', 'b')");
             db.update(
-                    "INSERT INTO users(email,password) VALUES('marcolachupa', 'pene')");
+                    "INSERT INTO users(email,password) VALUES('650435@unizar.es', 'c')");
             db.update(
-                    "INSERT INTO users(email,password) VALUES('joselachupa', 'pene')");
+                    "INSERT INTO users(email,password) VALUES('649003@unizar.es', 'd')");
             db.update(
-                    "INSERT INTO users(email,password) VALUES('pedromola', 'pene')");        
+                    "INSERT INTO users(email,password) VALUES('652062@unizar.es', 'e')");        
           
             // do a query
             //db.query(" DELETE FROM sample_table WHERE str_col='Ford'");
