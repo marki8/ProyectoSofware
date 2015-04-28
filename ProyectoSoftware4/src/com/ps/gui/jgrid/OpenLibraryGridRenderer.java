@@ -13,7 +13,7 @@ import java.awt.image.BufferedImage;
 import javax.swing.JComponent;
 
 import com.ps.common.Book;
-import com.ps.gui.DropShadow;
+import com.ps.gui.gfx.DropShadow;
 
 import de.jgrid.JGrid;
 import de.jgrid.renderer.GridCellRenderer;

@@ -1,4 +1,4 @@
-package com.ps.gui;
+package com.ps.gui.gfx;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
