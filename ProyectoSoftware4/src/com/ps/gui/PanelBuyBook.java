@@ -103,7 +103,7 @@ public class PanelBuyBook extends JPanel {
 				String autor= book.getAutor();
 				int puntuacion=0;
 				db.addBookBuy(user, titulo,autor,puntuacion);
-				SendMailTLS mail=new SendMailTLS("user",titulo);
+				SendMailTLS mail=new SendMailTLS("user",titulo,autor);
 				mail.send();
 			}
 		});

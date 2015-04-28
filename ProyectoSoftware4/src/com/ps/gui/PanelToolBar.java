@@ -57,6 +57,15 @@ public class PanelToolBar extends JToolBar implements Action{
 		b1.add(forward);
 		add(b1, BorderLayout.WEST);
 		
+		 backward.addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+			        CardLayout cl = (CardLayout)(cards.getLayout());
+			        cl.next(cards);
+				}
+	        });
+		
 
         JPanel b2 = new JPanel();
 		// Boton de inicio

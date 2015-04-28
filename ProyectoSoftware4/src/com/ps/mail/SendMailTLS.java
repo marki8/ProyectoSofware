@@ -1,5 +1,6 @@
 package com.ps.mail;
 
+import java.util.Date;
 import java.util.Properties;
 
 import javax.mail.Message;
@@ -14,10 +15,12 @@ public class SendMailTLS {
 	
 	private String mail;
 	private String titulo;
+	private String autor;
 	
-	public SendMailTLS(String mail,String titulo) {
+	public SendMailTLS(String mail,String titulo,String autor) {
 		this.mail=mail;
 		this.titulo=titulo;
+		this.autor=autor;
 	}
 
 	public void send() {
@@ -39,15 +42,16 @@ public class SendMailTLS {
 				});
 
 		try {
-
+			Date date=new Date();
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("easybooksps@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("javiermiguel93@gmail.com"));
 			message.setSubject("Compra del libro: "+titulo);
-			message.setText("Apreciado cliente,"
-					+ "\n\nUsted ha comprado el libro "+titulo);
-
+			message.setText("Apreciado cliente: "+mail
+					+ "\n\nUsted ha comprado el libro "+titulo+"de "+autor+"a las "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
+					+" horas del "+date.getDate()+"/"+date.getMonth()+"/"+date.getYear()) ;
+//libro,código del libro, hora del pedido, usuario
 			Transport.send(message);
 			
 		} catch (MessagingException e) {
