@@ -274,13 +274,7 @@ public class DbConnector {
             db.update(
                     "INSERT INTO users(email,password) VALUES('650010@unizar.es', 'a')");
             db.update(
-                    "INSERT INTO users(email,password) VALUES('612109@unizar.es', 'b')");
-            db.update(
-                    "INSERT INTO users(email,password) VALUES('650435@unizar.es', 'c')");
-            db.update(
-                    "INSERT INTO users(email,password) VALUES('649003@unizar.es', 'd')");
-            db.update(
-                    "INSERT INTO users(email,password) VALUES('652062@unizar.es', 'e')");        
+                    "INSERT INTO users(email,password) VALUES('admin', 'nimda')");        
           
             // do a query
             //db.query(" DELETE FROM sample_table WHERE str_col='Ford'");

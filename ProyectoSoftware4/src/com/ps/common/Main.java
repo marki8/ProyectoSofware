@@ -28,9 +28,16 @@ public class Main {
 //    	     JOptionPane.showConfirmDialog (null, new Object[]{titulo, jpf}, "contrasena", JOptionPane.PLAIN_MESSAGE);
 //    	     char p[] = jpf.getPassword();
 //    	     String pass = new String(p);
-    	   	if(db.userExist("612109@unizar.es", "b")){
-    	   		System.out.println("BIEEEEN");
-    	   		new MainGUI(0).setVisible(true);;
+       
+       String user="admin";
+       String pass="nimda";
+    	   	if(db.userExist(user,pass)){
+    	   		if(user.equals("admin")){
+    	   		new MainGUI(1).setVisible(true);;
+    	   		}
+    	   		else{
+        	   		new MainGUI(0).setVisible(true);;
+    	   		}
     	   	}
     	   	else{
     	   		System.out.println("MAAAL");
