@@ -20,6 +20,8 @@ import javax.swing.BorderFactory;
 import javax.swing.JComponent;
 import javax.swing.UIManager;
 
+import com.ps.gui.gfx.DropShadow;
+
 import de.jgrid.GridUI;
 
 public class EasyBooksUI extends GridUI {
@@ -61,6 +63,14 @@ public class EasyBooksUI extends GridUI {
 		Graphics2D g2 = (Graphics2D)g.create();
 	    g2.setPaint(new GradientPaint(0, 0, new Color(200, 200, 200), 0, 200, new Color(241, 241, 241)));
 	    g2.fillRect(0, 0, c.getWidth(), c.getHeight());
+	    
+	    // Sombra debajo de la barra de herramientas
+	    BufferedImage bi = new BufferedImage(c.getWidth(), 1, BufferedImage.TYPE_INT_RGB );
+	    DropShadow ds = new DropShadow(bi);
+	    ds.paint(g2, -2, -3);
+	    g2.setColor(new Color(120, 120, 120));
+	    g2.drawLine(0, 0, c.getWidth(), 0);
+	    
 	    g2.dispose();
 //		g.setFont(new Font("Helvetica", Font.BOLD, 20));
 //		g.setColor(Color.BLACK);

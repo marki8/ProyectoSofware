@@ -8,6 +8,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import javax.swing.JToolBar;
 
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
+import com.ps.gui.gfx.DropShadow;
 import com.ps.gui.gfx.GradientButton;
 import com.ps.gui.gfx.JSearchTextField;
 
@@ -54,21 +56,11 @@ public class PanelToolBar extends JToolBar implements Action{
 		} catch (IOException ex) {}
 		backward.setForeground(Color.WHITE);
 		forward.setForeground(Color.WHITE);
-		backward.addActionListener(backwardButton());
+		backward.addActionListener(backwardButton(cards));
 		forward.addActionListener(forwardButton());
 		b1.add(backward);
 		b1.add(forward);
-		add(b1, BorderLayout.WEST);
-		
-		 backward.addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-			        CardLayout cl = (CardLayout)(cards.getLayout());
-			        cl.next(cards);
-				}
-	        });
-		
+		add(b1, BorderLayout.WEST);		
 
         JPanel b2 = new JPanel();
 		// Boton de inicio
@@ -120,19 +112,26 @@ public class PanelToolBar extends JToolBar implements Action{
 	@Override
 	protected void paintComponent(Graphics g){
 	    Graphics2D g2 = (Graphics2D)g.create();
-
 	    g2.setPaint(new GradientPaint(0, 0, new Color(90, 90, 90), 0, getHeight(), new Color(76, 76, 76)));
 	    g2.fillRect(0, 0, getWidth(), getHeight());
 	    g2.setColor(Color.BLACK);
-		g2.drawRect(-1, -1, getWidth() + 1, getHeight());
+	    g2.setColor(new Color(40, 40, 40));
+		g2.drawLine(0,  getHeight() - 1, getWidth(), getHeight() - 1);
+	    BufferedImage bi = new BufferedImage(getWidth(), 1, BufferedImage.TYPE_INT_RGB );
+	    DropShadow ds = new DropShadow(bi);
+	    ds.paint(g2, -1, -2);
+	    g2.setColor(new Color(40, 40, 40));
+	    g2.drawLine(0, 0, getWidth(), 0);
 	    g2.dispose();
 	}
 	
-	private ActionListener backwardButton() {
+	private ActionListener backwardButton(final JPanel cards) {
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("<");
+		        CardLayout cl = (CardLayout)(cards.getLayout());
+		        cl.next(cards);
 			}
         };
 		return al;

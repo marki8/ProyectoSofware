@@ -30,6 +30,7 @@ import javax.swing.SwingUtilities;
 
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
+import com.ps.gui.gfx.DropShadow;
 import com.ps.gui.jgrid.ImageUtilities;
 import com.ps.mail.SendMailTLS;
 
@@ -86,7 +87,7 @@ public class PanelBuyBook extends JPanel {
 		// Borde alrededor de la imagen
         Graphics2D g = scaled.createGraphics();
         g.setColor(Color.BLACK);
-		g.drawRect(0, 0, scaled.getWidth(), scaled.getHeight());
+		g.drawRect(0, 0, scaled.getWidth() - 1, scaled.getHeight() - 1);
 		g.dispose();
 		
 		JLabel j = new JLabel();
@@ -242,6 +243,13 @@ public class PanelBuyBook extends JPanel {
 
 	    g2.setPaint(new GradientPaint(0, 0, new Color(200, 200, 200), 0, 200, new Color(241, 241, 241)));
 	    g2.fillRect(0, 0, getWidth(), getHeight());
+	    
+	    // Sombra debajo de la barra de herramientas
+	    BufferedImage bi = new BufferedImage(getWidth(), 1, BufferedImage.TYPE_INT_RGB );
+	    DropShadow ds = new DropShadow(bi);
+	    ds.paint(g2, -2, -3);
+	    g2.setColor(new Color(120, 120, 120));
+	    g2.drawLine(0, 0, getWidth(), 0);
 
 	    g2.dispose();
 	}

@@ -59,7 +59,7 @@ public class DropShadow {
 
 	private int distance_y;
 
-	protected DropShadow() {
+	public DropShadow() {
 		highQuality = true;
 		shadow = null;
 		originalImage = null;
