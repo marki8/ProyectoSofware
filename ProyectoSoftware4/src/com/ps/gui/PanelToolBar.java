@@ -15,11 +15,9 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
 import com.ps.common.Book;
@@ -36,6 +34,7 @@ public class PanelToolBar extends JToolBar implements Action{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 
 	public PanelToolBar(final JPanel cards, final DbConnector db,final List<Book> bookList,final JGrid grid) {
 		//setLayout(new BorderLayout(10, 10));
@@ -57,7 +56,7 @@ public class PanelToolBar extends JToolBar implements Action{
 		backward.setForeground(Color.WHITE);
 		forward.setForeground(Color.WHITE);
 		backward.addActionListener(backwardButton(cards));
-		forward.addActionListener(forwardButton());
+		forward.addActionListener(forwardButton(cards));
 		b1.add(backward);
 		b1.add(forward);
 		add(b1, BorderLayout.WEST);		
@@ -131,17 +130,19 @@ public class PanelToolBar extends JToolBar implements Action{
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("<");
 		        CardLayout cl = (CardLayout)(cards.getLayout());
-		        cl.next(cards);
+		        cl.previous(cards);
 			}
         };
 		return al;
 	}
 	
-	private ActionListener forwardButton() {
+	private ActionListener forwardButton(final JPanel cards) {
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(">");
+		        CardLayout cl = (CardLayout)(cards.getLayout());
+		        cl.next(cards);
 			}
         };
 		return al;
@@ -157,7 +158,7 @@ public class PanelToolBar extends JToolBar implements Action{
 				bookList.addAll(db.getBooks());
 				grid.repaint();
 		        CardLayout cl = (CardLayout)(cards.getLayout());
-		        cl.next(cards);
+		        cl.show(cards, "GRID");
 			}
         };
 		return al;
@@ -174,7 +175,7 @@ public class PanelToolBar extends JToolBar implements Action{
                 //bookList.add(new Book("a","a","/book0.jpg","a",25,"a"));
                 grid.repaint();
                 CardLayout cl = (CardLayout)(cards.getLayout());
-		        cl.next(cards);
+                cl.show(cards, "GRID");       
 			}
         };
 		return al;
