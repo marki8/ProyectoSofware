@@ -5,19 +5,14 @@ import java.awt.Color;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
-import com.ps.gui.jgrid.EasyBooksUI;
-import com.ps.gui.jgrid.OpenLibraryGridRenderer;
-import com.ps.gui.jgrid.SelectionModel;
 
 import de.jgrid.JGrid;
 
