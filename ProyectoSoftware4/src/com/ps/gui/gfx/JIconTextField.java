@@ -14,7 +14,6 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 
 public class JIconTextField extends JTextField {
@@ -39,7 +38,7 @@ public class JIconTextField extends JTextField {
 	public void setIcon(Icon icon) {
 		this.icon = icon;
 		iconBounds = new Rectangle(0, 0, icon.getIconWidth() + 8,
-				icon.getIconHeight());
+				icon.getIconHeight() + 8);
 	}
 
 	public Icon getIcon() {
