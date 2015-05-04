@@ -1,6 +1,7 @@
 package com.ps.util;
 
 import java.awt.Color;
+
 import java.awt.Font;
 import java.awt.FontFormatException;
 import java.awt.Graphics;
@@ -19,7 +20,6 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-
 import javax.imageio.ImageIO;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -29,8 +29,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.JWindow;
-
-import com.Main.Main;
 
 public class SplashScreen extends JWindow {
 	
@@ -50,11 +48,11 @@ public class SplashScreen extends JWindow {
 		this.setVisible(true);
 		
 		this.frame=new JFrame();
-		//this.frame.setSize(Main.Alto, Main.Ancho);
+		//this.frame.setSize(800, 1000);
 		this.frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.frame.setVisible(true);
 		this.panel=new JPanel();
-		this.panel.setSize(Main.Alto, Main.Ancho);
+		this.panel.setSize(800, 1000);
 		this.frame.add(this.panel);
 		this.dispose();
 		InitSplash();
@@ -107,14 +105,14 @@ public class SplashScreen extends JWindow {
 		usuario.setFont(usuario.getFont().deriveFont(30f));
 		usuario.setText("Usuario: ");
 		usuario.setBackground(Color.BLACK);
-		usuario.setBounds((Main.Ancho/2)+300,(Main.Alto/2)+this.logo.getHeight(), 150, 30);
+		usuario.setBounds((1000/2)+300,(800/2)+this.logo.getHeight(), 150, 30);
 		
 		/*
 		 * Panel para introducir el usuario
 		 */
 		JTextField usuarioText = new JTextField(32);
 		usuarioText.setEditable(true);
-		usuarioText.setBounds((Main.Ancho/2)+500,(Main.Alto/2)+this.logo.getHeight(), 150, 30);
+		usuarioText.setBounds((1000/2)+500,(800/2)+this.logo.getHeight(), 150, 30);
 		usuarioText.addKeyListener(new KeyListener() {			
 			@Override
 			public void keyTyped(KeyEvent arg0) {
@@ -139,14 +137,14 @@ public class SplashScreen extends JWindow {
 		contraseña.setFont(contraseña.getFont().deriveFont(30f));
 		contraseña.setText("Contraseña: ");
 		contraseña.setBackground(Color.BLACK);
-		contraseña.setBounds((Main.Ancho/2)+300,(Main.Alto/2)+this.logo.getHeight()+50, 200, 30);
+		contraseña.setBounds((1000/2)+300,(800/2)+this.logo.getHeight()+50, 200, 30);
 		
 		/*
 		 * Field para introducir la contraseña
 		 */
 		JTextField contraseñaText = new JTextField(32);
 		contraseñaText.setEditable(true);
-		contraseñaText.setBounds((Main.Ancho/2)+500,(Main.Alto/2)+this.logo.getHeight()+50, 150, 30);
+		contraseñaText.setBounds((1000/2)+500,(800/2)+this.logo.getHeight()+50, 150, 30);
 		contraseñaText.addKeyListener(new KeyListener() {			
 			@Override
 			public void keyTyped(KeyEvent arg0) {
@@ -172,7 +170,7 @@ public class SplashScreen extends JWindow {
 		
 		JButton botonAceptar=  new JButton("Aceptar");
 		botonAceptar.setFont(botonAceptar.getFont().deriveFont(20f));
-		botonAceptar.setBounds((Main.Ancho/2)+300, (Main.Alto/2)+this.logo.getHeight()+125, 150, 50);
+		botonAceptar.setBounds((1000/2)+300, (800/2)+this.logo.getHeight()+125, 150, 50);
 		botonAceptar.addActionListener(new ActionListener() {
 			
 			//Funcion que se activa cuando se pulsa el boton 
@@ -187,7 +185,7 @@ public class SplashScreen extends JWindow {
 		
 		JButton botonRegistrarse=  new JButton("Registrarse");
 		botonRegistrarse.setFont(botonAceptar.getFont().deriveFont(20f));
-		botonRegistrarse.setBounds((Main.Ancho/2)+500, (Main.Alto/2)+this.logo.getHeight()+125, 150, 50);
+		botonRegistrarse.setBounds((1000/2)+500, (800/2)+this.logo.getHeight()+125, 150, 50);
 		botonRegistrarse.addActionListener(new ActionListener() {
 			
 			//Funcion que se activa cuando se pulsa el boton 
@@ -216,8 +214,8 @@ public class SplashScreen extends JWindow {
 
         Graphics2D g2d = (Graphics2D) g;
         g2d.scale(0.5, 0.5);
-        g2d.drawImage(this.logo,(Main.Ancho/2)+(int)(this.logo.getWidth()*0.15),
-        		(Main.Alto/2)-200, null);
+        g2d.drawImage(this.logo,(1000/2)+(int)(this.logo.getWidth()*0.15),
+        		(800/2)-200, null);
     }
 	
 	
