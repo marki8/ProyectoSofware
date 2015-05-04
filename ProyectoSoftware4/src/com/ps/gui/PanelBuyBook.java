@@ -1,6 +1,7 @@
 package com.ps.gui;
 
 import java.awt.BorderLayout;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -24,7 +25,10 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JSeparator;
 import javax.swing.JSplitPane;
@@ -60,11 +64,13 @@ public class PanelBuyBook extends JPanel {
 
 	/**
 	 * Constructor
+	 * 
 	 * @param book
 	 * @param db
 	 * @param grid
 	 */
-	public PanelBuyBook(final Book book, final DbConnector db, final JGrid grid) {
+	public PanelBuyBook(final JPanel cards, final Book book,
+			final DbConnector db, final JGrid grid) {
 
 		// Leemos la imagen del libro
 		BufferedImage img = null;
@@ -83,7 +89,8 @@ public class PanelBuyBook extends JPanel {
 			divider = scaled.getWidth();
 		// Split Pane para colocar los dos paneles izquiedo y derecho
 		final JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
-				panelIzquierdo(book, db, scaled), panelDerecho(book, db, grid));
+				panelIzquierdo(cards, book, db, scaled), panelDerecho(book, db,
+						grid));
 
 		pane.setOneTouchExpandable(true);
 		pane.setDividerLocation(divider);
@@ -96,13 +103,14 @@ public class PanelBuyBook extends JPanel {
 
 	/**
 	 * Panel Izquierdo
+	 * 
 	 * @param book
 	 * @param db
 	 * @param scaled
 	 * @return
 	 */
-	private JPanel panelIzquierdo(final Book book, final DbConnector db,
-			BufferedImage scaled) {
+	private JPanel panelIzquierdo(final JPanel cards, final Book book,
+			final DbConnector db, BufferedImage scaled) {
 		JPanel leftPanel = new JPanel();
 		leftPanel.setMinimumSize(new Dimension(200, 400));
 		leftPanel.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
@@ -119,7 +127,7 @@ public class PanelBuyBook extends JPanel {
 
 		// Boton de comprar libro
 		JButton b1 = new JButton(book.getPrecio() + " € Comprar libro");
-		b1.addActionListener(buyButton(book, db));
+		b1.addActionListener(buyButton(cards, book, db));
 		b1.setFont(new Font("Arial", Font.BOLD, 14));
 		leftPanel.add(b1);
 
@@ -194,7 +202,8 @@ public class PanelBuyBook extends JPanel {
 		Random rand = new Random();
 		pages = rand.nextInt((1000 - 50) + 1) + 50;
 		size = 1.0 + (200.0 - 1.0) * rand.nextDouble();
-		date = new Date(631152000000L + (Math.abs(rand.nextLong())%(70L*36*24*60*60*4000)));
+		date = new Date(631152000000L + (Math.abs(rand.nextLong()) % (70L * 36
+				* 24 * 60 * 60 * 4000)));
 		final JPanel desc = descriptionPanel(book, grid);
 		addComponentListener(panelResized(desc, book, grid));
 
@@ -235,8 +244,9 @@ public class PanelBuyBook extends JPanel {
 		return new Dimension(width, height);
 
 	}
-	
-	private ActionListener buyButton(final Book book, final DbConnector db) {
+
+	private ActionListener buyButton(final JPanel cards, final Book book,
+			final DbConnector db) {
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -245,7 +255,14 @@ public class PanelBuyBook extends JPanel {
 				String autor = book.getAutor();
 				int puntuacion = 0;
 				db.addBookBuy(user, titulo, autor, puntuacion);
+				JOptionPane j = new JOptionPane();
+				j.showMessageDialog(
+						PanelBuyBook.this,
+						"Usted ha realizado la compra con éxito.\nRecibira un correo con la informacion de la compra",
+						"Compra Realizada", JOptionPane.INFORMATION_MESSAGE);
 				SendMailTLS mail = new SendMailTLS("user", titulo, autor);
+				CardLayout cl = (CardLayout) (cards.getLayout());
+				cl.show(cards, "GRID");
 				mail.send();
 			}
 		};
@@ -320,12 +337,13 @@ public class PanelBuyBook extends JPanel {
 		desc.add(Box.createRigidArea(new Dimension(0, 10)));
 
 		JTable table = new JTable();
-		SimpleDateFormat formatter= new SimpleDateFormat("dd MMM yyyy");
+		SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
 		table.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
 				{ "Idioma", "Español", "Publicado", formatter.format(date) },
 				{ "Genero", "Historica", "Paginas", pages },
-				{ "Editorial", book.getEditorial(), "Tamaño", String.format("%.1f", size) + " MB" }, },
-				new String[] { "Title 1", "Title 2", "Title 3", "Title 4" }));
+				{ "Editorial", book.getEditorial(), "Tamaño",
+						String.format("%.1f", size) + " MB" }, }, new String[] {
+				"Title 1", "Title 2", "Title 3", "Title 4" }));
 
 		JScrollPane scrollPane = new JScrollPane(table);
 

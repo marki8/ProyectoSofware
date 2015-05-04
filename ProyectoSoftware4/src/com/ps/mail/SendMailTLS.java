@@ -1,5 +1,6 @@
 package com.ps.mail;
 
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Properties;
 
@@ -12,15 +13,15 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 public class SendMailTLS {
-	
+
 	private String mail;
 	private String titulo;
 	private String autor;
-	
-	public SendMailTLS(String mail,String titulo,String autor) {
-		this.mail=mail;
-		this.titulo=titulo;
-		this.autor=autor;
+
+	public SendMailTLS(String mail, String titulo, String autor) {
+		this.mail = mail;
+		this.titulo = titulo;
+		this.autor = autor;
 	}
 
 	public void send() {
@@ -42,18 +43,25 @@ public class SendMailTLS {
 				});
 
 		try {
-			Date date=new Date();
+			Date date = new Date();
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(date);
+			int minutos = cal.get(Calendar.MINUTE);
+			int horas = cal.get(Calendar.HOUR_OF_DAY);
+			int segundos = cal.get(Calendar.SECOND);
+			int dia = cal.get(Calendar.DAY_OF_MONTH);
+			int mes = cal.get(Calendar.MONTH);
+			int year = cal.get(Calendar.YEAR);
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("easybooksps@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO,
 					InternetAddress.parse("javiermiguel93@gmail.com"));
-			message.setSubject("Compra del libro: "+titulo);
-			message.setText("Apreciado cliente: "+mail
-					+ "\n\nUsted ha comprado el libro "+titulo+"de "+autor+"a las "+date.getHours()+":"+date.getMinutes()+":"+date.getSeconds()
-					+" horas del "+date.getDate()+"/"+date.getMonth()+"/"+date.getYear()) ;
-//libro,código del libro, hora del pedido, usuario
+			message.setSubject("Compra del libro: " + titulo);
+			message.setText("Apreciado cliente: " + mail
+					+ "\n\nUsted ha comprado el libro " + titulo + " de "
+					+ autor + " a las " + horas + ":" + minutos + ":"
+					+ segundos + " horas del " + dia + "/" + mes + "/" + year);
 			Transport.send(message);
-			
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}

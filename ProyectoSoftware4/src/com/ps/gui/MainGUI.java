@@ -132,7 +132,7 @@ public class MainGUI extends JFrame {
 						// izquierdo
 						if (arg0.getClickCount() == 2) { // Doble clic izquierdo
 							System.out.println("Seleccion " + selectedIndex);
-							cards.add(new PanelBuyBook(book, db, grid), "TEST");
+							cards.add(new PanelBuyBook(cards,book, db, grid), "TEST");
 							CardLayout cl = (CardLayout) (cards.getLayout());
 							//panel1.setVisible(false);
 							cl.show(cards, "TEST");
