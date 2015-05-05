@@ -1,12 +1,10 @@
 package com.ps.gui.jgrid;
 
-import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Polygon;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 
@@ -78,43 +76,50 @@ public class OpenLibraryGridRenderer extends JComponent implements GridCellRende
 			BufferedImage coverImage = ImageUtilities.getOptimalScalingImage(
 					book.getCover(), width, height);
 			//g2.setStroke(new BasicStroke(2.5f));
-
-//			if (isSelected) {
-//				g2.setColor(new Color(0, 0, 0, 160));
-//			} else {
-//				g2.setColor(new Color(0, 0, 0, 100));
-//			}
-
-//			g2.fillOval(startX - 8, coverImage.getHeight() - 8, coverImage.getWidth() + 16, 8);
-//			Polygon shape = new Polygon();
-
-			// Sombra inferior
-//			shape.addPoint(startX - 8, coverImage.getHeight() - 2);
-//			shape.addPoint(startX - 8 + coverImage.getWidth() + 16, coverImage.getHeight() - 2);
-//
-//			// Sombra izquierda
-//			shape.addPoint(startX + coverImage.getWidth() + coverImage.getWidth() / 20,
-//					coverImage.getHeight() / 20);
-//			shape.addPoint(startX + coverImage.getWidth(), 3);
-//
-//			// Sombra derecha
-//			shape.addPoint(startX, 2);
-//			shape.addPoint(startX - coverImage.getWidth() / 20, coverImage.getHeight() / 20);
-
-			g2.setFont(new Font("Helvetica", Font.BOLD, 12));
-			g2.drawString(book.getTitle(), startX, getHeight() - 24);
-			g2.setFont(new Font("HelveticaLight", Font.PLAIN, 10));
-			g2.drawString(book.getAutor(), startX, getHeight() - 10);
-//			g2.fill(shape);
-
-//			g2.setColor(new Color(0, 0, 0, 160)); // 80
-//			g2.setStroke(new BasicStroke(1.6f)); // 0.8f
+			
+			// Sombra del libro
 			DropShadow ds = new DropShadow(coverImage);
+
+			if (isSelected) {
+				ds.paintShadow(g, startX, 0);
+				g2.setColor(new Color(0, 0, 0, 255));
+				//ds.setShadowColor(new Color(0, 255, 255));
+			} else {
+				g2.setColor(new Color(0, 0, 0, 240));
+			}
 			ds.paintShadow(g, startX, 0);
+
+			// Titulo del libro
+			g2.setFont(new Font("Helvetica", Font.BOLD, 12));
+			g2.drawString(checkTextSize(book.getTitle(), 12, coverImage.getWidth()), startX, getHeight() - 24);
+			// Autor del libro
+			g2.setFont(new Font("HelveticaLight", Font.PLAIN, 10));
+			g2.drawString(checkTextSize(book.getAutor(), 10, coverImage.getWidth()), startX, getHeight() - 10);
+
+			//g2.setColor(new Color(0, 0, 0, 160)); // 80
+			//g2.setStroke(new BasicStroke(1.6f)); // 0.8f
+			
+			// Imagen del libro
 			g2.drawImage(coverImage, startX, 0, null);
 			g2.drawRect(startX, 0, coverImage.getWidth(),coverImage.getHeight());
 
 			g2.dispose();
 		}
+	}
+	
+	private String checkTextSize(String text, int size, int widht) {
+		boolean modify = false;
+		for (int i = text.length() - 1; i >= 0; i--) {
+			if (text.length()*size > widht + 11*size) {
+				text = text.substring(0, i); 
+				modify = true;
+			}
+			else {
+				break;
+			}
+		}
+
+		if (modify) return text + "...";
+		return text;
 	}
 }

@@ -3,6 +3,8 @@ package com.ps.gui;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -15,10 +17,12 @@ import java.util.List;
 import javax.imageio.ImageIO;
 import javax.swing.Action;
 import javax.swing.BorderFactory;
-import javax.swing.Icon;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 
@@ -27,6 +31,7 @@ import com.ps.db.DbConnector;
 import com.ps.gui.gfx.DropShadow;
 import com.ps.gui.gfx.GradientButton;
 import com.ps.gui.gfx.JSearchTextField;
+import com.ps.mail.SendMailTLS;
 
 import de.jgrid.JGrid;
 
@@ -36,6 +41,7 @@ public class PanelToolBar extends JToolBar implements Action{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+
 
 	public PanelToolBar(final JPanel cards, final DbConnector db,final List<Book> bookList,final JGrid grid) {
 		//setLayout(new BorderLayout(10, 10));
@@ -57,7 +63,7 @@ public class PanelToolBar extends JToolBar implements Action{
 		backward.setForeground(Color.WHITE);
 		forward.setForeground(Color.WHITE);
 		backward.addActionListener(backwardButton(cards));
-		forward.addActionListener(forwardButton());
+		forward.addActionListener(forwardButton(cards));
 		b1.add(backward);
 		b1.add(forward);
 		add(b1, BorderLayout.WEST);		
@@ -76,7 +82,7 @@ public class PanelToolBar extends JToolBar implements Action{
 		// Boton de opciones
 		JButton options = new GradientButton("Opciones");
 		options.setForeground(Color.WHITE);
-		options.addActionListener(optionsButton());
+		options.addActionListener(optionsButton(cards,db));
 		b2.add(options);
 		add(b2, BorderLayout.CENTER);
 		
@@ -131,17 +137,19 @@ public class PanelToolBar extends JToolBar implements Action{
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("<");
 		        CardLayout cl = (CardLayout)(cards.getLayout());
-		        cl.next(cards);
+		        cl.previous(cards);
 			}
         };
 		return al;
 	}
 	
-	private ActionListener forwardButton() {
+	private ActionListener forwardButton(final JPanel cards) {
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println(">");
+		        CardLayout cl = (CardLayout)(cards.getLayout());
+		        cl.next(cards);
 			}
         };
 		return al;
@@ -157,7 +165,7 @@ public class PanelToolBar extends JToolBar implements Action{
 				bookList.addAll(db.getBooks());
 				grid.repaint();
 		        CardLayout cl = (CardLayout)(cards.getLayout());
-		        cl.next(cards);
+		        cl.show(cards, "GRID");
 			}
         };
 		return al;
@@ -174,17 +182,63 @@ public class PanelToolBar extends JToolBar implements Action{
                 //bookList.add(new Book("a","a","/book0.jpg","a",25,"a"));
                 grid.repaint();
                 CardLayout cl = (CardLayout)(cards.getLayout());
-		        cl.next(cards);
+                cl.show(cards, "GRID");       
 			}
         };
 		return al;
 	}
 	
-	private ActionListener optionsButton() {
+	private ActionListener optionsButton(final JPanel cards, final DbConnector db) {
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Opciones");
+				final JTextField textFieldEmail;
+				final JPasswordField textFieldPass;
+				JPanel pOptions=new JPanel();
+				//Cambiar email y pass
+				JLabel req = new JLabel("Cambiar de email y contrase�a");
+				req.setFont(new Font("Helvetica", Font.BOLD, 14));
+				pOptions.add(req);
+				JLabel labelEmail = new JLabel("Email: ");
+			    textFieldEmail = new JTextField("", 15);
+			    pOptions.add(labelEmail);
+			    pOptions.add(textFieldEmail);
+			    JButton bEmail = new JButton("Cambiar");
+			    //button cambiar mail
+				bEmail.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String emailViejo = "admin";
+						String email = textFieldEmail.getText();;
+						db.changeEmail(email, emailViejo);
+					}
+				});
+				bEmail.setFont(new Font("Arial", Font.BOLD, 14));
+				pOptions.add(bEmail);
+			    JLabel labelPass = new JLabel("Contrasena: ");
+			    textFieldPass = new JPasswordField("", 15);
+			    pOptions.add(labelPass);
+			    pOptions.add(textFieldPass);
+			    //button cambiar pass
+			    JButton bPass = new JButton("Cambiar");
+				bPass.addActionListener(new ActionListener() {
+					@Override
+					public void actionPerformed(ActionEvent e) {
+						String passViejo = "nimda";
+						String pass = textFieldPass.getText();
+						db.changePass(pass, passViejo);
+					}
+				});
+				bPass.setFont(new Font("Arial", Font.BOLD, 14));
+				pOptions.add(bPass);
+
+				cards.add(pOptions, "OPTIONS");
+				CardLayout cl = (CardLayout) (cards.getLayout());
+				//panel1.setVisible(false);
+				cl.show(cards, "OPTIONS");
+//				pOptions.setVisible(true);
+//				add(pOptions, BorderLayout.CENTER);
 			}
         };
 		return al;

@@ -2,10 +2,6 @@ package com.ps.gui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
-import java.awt.Color;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -13,25 +9,19 @@ import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.JToolBar;
 import javax.swing.UIManager;
-import javax.swing.UIManager.LookAndFeelInfo;
-import javax.swing.UnsupportedLookAndFeelException;
+
 
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
 import com.ps.gui.PanelAddBook;
-import com.ps.gui.PanelButtons;
 import com.ps.gui.PanelBuyBook;
 import com.ps.gui.PanelToolBar;
 import com.ps.gui.jgrid.EasyBooksUI;
@@ -40,11 +30,14 @@ import com.ps.gui.jgrid.SelectionModel;
 
 import de.jgrid.JGrid;
 
+/**
+ * 
+ * @author 
+ *
+ */
 public class MainGUI extends JFrame {
 
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	private DbConnector db = null;
@@ -68,17 +61,6 @@ public class MainGUI extends JFrame {
 		addWindowListener(exitListener);
 
 		// Configuramos el Look & Feel para que cada S0 use su propia GUI
-//		try {
-//			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//		} catch (ClassNotFoundException e1) {
-//			e1.printStackTrace();
-//		} catch (InstantiationException e1) {
-//			e1.printStackTrace();
-//		} catch (IllegalAccessException e1) {
-//			e1.printStackTrace();
-//		} catch (UnsupportedLookAndFeelException e1) {
-//			e1.printStackTrace();
-//		}
 		try {
 		    UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
 
@@ -98,7 +80,6 @@ public class MainGUI extends JFrame {
 		final JGrid grid = new JGrid(new SelectionModel(bookList));
 		grid.getCellRendererManager().setDefaultRenderer(
 				new OpenLibraryGridRenderer());
-		// grid.setDefaultCellRenderer(new OpenLibraryGridRenderer());
 		grid.setUI(new EasyBooksUI());
 
 		final JPanel cards = new JPanel(new CardLayout());
@@ -106,28 +87,28 @@ public class MainGUI extends JFrame {
 		JScrollPane jsp = new JScrollPane(grid);
 		jsp.setBorder(null);
 		cards.add(jsp, "GRID");
-		// cards.add(new PanelBuyBook(), "TEST");
 
-		// Columna derecha
-		JPanel panel1 = new JPanel(); // Box.createVerticalBox();
-//		panel1.setLayout(new BoxLayout(panel1, BoxLayout.PAGE_AXIS));
-//		panel1.add(new PanelButtons(cards, db,bookList,grid));
-		final PanelAddBook pab = new PanelAddBook(grid, bookList, db);
+		// Columna derecha (Incrustada en otro panel para que no se redimensione)
+		JPanel panel1 = new JPanel();
+		PanelAddBook pab = new PanelAddBook(grid, bookList, db);
 		panel1.setVisible(false);
 		panel1.add(pab);
 		if (opcion == 1) panel1.setVisible(true);
 
 		// Listener de eventos del raton para el grid de libros
-		grid.addMouseListener(MouseListener(grid, cards, pab, panel1));
+		grid.addMouseListener(MouseListener(grid, cards, pab));
 
-		//getContentPane().setBackground( Color.WHITE );
 		getContentPane().add(new PanelToolBar(cards, db,bookList,grid), BorderLayout.PAGE_START);
 		getContentPane().add(cards, BorderLayout.CENTER);
 		getContentPane().add(panel1, BorderLayout.EAST);
-		// setExtendedState(JFrame.MAXIMIZED_BOTH);
+		//setExtendedState(JFrame.MAXIMIZED_BOTH);
 		setSize(1066, 600);
 	}
 
+	/**
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		new MainGUI(1).setVisible(true);
 	}
@@ -137,11 +118,10 @@ public class MainGUI extends JFrame {
 	 * @param grid
 	 * @param cards
 	 * @param pab
-	 * @param panel1 
 	 * @return
 	 */
 	private MouseAdapter MouseListener(final JGrid grid, final JPanel cards,
-			final PanelAddBook pab, final JPanel panel1) {
+			final PanelAddBook pab) {
 		MouseAdapter ma = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
