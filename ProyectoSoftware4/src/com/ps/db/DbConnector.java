@@ -83,7 +83,7 @@ public class DbConnector {
 	}
 
 	/**
-	 * A�adir libros a la base de datos.
+	 * Annadir libros a la base de datos.
 	 */
 	public synchronized void addBook(String title, String autor, String path,
 			String editorial) {
@@ -98,7 +98,7 @@ public class DbConnector {
 	}
 
 	/**
-	 * M�todo para a�adir usuarios
+	 * Metodo para annadir usuarios
 	 * 
 	 * @param user
 	 *            , @param password
@@ -121,7 +121,7 @@ public class DbConnector {
 	}
 
 	/**
-	 * M�todo de eliminaci�n de libros.
+	 * Metodo de eliminacion de libros.
 	 */
 	public synchronized void deleteBook(String title, String autor, String path) {
 
@@ -131,6 +131,152 @@ public class DbConnector {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+
+	// CONSULTAS DE BUSQUEDA DE LIBROS.
+
+	/**
+	 * Busqueda de libros por autor @param autor en la base de datos, en caso de
+	 * no encontrar ninguno, la busqueda devolvera un libro con todos los
+	 * parametros a -1.
+	 */
+	public synchronized List<Book> getBookAutor(String autor) {
+		Statement st = null;
+		ResultSet rs = null;
+		List<Book> bookList = new ArrayList<Book>();
+		autor=autor.toUpperCase();
+
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion FROM book b WHERE UPPER(b.autor)='"
+					+ autor + "'");
+			st.close();
+
+			if (rs.getString(1).isEmpty()) {
+				bookList.add(new Book("-1", "-1", "-1", "-1", -1, "-1"));
+			} else {
+				bookList = new ArrayList<Book>();
+				for (; rs.next();) {
+					bookList.add(new Book(rs.getString(1), rs.getString(2), rs
+							.getString(3), rs.getString(4), rs.getInt(5), rs
+							.getString(6)));
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return bookList;
+	}
+
+	/**
+	 * Busqueda de libros por titulo en la base de datos, en caso de no
+	 * encontrar ninguno, la busqueda devolvera un libro con todos los
+	 * parametros a -1.
+	 */
+	public synchronized List<Book> getBookTitulo(String titulo) {
+		Statement st = null;
+		ResultSet rs = null;
+		List<Book> bookList = new ArrayList<Book>();
+		titulo=titulo.toUpperCase();
+
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion FROM book b WHERE UPPER(b.title)='"
+					+ titulo + "'");
+			st.close();
+
+			if (rs.getString(1).isEmpty()) {
+				bookList.add(new Book("-1", "-1", "-1", "-1", -1, "-1"));
+			} else {
+				bookList = new ArrayList<Book>();
+				for (; rs.next();) {
+					bookList.add(new Book(rs.getString(1), rs.getString(2), rs
+							.getString(3), rs.getString(4), rs.getInt(5), rs
+							.getString(6)));
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return bookList;
+	}
+
+	/**
+	 * Busqueda de libros por editorial en la base de datos, en caso de no
+	 * encontrar ninguno, la busqueda devolvera un libro con todos los
+	 * parametros a -1.
+	 */
+	public synchronized List<Book> getBookEditorial(String editorial) {
+		Statement st = null;
+		ResultSet rs = null;
+		List<Book> bookList = new ArrayList<Book>();
+		editorial=editorial.toUpperCase();
+
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion FROM book b WHERE UPPER(b.editorial)='"
+					+ editorial + "'");
+			st.close();
+
+			if (rs.getString(1).isEmpty()) {
+				bookList.add(new Book("-1", "-1", "-1", "-1", -1, "-1"));
+			} else {
+				bookList = new ArrayList<Book>();
+				for (; rs.next();) {
+					bookList.add(new Book(rs.getString(1), rs.getString(2), rs
+							.getString(3), rs.getString(4), rs.getInt(5), rs
+							.getString(6)));
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return bookList;
+	}
+
+	/**
+	 * Busqueda de libros por mediante una cadena de caracteres, si esta cadena
+	 * esta en algun de los siguientes parametros de libros en la base de datos
+	 * devolvera el libro. En caso contrario devolvera un libro con parametros a
+	 * -1
+	 */
+	public synchronized List<Book> getBooString(String cadena) {
+		Statement st = null;
+		ResultSet rs = null;
+		cadena = cadena.toUpperCase();
+		List<Book> bookList = new ArrayList<Book>();
+
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery(("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion FROM book b WHERE UPPER(autor) LIKE '%"
+					+ cadena
+					+ "%' OR UPPER(titulo) LIKE '%"
+					+ cadena
+					+ "%' OR UPPER(editorial) LIKE '%" + cadena + "%'"));
+			st.close();
+
+			if (rs.getString(1).isEmpty()) {
+				bookList.add(new Book("-1", "-1", "-1", "-1", -1, "-1"));
+			} else {
+				bookList = new ArrayList<Book>();
+				for (; rs.next();) {
+					bookList.add(new Book(rs.getString(1), rs.getString(2), rs
+							.getString(3), rs.getString(4), rs.getInt(5), rs
+							.getString(6)));
+				}
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return bookList;
 	}
 
 	/**
@@ -203,22 +349,24 @@ public class DbConnector {
 		return bookList;
 	}
 
-	public synchronized void changeEmail(String email,String emailViejo) {
+	public synchronized void changeEmail(String email, String emailViejo) {
 		Statement st = null;
 		try {
 			st = conn.createStatement();
-			st.executeQuery("UPDATE users SET email = '"+email+"' WHERE email = '"+emailViejo+"';");
+			st.executeQuery("UPDATE users SET email = '" + email
+					+ "' WHERE email = '" + emailViejo + "';");
 			st.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void changePass(String pass, String passViejo) {
 		Statement st = null;
 		try {
 			st = conn.createStatement();
-			st.executeQuery("UPDATE users SET password = '"+pass+"' WHERE password = '"+passViejo+"';");
+			st.executeQuery("UPDATE users SET password = '" + pass
+					+ "' WHERE password = '" + passViejo + "';");
 			st.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -268,7 +416,7 @@ public class DbConnector {
 	} // void dump( ResultSet rs )
 
 	/**
-	 * M�todo main, creaci�n de las bases de datos de libros.
+	 * Metodo main, creacion de las bases de datos de libros.
 	 */
 	public static void main(String[] args) {
 
@@ -282,7 +430,7 @@ public class DbConnector {
 			return; // bye bye
 		}
 		try {
-			// Creaci�n de la primera tabla, guardaremos los libros de la base
+			// Creacion de la primera tabla, guardaremos los libros de la base
 			// de datos.
 			db.update("CREATE TABLE book (title VARCHAR(256), autor VARCHAR(256), path VARCHAR(256), editorial VARCHAR(256),precio NUMERIC(5, 2),descripcion VARCHAR(500), PRIMARY KEY (title, autor))");
 		} catch (SQLException ex2) {
@@ -290,14 +438,14 @@ public class DbConnector {
 		}
 
 		try {
-			// Creaci�n de la segunda tabla, esta vez de usuarios.
+			// Creacion de la segunda tabla, esta vez de usuarios.
 			db.update("CREATE TABLE users (email VARCHAR(256), password VARCHAR(256), PRIMARY KEY (email))");
 		} catch (SQLException ex3) {
 			System.out.println("Error 2");
 		}
 
 		try {
-			// Creaci�n de la tercera tabla, en la cual disponemos los libros
+			// Creacio de la tercera tabla, en la cual disponemos los libros
 			// comprados por cada usuario y la posible puntuacion de estos.
 			db.update("CREATE TABLE posee (email VARCHAR(256), title VARCHAR(256), autor VARCHAR(256), puntuacion NUMERIC(5, 2), foreign key (email) references users(email),foreign key(title,autor) references book(title,autor))");
 		} catch (SQLException ex3) {
@@ -308,21 +456,20 @@ public class DbConnector {
 		try {
 
 			// Insertamos libros
-			db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('La espada del destino', 'Andrzej Sapkowski', '/book0.jpg', 'mevaisacomerlapolla',(11.99),'VIVA')");
-			db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Destiny of the sword', 'Jeremy Twigg', '/book1.jpg', 'mevaisacomerlapolla',(71.99),'VIVA')");
-			db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Nathe the great and the Sticky Case', 'Ugo Sanchez', '/book2.jpg', 'mevaisacomerlapolla',(51.99),'VIVA')");
-			db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('The Iron Hell', 'Jack London', '/book3.jpg', 'mevaisacomerlapolla',(14.99),'VIVA')");
-			db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('The arrow of gold', 'Joseph Conrad', '/book4.jpg', 'mevaisacomerlapolla',(13.99),'VIVA')");
-			db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Bold Pursuit', 'Zabrina Faiere', '/book5.jpg', 'mevaisacomerlapolla',(12.99),'VIVA')");
+			// db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('La espada del destino', 'Andrzej Sapkowski', '/book0.jpg', 'mevaisacomerlapolla',(11.99),'VIVA')");
+			// db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Destiny of the sword', 'Jeremy Twigg', '/book1.jpg', 'mevaisacomerlapolla',(71.99),'VIVA')");
+			// db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Nathe the great and the Sticky Case', 'Ugo Sanchez', '/book2.jpg', 'mevaisacomerlapolla',(51.99),'VIVA')");
+			// db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('The Iron Hell', 'Jack London', '/book3.jpg', 'mevaisacomerlapolla',(14.99),'VIVA')");
+			// db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('The arrow of gold', 'Joseph Conrad', '/book4.jpg', 'mevaisacomerlapolla',(13.99),'VIVA')");
+			// db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Bold Pursuit', 'Zabrina Faiere', '/book5.jpg', 'mevaisacomerlapolla',(12.99),'VIVA')");
 
 			// Insertamos usuarios
-			db.update("INSERT INTO users(email,password) VALUES('650010@unizar.es', 'a')");
-			db.update("INSERT INTO users(email,password) VALUES('admin', 'nimda')");
+			// db.update("INSERT INTO users(email,password) VALUES('650010@unizar.es', 'a')");
+			// db.update("INSERT INTO users(email,password) VALUES('admin', 'nimda')");
 
-			// do a query
+			// Probatinas probatinas
 			// db.query(" DELETE FROM sample_table WHERE str_col='Ford'");
 			// db.query("SELECT * FROM book");
-
 			// at end of program
 			db.shutdown();
 		} catch (SQLException ex3) {
@@ -332,5 +479,4 @@ public class DbConnector {
 		}
 	}
 
-	
 }
