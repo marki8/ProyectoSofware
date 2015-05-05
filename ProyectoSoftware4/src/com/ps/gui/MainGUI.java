@@ -114,7 +114,10 @@ public class MainGUI extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new MainGUI(1).setVisible(true);
+		MainGUI gui = new MainGUI(1);
+		gui.setVisible(true);
+		gui.pack();
+		//new MainGUI(1).setVisible(true);
 	}
 
 	/**

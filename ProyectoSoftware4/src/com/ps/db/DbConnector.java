@@ -144,24 +144,21 @@ public class DbConnector {
 		Statement st = null;
 		ResultSet rs = null;
 		List<Book> bookList = new ArrayList<Book>();
-		autor=autor.toUpperCase();
+		autor = autor.toUpperCase();
 
 		try {
 			st = conn.createStatement();
-			rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion FROM book b WHERE UPPER(b.autor)='"
-					+ autor + "'");
+			rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion "
+					+ "FROM book b WHERE UPPER(b.autor) LIKE '%" + autor + "%'");
 			st.close();
 
-			if (rs.getString(1).isEmpty()) {
-				bookList.add(new Book("-1", "-1", "-1", "-1", -1, "-1"));
-			} else {
-				bookList = new ArrayList<Book>();
-				for (; rs.next();) {
-					bookList.add(new Book(rs.getString(1), rs.getString(2), rs
-							.getString(3), rs.getString(4), rs.getInt(5), rs
-							.getString(6)));
-				}
+			bookList = new ArrayList<Book>();
+			for (; rs.next();) {
+				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
+						.getString(3), rs.getString(4), rs.getInt(5), rs
+						.getString(6)));
 			}
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -179,24 +176,34 @@ public class DbConnector {
 		Statement st = null;
 		ResultSet rs = null;
 		List<Book> bookList = new ArrayList<Book>();
-		titulo=titulo.toUpperCase();
+		titulo = titulo.toUpperCase();
 
 		try {
 			st = conn.createStatement();
-			rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion FROM book b WHERE UPPER(b.title)='"
-					+ titulo + "'");
+			rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion"
+					+ " FROM book b WHERE UPPER(b.title) LIKE '%" + titulo + "%'");
 			st.close();
 
-			if (rs.getString(1).isEmpty()) {
-				bookList.add(new Book("-1", "-1", "-1", "-1", -1, "-1"));
-			} else {
-				bookList = new ArrayList<Book>();
-				for (; rs.next();) {
-					bookList.add(new Book(rs.getString(1), rs.getString(2), rs
-							.getString(3), rs.getString(4), rs.getInt(5), rs
-							.getString(6)));
+			bookList = new ArrayList<Book>();
+			for (; rs.next();) {
+				bookList.add(new Book(rs.getString(1), rs.getString(2), rs.getString(3),
+						rs.getString(4), rs.getInt(5), rs.getString(6)));
 				}
-			}
+			
+			
+			// ALTERNATIVA
+//			st = conn.createStatement();
+//			rs = st.executeQuery("SELECT * FROM book");
+//			st.close();
+//			
+//			bookList = new ArrayList<Book>();
+//			for (; rs.next();) {
+//				if (rs.getString(1).toUpperCase().contains(titulo))
+//					bookList.add(new Book(rs.getString(1), rs.getString(2), rs
+//						.getString(3), rs.getString(4), rs.getInt(5), rs.getString(6)));
+//			}
+			
+			
 
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -214,23 +221,19 @@ public class DbConnector {
 		Statement st = null;
 		ResultSet rs = null;
 		List<Book> bookList = new ArrayList<Book>();
-		editorial=editorial.toUpperCase();
+		editorial = editorial.toUpperCase();
 
 		try {
 			st = conn.createStatement();
-			rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion FROM book b WHERE UPPER(b.editorial)='"
-					+ editorial + "'");
+			rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion "
+					+ "FROM book b WHERE UPPER(b.editorial) LIKE '%" + editorial + "%'");
 			st.close();
 
-			if (rs.getString(1).isEmpty()) {
-				bookList.add(new Book("-1", "-1", "-1", "-1", -1, "-1"));
-			} else {
-				bookList = new ArrayList<Book>();
-				for (; rs.next();) {
-					bookList.add(new Book(rs.getString(1), rs.getString(2), rs
-							.getString(3), rs.getString(4), rs.getInt(5), rs
-							.getString(6)));
-				}
+			bookList = new ArrayList<Book>();
+			for (; rs.next();) {
+				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
+						.getString(3), rs.getString(4), rs.getInt(5), rs
+						.getString(6)));
 			}
 
 		} catch (SQLException e) {
@@ -246,7 +249,7 @@ public class DbConnector {
 	 * devolvera el libro. En caso contrario devolvera un libro con parametros a
 	 * -1
 	 */
-	public synchronized List<Book> getBooString(String cadena) {
+	public synchronized List<Book> getBookString(String cadena) {
 		Statement st = null;
 		ResultSet rs = null;
 		cadena = cadena.toUpperCase();
@@ -254,22 +257,17 @@ public class DbConnector {
 
 		try {
 			st = conn.createStatement();
-			rs = st.executeQuery(("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion FROM book b WHERE UPPER(autor) LIKE '%"
-					+ cadena
-					+ "%' OR UPPER(titulo) LIKE '%"
-					+ cadena
-					+ "%' OR UPPER(editorial) LIKE '%" + cadena + "%'"));
+			rs = st.executeQuery(("SELECT b.title, b.autor, b.path, b.editorial, b.precio, b.descripcion "
+					+ "FROM book b WHERE UPPER(b.autor) LIKE '%" + cadena + "%' "
+					+ "OR UPPER(b.title) LIKE '%" + cadena + "%' "
+					+ "OR UPPER(editorial) LIKE '%" + cadena + "%'"));
 			st.close();
 
-			if (rs.getString(1).isEmpty()) {
-				bookList.add(new Book("-1", "-1", "-1", "-1", -1, "-1"));
-			} else {
-				bookList = new ArrayList<Book>();
-				for (; rs.next();) {
-					bookList.add(new Book(rs.getString(1), rs.getString(2), rs
-							.getString(3), rs.getString(4), rs.getInt(5), rs
-							.getString(6)));
-				}
+			bookList = new ArrayList<Book>();
+			for (; rs.next();) {
+				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
+						.getString(3), rs.getString(4), rs.getInt(5), rs
+						.getString(6)));
 			}
 
 		} catch (SQLException e) {

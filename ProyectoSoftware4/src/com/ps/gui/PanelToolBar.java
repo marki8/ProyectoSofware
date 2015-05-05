@@ -19,23 +19,31 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
 import com.ps.gui.gfx.DropShadow;
 import com.ps.gui.gfx.GradientButton;
 import com.ps.gui.gfx.JSearchTextField;
+
 import de.jgrid.JGrid;
 
 public class PanelToolBar extends JToolBar implements Action{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
+	// Componentes
+	private JButton backward;
+	private JButton forward;
+	private JButton init;
+	private JButton purchases;
+	private JButton options;
+	private JSearchTextField field;
 
-	public PanelToolBar(final JPanel cards, final DbConnector db,final List<Book> bookList,final JGrid grid) {
+
+	public PanelToolBar(JPanel cards, DbConnector db, List<Book> bookList, JGrid grid) {
 		//setLayout(new BorderLayout(10, 10));
 		
 		setName("Barra de herramientas");
@@ -46,8 +54,8 @@ public class PanelToolBar extends JToolBar implements Action{
 		
         JPanel b1 = new JPanel();
 		// Boton hacia atras y hacia delante
-		JButton backward = new GradientButton("");
-		JButton forward = new GradientButton("");
+		backward = new GradientButton("");
+		forward = new GradientButton("");
 		try {
 			backward.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/b.png"))));
 			forward.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/f.png"))));
@@ -62,17 +70,17 @@ public class PanelToolBar extends JToolBar implements Action{
 
         JPanel b2 = new JPanel();
 		// Boton de inicio
-		JButton init = new GradientButton("Inicio");
+		init = new GradientButton("Inicio");
 		init.setForeground(Color.WHITE);
 		init.addActionListener(initButton(cards, db, bookList, grid));
 		b2.add(init);
 		// Boton de mis compras
-		JButton purchases = new GradientButton("Mis Compras");
+		purchases = new GradientButton("Mis Compras");
 		purchases.setForeground(Color.WHITE);
 		purchases.addActionListener(purchasesButton(cards, db, bookList, grid));
 		b2.add(purchases);
 		// Boton de opciones
-		JButton options = new GradientButton("Opciones");
+		options = new GradientButton("Opciones");
 		options.setForeground(Color.WHITE);
 		options.addActionListener(optionsButton(cards,db));
 		b2.add(options);
@@ -80,8 +88,9 @@ public class PanelToolBar extends JToolBar implements Action{
 		
 		// Barra de busqueda
         JPanel search = new JPanel();
-        JSearchTextField field = new JSearchTextField(15);
+        field = new JSearchTextField(15);
         field.setIcon(new ImageIcon("img/search_icon.png"));
+        field.getDocument().addDocumentListener(searchField(db, grid, bookList));
 		search.add(field);
 	    add(search, BorderLayout.EAST);
 	    
@@ -123,6 +132,11 @@ public class PanelToolBar extends JToolBar implements Action{
 	    g2.dispose();
 	}
 	
+	/**
+	 * 
+	 * @param cards
+	 * @return
+	 */
 	private ActionListener backwardButton(final JPanel cards) {
 		ActionListener al = new ActionListener() {
 			@Override
@@ -135,6 +149,11 @@ public class PanelToolBar extends JToolBar implements Action{
 		return al;
 	}
 	
+	/**
+	 * 
+	 * @param cards
+	 * @return
+	 */
 	private ActionListener forwardButton(final JPanel cards) {
 		ActionListener al = new ActionListener() {
 			@Override
@@ -147,6 +166,14 @@ public class PanelToolBar extends JToolBar implements Action{
 		return al;
 	}
 	
+	/**
+	 * 
+	 * @param cards
+	 * @param db
+	 * @param bookList
+	 * @param grid
+	 * @return
+	 */
 	private ActionListener initButton(final JPanel cards, final DbConnector db,
 			final List<Book> bookList, final JGrid grid) {
 		ActionListener al = new ActionListener() {
@@ -163,6 +190,14 @@ public class PanelToolBar extends JToolBar implements Action{
 		return al;
 	}
 	
+	/**
+	 * 
+	 * @param cards
+	 * @param db
+	 * @param bookList
+	 * @param grid
+	 * @return
+	 */
 	private ActionListener purchasesButton(final JPanel cards, final DbConnector db,
 			final List<Book> bookList, final JGrid grid) {
 		ActionListener al = new ActionListener() {
@@ -170,7 +205,7 @@ public class PanelToolBar extends JToolBar implements Action{
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Mis libros");
                 bookList.clear();
-                bookList.addAll(db.getBooksBuy("650010@unizar.es"));
+                bookList.addAll(db.getBooksBuy("650010@unizar.es")); // CAMBIAR
                 //bookList.add(new Book("a","a","/book0.jpg","a",25,"a"));
                 grid.repaint();
                 CardLayout cl = (CardLayout)(cards.getLayout());
@@ -180,6 +215,12 @@ public class PanelToolBar extends JToolBar implements Action{
 		return al;
 	}
 	
+	/**
+	 * 
+	 * @param cards
+	 * @param db
+	 * @return
+	 */
 	private ActionListener optionsButton(final JPanel cards, final DbConnector db) {
 		ActionListener al = new ActionListener() {
 			@Override
@@ -190,5 +231,62 @@ public class PanelToolBar extends JToolBar implements Action{
 			}
         };
 		return al;
+	}
+	
+	/**
+	 * 
+	 * @param db
+	 * @param grid
+	 * @param bookList
+	 * @return
+	 */
+	private DocumentListener searchField(final DbConnector db, final JGrid grid,
+			final List<Book> bookList) {
+		DocumentListener dl = new DocumentListener() {
+
+			@Override
+			public void changedUpdate(DocumentEvent arg0) {
+				listen();
+			}
+
+			@Override
+			public void insertUpdate(DocumentEvent arg0) {
+				listen();
+			}
+
+			@Override
+			public void removeUpdate(DocumentEvent arg0) {
+				listen();
+			}
+			
+			public void listen() {
+				List<Book> books = null;
+				switch(field.getSelected()) {
+				case 0:
+					books = db.getBookString(field.getText());
+					break;
+				case 1:
+					books = db.getBookTitulo(field.getText());
+					System.out.println(books.toString());
+					break;
+				case 2: 
+					books = db.getBookAutor(field.getText());
+					break;
+				case 3:
+					books = db.getBookEditorial(field.getText());
+					break;
+				case 4:
+					books = db.getBooks(); // POR TERMINAR
+					break;
+				default:
+					books = db.getBooks();
+				}
+                bookList.clear();
+                bookList.addAll(books);
+                grid.repaint();
+			}
+			
+		};
+		return dl;
 	}
 }
