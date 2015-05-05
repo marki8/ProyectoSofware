@@ -97,7 +97,11 @@ public class MainGUI extends JFrame {
 
 		// Listener de eventos del raton para el grid de libros
 		grid.addMouseListener(MouseListener(grid, cards, pab));
-
+		
+		// Panel de opciones
+		PanelOptions po = new PanelOptions(db);		
+		cards.add(po, "OPTIONS");
+		
 		getContentPane().add(new PanelToolBar(cards, db,bookList,grid), BorderLayout.PAGE_START);
 		getContentPane().add(cards, BorderLayout.CENTER);
 		getContentPane().add(panel1, BorderLayout.EAST);
