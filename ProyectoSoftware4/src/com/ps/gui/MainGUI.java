@@ -97,7 +97,11 @@ public class MainGUI extends JFrame {
 
 		// Listener de eventos del raton para el grid de libros
 		grid.addMouseListener(MouseListener(grid, cards, pab));
-
+		
+		// Panel de opciones
+		PanelOptions po = new PanelOptions(db);		
+		cards.add(po, "OPTIONS");
+		
 		getContentPane().add(new PanelToolBar(cards, db,bookList,grid), BorderLayout.PAGE_START);
 		getContentPane().add(cards, BorderLayout.CENTER);
 		getContentPane().add(panel1, BorderLayout.EAST);
@@ -110,7 +114,10 @@ public class MainGUI extends JFrame {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		new MainGUI(1).setVisible(true);
+		MainGUI gui = new MainGUI(1);
+		gui.setVisible(true);
+		gui.pack();
+		//new MainGUI(1).setVisible(true);
 	}
 
 	/**
@@ -132,7 +139,7 @@ public class MainGUI extends JFrame {
 						// izquierdo
 						if (arg0.getClickCount() == 2) { // Doble clic izquierdo
 							System.out.println("Seleccion " + selectedIndex);
-							cards.add(new PanelBuyBook(book, db, grid), "TEST");
+							cards.add(new PanelBuyBook(cards,book, db, grid), "TEST");
 							CardLayout cl = (CardLayout) (cards.getLayout());
 							//panel1.setVisible(false);
 							cl.show(cards, "TEST");

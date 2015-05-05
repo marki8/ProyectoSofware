@@ -92,6 +92,7 @@ public class OpenLibraryGridRenderer extends JComponent implements GridCellRende
 			// Titulo del libro
 			g2.setFont(new Font("Helvetica", Font.BOLD, 12));
 			g2.drawString(checkTextSize(book.getTitle(), 12, coverImage.getWidth()), startX, getHeight() - 24);
+			//highlightText(checkTextSize(book.getTitle(), 12, coverImage.getWidth()), "es", g2, startX, getHeight() -24);
 			// Autor del libro
 			g2.setFont(new Font("HelveticaLight", Font.PLAIN, 10));
 			g2.drawString(checkTextSize(book.getAutor(), 10, coverImage.getWidth()), startX, getHeight() - 10);
@@ -121,5 +122,21 @@ public class OpenLibraryGridRenderer extends JComponent implements GridCellRende
 
 		if (modify) return text + "...";
 		return text;
+	}
+	
+	private void highlightText(String text, String h, Graphics2D g, int xini, int yini) {
+		for (int i = 0; i < text.length(); i++) {
+			char ch = text.charAt(i);
+			if (h.indexOf(ch) >= 0) {
+				g.setFont(new Font("Helvetica", Font.BOLD, 12));
+				g.drawString(String.valueOf(text.charAt(i)), xini, yini);
+				xini += 8;
+			}
+			else {
+				g.setFont(new Font("Helvetica", Font.PLAIN, 12));
+				g.drawString(String.valueOf(text.charAt(i)), xini, yini);
+				xini += 8;
+			}
+		}
 	}
 }
