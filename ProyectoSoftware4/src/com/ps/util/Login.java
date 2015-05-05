@@ -64,22 +64,22 @@ private void LoadLoginData(){
 		});
 //		
 //		/*
-//		 * Texto de la contraseña
+//		 * Texto de la contrasena
 //		 */
-		JLabel contraseña= new JLabel();
-		contraseña.setFont(contraseña.getFont().deriveFont(20f));
-		contraseña.setForeground(Color.WHITE);
-		contraseña.setText("Contraseña: ");
-		contraseña.setBackground(Color.BLACK);
-		contraseña.setBounds(300,350, 150, 30);
+		JLabel contrasena= new JLabel();
+		contrasena.setFont(contrasena.getFont().deriveFont(20f));
+		contrasena.setForeground(Color.WHITE);
+		contrasena.setText("contrasena: ");
+		contrasena.setBackground(Color.BLACK);
+		contrasena.setBounds(300,350, 150, 30);
 		
 		/*
-		 * Field para introducir la contraseña
+		 * Field para introducir la contrasena
 		 */
-		final JPasswordField contraseñaText = new JPasswordField(32);
-		contraseñaText.setEditable(true);
-		contraseñaText.setBounds(425,350, 150, 30);
-		contraseñaText.addKeyListener(new KeyListener() {			
+		final JPasswordField contrasenaText = new JPasswordField(32);
+		contrasenaText.setEditable(true);
+		contrasenaText.setBounds(425,350, 150, 30);
+		contrasenaText.addKeyListener(new KeyListener() {			
 			@Override
 			public void keyTyped(KeyEvent arg0) {
 				// TODO Auto-generated method stub
@@ -112,8 +112,8 @@ private void LoadLoginData(){
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				user=usuarioText.getText();
-				pass=contraseñaText.getText();
-				System.out.println("Usuario: "+user+" Contraseña: "+pass);
+				pass=contrasenaText.getText();
+				System.out.println("Usuario: "+user+" contrasena: "+pass);
 				/**
 				 * Hacer login
 				 */
@@ -136,13 +136,13 @@ private void LoadLoginData(){
 		});
 //		
 //		/*
-//		 * Añadimos los componentes
+//		 * Aï¿½adimos los componentes
 //		 */
-		this.add(contraseña);
+		this.add(contrasena);
 		this.add(usuario);
 //		
 //
-		this.add(contraseñaText);
+		this.add(contrasenaText);
 		this.add(usuarioText);
 //		
 		this.add(botonAceptar);
