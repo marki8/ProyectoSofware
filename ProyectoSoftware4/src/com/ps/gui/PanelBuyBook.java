@@ -51,9 +51,10 @@ import de.jgrid.JGrid;
  * @author
  * 
  */
-public class PanelBuyBook extends JPanel {
+public class PanelBuyBook extends Panel {
 
 	private static final long serialVersionUID = 1L;
+	private String user;
 	private String description = "Para ver este libro, debes tener un dispositivo "
 			+ "iOS con iBooks 1.3.1 (o posterior) y iOS 4.3.3 (o posterior).";
 	private int pages;
@@ -68,8 +69,9 @@ public class PanelBuyBook extends JPanel {
 	 * @param grid
 	 */
 	public PanelBuyBook(final JPanel cards, final Book book,
-			final DbConnector db, final JGrid grid) {
+			final DbConnector db, final JGrid grid,String user) {
 
+		this.user=user;
 		// Leemos la imagen del libro
 		BufferedImage img = null;
 		try {
@@ -77,7 +79,7 @@ public class PanelBuyBook extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// Escala proporcional al tamaño de la imagen
+		// Escala proporcional al tamaÃ±o de la imagen
 		Dimension scale = scale(img.getWidth(), img.getHeight());
 		BufferedImage scaled = ImageUtilities.getOptimalScalingImage(img,
 				scale.width, scale.height);
@@ -207,8 +209,9 @@ public class PanelBuyBook extends JPanel {
 
 		// Panel de valoraciones
 		JPanel val = new JPanel();
+		//val.add(new PuntuacionEstrellas(25,50));
 
-		// Pestañas de detalles y valoraciones
+		// PestaÃ±as de detalles y valoraciones
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Detalles", null, desc, "Descripcion");
 		tabbedPane.addTab("Valoraciones", null, val, "Valoraciones");
@@ -248,7 +251,6 @@ public class PanelBuyBook extends JPanel {
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String user = "650010@unizar.es";
 				String titulo = book.getTitle();
 				String autor = book.getAutor();
 				int puntuacion = 0;
@@ -256,12 +258,12 @@ public class PanelBuyBook extends JPanel {
 				JOptionPane j = new JOptionPane();
 				j.showMessageDialog(
 						PanelBuyBook.this,
-						"Usted ha realizado la compra con éxito.\nRecibira un correo con la informacion de la compra",
+						"Usted ha realizado la compra con Exito.\nRecibira un correo con la informacion de la compra",
 						"Compra Realizada", JOptionPane.INFORMATION_MESSAGE);
 				SendMailTLS mail = new SendMailTLS("user", titulo, autor);
 				CardLayout cl = (CardLayout) (cards.getLayout());
 				cl.show(cards, "GRID");
-				mail.send();
+				mail.send(user);
 			}
 		};
 		return al;
@@ -315,7 +317,7 @@ public class PanelBuyBook extends JPanel {
 		JLabel d1 = new JLabel("Descripción del libro");
 		d1.setFont(new Font("Arial", Font.BOLD, 16));
 		desc.add(d1, LEFT_ALIGNMENT);
-		// Separación
+		// SeparaciÃ³n
 		desc.add(Box.createRigidArea(new Dimension(0, 10)));
 		// Sinopsis
 		int width = (int) grid.getPreferredSize().getWidth()
@@ -339,7 +341,7 @@ public class PanelBuyBook extends JPanel {
 		table.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
 				{ "Idioma", "Español", "Publicado", formatter.format(date) },
 				{ "Genero", "Historica", "Paginas", pages },
-				{ "Editorial", book.getEditorial(), "Tamaño",
+				{ "Editorial", book.getEditorial(), "TamaÃ±o",
 						String.format("%.1f", size) + " MB" }, }, new String[] {
 				"Title 1", "Title 2", "Title 3", "Title 4" }));
 
@@ -365,24 +367,5 @@ public class PanelBuyBook extends JPanel {
 		table.getColumnModel().getColumn(3).setPreferredWidth(160);
 		desc.add(scrollPane, LEFT_ALIGNMENT);
 		return desc;
-	}
-
-	@Override
-	protected void paintComponent(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g.create();
-
-		g2.setPaint(new GradientPaint(0, 0, new Color(200, 200, 200), 0, 200,
-				new Color(241, 241, 241)));
-		g2.fillRect(0, 0, getWidth(), getHeight());
-
-		// Sombra debajo de la barra de herramientas
-		BufferedImage bi = new BufferedImage(getWidth(), 1,
-				BufferedImage.TYPE_INT_RGB);
-		DropShadow ds = new DropShadow(bi);
-		ds.paint(g2, -2, -3);
-		g2.setColor(new Color(120, 120, 120));
-		g2.drawLine(0, 0, getWidth(), 0);
-
-		g2.dispose();
 	}
 }

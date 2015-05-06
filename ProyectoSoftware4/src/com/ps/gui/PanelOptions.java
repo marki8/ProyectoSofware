@@ -1,16 +1,10 @@
 package com.ps.gui;
 
-import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
-
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -22,17 +16,20 @@ import javax.swing.JTextField;
 import javax.swing.SwingUtilities;
 
 import com.ps.db.DbConnector;
-import com.ps.gui.gfx.DropShadow;
 
-public class PanelOptions extends JPanel {
+public class PanelOptions extends Panel {
 	
 	private static final long serialVersionUID = 1L;
 	
 	private final JTextField textFieldEmail;
 	private final JPasswordField textFieldPass;
+	private String user;
+	private String pass;
 
-	public PanelOptions(final DbConnector db) {
+	public PanelOptions(final DbConnector db,String user,String pass) {
 		
+		this.user=user;
+		this.pass=pass;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -93,7 +90,7 @@ public class PanelOptions extends JPanel {
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String emailViejo = "admin";
+				String emailViejo = user;
 				String email = textFieldEmail.getText();;
 				db.changeEmail(email, emailViejo);
 			}
@@ -105,31 +102,11 @@ public class PanelOptions extends JPanel {
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String passViejo = "nimda";
+				String passViejo = pass;
 				String pass = textFieldPass.getText();
 				db.changePass(pass, passViejo);
 			}
 		};
 		return al;
 	}
-	
-	@Override
-	protected void paintComponent(Graphics g) {
-		Graphics2D g2 = (Graphics2D) g.create();
-
-		g2.setPaint(new GradientPaint(0, 0, new Color(200, 200, 200), 0, 200,
-				new Color(241, 241, 241)));
-		g2.fillRect(0, 0, getWidth(), getHeight());
-
-		// Sombra debajo de la barra de herramientas
-		BufferedImage bi = new BufferedImage(getWidth(), 1,
-				BufferedImage.TYPE_INT_RGB);
-		DropShadow ds = new DropShadow(bi);
-		ds.paint(g2, -2, -3);
-		g2.setColor(new Color(120, 120, 120));
-		g2.drawLine(0, 0, getWidth(), 0);
-
-		g2.dispose();
-	}
-
 }

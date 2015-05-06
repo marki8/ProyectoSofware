@@ -1,22 +1,23 @@
 package com.ps.common;
 
-//import javax.swing.JLabel;
-//import javax.swing.JOptionPane;
-//import javax.swing.JPasswordField;
-
-import java.util.Date;
+import javax.swing.JFrame;
 
 import com.ps.db.DbConnector;
-import com.ps.gui.*;
+import com.ps.gui.PanelLogin;
+import com.ps.util.SplashScreen;
 
 public class Main {
+
+
+	private static DbConnector db = null;
+	public static final int Ancho = 420;
+	public static final int Alto = 350;
+
 	/**
+	 * 
 	 * @param args
 	 * @throws SiguienteException
 	 */
-
-	private static DbConnector db = null;
-
 	public static void main(String[] args) throws SiguienteException {
 		try {
 			try {
@@ -24,29 +25,14 @@ public class Main {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			// String usuario = (String)JOptionPane.showInputDialog(null,
-			// "Usuario:","Login",JOptionPane.PLAIN_MESSAGE);
-			// JPasswordField jpf = new JPasswordField();
-			// JLabel titulo = new JLabel ("Contrasena:");
-			// JOptionPane.showConfirmDialog (null, new Object[]{titulo, jpf},
-			// "contrasena", JOptionPane.PLAIN_MESSAGE);
-			// char p[] = jpf.getPassword();
-			// String pass = new String(p);
 
-			String user = "admin";
-			String pass = "nimda";
-			
-			if (db.userExist(user, pass)) {
-				if (user.equals("admin")) {
-					new MainGUI(1).setVisible(true);
-					;
-				} else {
-					new MainGUI(0).setVisible(true);
-					;
-				}
-			} else {
-				System.out.println("MAAAL");
-			}
+			new SplashScreen(1000);
+			JFrame Login = new JFrame();
+			Login.setSize(Ancho, Alto);
+			Login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			Login.setLocationRelativeTo(null);
+			Login.add(new PanelLogin(db, Login));
+			Login.setVisible(true);
 
 		} catch (Exception e) {
 			e.printStackTrace();
