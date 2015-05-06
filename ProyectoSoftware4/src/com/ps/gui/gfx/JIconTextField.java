@@ -24,14 +24,15 @@ public class JIconTextField extends JTextField {
 	private static final long serialVersionUID = 1L;
 	private Icon icon;
 	private Rectangle iconBounds;
-
+	private JLabel lb;
 	private int selected;
 
 	public JIconTextField() {
 		super();
 		this.icon = null;
-		JLabel lb = new JLabel(icon);
+		lb = new JLabel(icon);
 		addMouseListener(mouseListener());
+		addMouseMotionListener(mouseListener());
 		add(lb);
 	}
 
@@ -75,9 +76,6 @@ public class JIconTextField extends JTextField {
 		MouseAdapter ma = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println(e.getPoint());
-				System.out.println(iconBounds.width + " " + iconBounds.height);
-
 				if (iconBounds.contains(e.getPoint())) {
 					JPopupMenu popup = new JPopupMenu();
 					JMenuItem m;
@@ -95,6 +93,20 @@ public class JIconTextField extends JTextField {
 					}
 					popup.show(JIconTextField.this, 0, icon.getIconHeight());
 				}
+			}
+			
+			@Override
+			public void mouseMoved(MouseEvent arg0) {
+			    int mx = arg0.getX();
+			    int my = arg0.getY();
+			    if (mx > iconBounds.x && mx < iconBounds.x + iconBounds.width && my > iconBounds.y
+			            && my < iconBounds.y + iconBounds.height) {
+			    	//Icon icon = new ImageIcon("img/search_icon.png");
+			    	System.out.println("DENTRO");
+
+			    } else {
+			    	//Icon icon = new ImageIcon("img/search_icon1.png");
+			    }		
 			}
 		};
 		return ma;

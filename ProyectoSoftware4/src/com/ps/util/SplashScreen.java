@@ -8,18 +8,22 @@ import javax.swing.JWindow;
 
 public class SplashScreen extends JWindow {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private ImageIcon logo;
 	private int duration;
 	
 	public SplashScreen(int duration){
-		this.duration=duration;
+		this.duration = duration;
 		LoadImage();
-		//LoadIcon();
 		pack();
 	    setLocationRelativeTo(null);
 	    setVisible(true);
-	    try {Thread.sleep(this.duration);} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
+	    try {
+	    	Thread.sleep(this.duration);	
+	    } catch (InterruptedException e) {
 			e.printStackTrace();
 		}		
 	    
@@ -27,8 +31,8 @@ public class SplashScreen extends JWindow {
 	}
 	
 	private void LoadImage(){
-			this.logo=new ImageIcon("assets/fondo.gif");
-			JLabel logolabel= new JLabel(this.logo);
-			this.getContentPane().add(logolabel,BorderLayout.CENTER);
+			this.logo = new ImageIcon("assets/fondo.gif");
+			JLabel logolabel = new JLabel(this.logo);
+			this.getContentPane().add(logolabel, BorderLayout.CENTER);
 	}
 }
