@@ -15,13 +15,13 @@ public class SplashExample {
 	public static final int Alto=700;
 	
 	public static void main(String[] args){
-		JWindow ventana= new SplashScreen(1000);
-		
-		JFrame  Login= new JFrame(BorderLayout.CENTER);
-		Login.setSize(Ancho, Alto);
-		Login.add(new Login());
-		Login.setVisible(true);
-		
+//		JWindow ventana= new SplashScreen(1000);
+//		
+//		JFrame  Login= new JFrame(BorderLayout.CENTER);
+//		Login.setSize(Ancho, Alto);
+//		Login.add(new Login());
+//		Login.setVisible(true);
+//		
 	}
 
 }

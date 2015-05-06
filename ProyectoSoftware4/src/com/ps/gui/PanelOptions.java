@@ -30,9 +30,13 @@ public class PanelOptions extends JPanel {
 	
 	private final JTextField textFieldEmail;
 	private final JPasswordField textFieldPass;
+	private String user;
+	private String pass;
 
-	public PanelOptions(final DbConnector db) {
+	public PanelOptions(final DbConnector db,String user,String pass) {
 		
+		this.user=user;
+		this.pass=pass;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -93,7 +97,7 @@ public class PanelOptions extends JPanel {
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String emailViejo = "admin";
+				String emailViejo = user;
 				String email = textFieldEmail.getText();;
 				db.changeEmail(email, emailViejo);
 			}
@@ -105,7 +109,7 @@ public class PanelOptions extends JPanel {
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String passViejo = "nimda";
+				String passViejo = pass;
 				String pass = textFieldPass.getText();
 				db.changePass(pass, passViejo);
 			}

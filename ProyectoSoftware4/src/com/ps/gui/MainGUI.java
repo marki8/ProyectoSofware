@@ -42,8 +42,12 @@ public class MainGUI extends JFrame {
 
 	private DbConnector db = null;
 	private List<Book> bookList;
+	private String user;
+	private String pass;
 
-	public MainGUI(int opcion) {
+	public MainGUI(int opcion,String user,String pass) {
+		this.user=user;
+		this.pass=pass;
 		setTitle("Easy Books");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -99,10 +103,10 @@ public class MainGUI extends JFrame {
 		grid.addMouseListener(MouseListener(grid, cards, pab));
 		
 		// Panel de opciones
-		PanelOptions po = new PanelOptions(db);		
+		PanelOptions po = new PanelOptions(db,user,pass);		
 		cards.add(po, "OPTIONS");
 		
-		getContentPane().add(new PanelToolBar(cards, db,bookList,grid), BorderLayout.PAGE_START);
+		getContentPane().add(new PanelToolBar(cards, db,bookList,grid,user), BorderLayout.PAGE_START);
 		getContentPane().add(cards, BorderLayout.CENTER);
 		getContentPane().add(panel1, BorderLayout.EAST);
 		//setExtendedState(JFrame.MAXIMIZED_BOTH);
@@ -113,12 +117,12 @@ public class MainGUI extends JFrame {
 	 * 
 	 * @param args
 	 */
-	public static void main(String[] args) {
-		MainGUI gui = new MainGUI(1);
-		gui.setVisible(true);
-		gui.pack();
-		//new MainGUI(1).setVisible(true);
-	}
+//	public static void main(String[] args) {
+//		MainGUI gui = new MainGUI(1,user);
+//		gui.setVisible(true);
+//		gui.pack();
+//		//new MainGUI(1).setVisible(true);
+//	}
 
 	/**
 	 * 
@@ -139,7 +143,7 @@ public class MainGUI extends JFrame {
 						// izquierdo
 						if (arg0.getClickCount() == 2) { // Doble clic izquierdo
 							System.out.println("Seleccion " + selectedIndex);
-							cards.add(new PanelBuyBook(cards,book, db, grid), "TEST");
+							cards.add(new PanelBuyBook(cards,book, db, grid,user), "TEST");
 							CardLayout cl = (CardLayout) (cards.getLayout());
 							//panel1.setVisible(false);
 							cl.show(cards, "TEST");

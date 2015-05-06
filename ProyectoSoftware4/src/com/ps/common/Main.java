@@ -1,13 +1,11 @@
 package com.ps.common;
 
-//import javax.swing.JLabel;
-//import javax.swing.JOptionPane;
-//import javax.swing.JPasswordField;
-
-import java.util.Date;
+import javax.swing.JFrame;
+import javax.swing.JWindow;
 
 import com.ps.db.DbConnector;
-import com.ps.gui.*;
+import com.ps.util.Login;
+import com.ps.util.SplashScreen;
 
 public class Main {
 	/**
@@ -16,6 +14,8 @@ public class Main {
 	 */
 
 	private static DbConnector db = null;
+	public static final int Ancho=840;
+	public static final int Alto=700;
 
 	public static void main(String[] args) throws SiguienteException {
 		try {
@@ -33,20 +33,14 @@ public class Main {
 			// char p[] = jpf.getPassword();
 			// String pass = new String(p);
 
-			String user = "admin";
-			String pass = "nimda";
 			
-			if (db.userExist(user, pass)) {
-				if (user.equals("admin")) {
-					new MainGUI(1).setVisible(true);
-					;
-				} else {
-					new MainGUI(0).setVisible(true);
-					;
-				}
-			} else {
-				System.out.println("MAAAL");
-			}
+			JWindow ventana= new SplashScreen(1000);
+			JFrame  Login= new JFrame();
+			Login.setSize(Ancho, Alto);
+			Login.setLocationRelativeTo(null);
+			Login.add(new Login(db,Login));
+			Login.setVisible(true);
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();

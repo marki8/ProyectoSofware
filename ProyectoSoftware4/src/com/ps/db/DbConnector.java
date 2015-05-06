@@ -83,6 +83,19 @@ public class DbConnector {
 	}
 
 	/**
+	 * Annadir un usario a la base de datos.
+	 */
+	public synchronized void addUser(String email, String pass) {
+
+		try {
+			update("INSERT INTO users(email,password) VALUES('"
+					+ email + "','" + pass + "')");
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	/**
 	 * Annadir libros a la base de datos.
 	 */
 	public synchronized void addBook(String title, String autor, String path,
@@ -331,7 +344,7 @@ public class DbConnector {
 
 		try {
 			st = conn.createStatement();
-			rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion FROM book b,users u,posee p WHERE u.email=p.email AND b.title=p.title AND b.autor=p.autor");
+			rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion FROM book b,users u,posee p WHERE u.email=p.email AND b.title=p.title AND b.autor=p.autor AND p.email='"+user+"'");
 			st.close();
 
 			bookList = new ArrayList<Book>();
@@ -454,16 +467,16 @@ public class DbConnector {
 		try {
 
 			// Insertamos libros
-			// db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('La espada del destino', 'Andrzej Sapkowski', '/book0.jpg', 'mevaisacomerlapolla',(11.99),'VIVA')");
-			// db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Destiny of the sword', 'Jeremy Twigg', '/book1.jpg', 'mevaisacomerlapolla',(71.99),'VIVA')");
-			// db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Nathe the great and the Sticky Case', 'Ugo Sanchez', '/book2.jpg', 'mevaisacomerlapolla',(51.99),'VIVA')");
-			// db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('The Iron Hell', 'Jack London', '/book3.jpg', 'mevaisacomerlapolla',(14.99),'VIVA')");
-			// db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('The arrow of gold', 'Joseph Conrad', '/book4.jpg', 'mevaisacomerlapolla',(13.99),'VIVA')");
-			// db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Bold Pursuit', 'Zabrina Faiere', '/book5.jpg', 'mevaisacomerlapolla',(12.99),'VIVA')");
+			 db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('La espada del destino', 'Andrzej Sapkowski', '/book0.jpg', 'mevaisacomerlapolla',(11.99),'VIVA')");
+			 db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Destiny of the sword', 'Jeremy Twigg', '/book1.jpg', 'mevaisacomerlapolla',(71.99),'VIVA')");
+			 db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Nathe the great and the Sticky Case', 'Ugo Sanchez', '/book2.jpg', 'mevaisacomerlapolla',(51.99),'VIVA')");
+			 db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('The Iron Hell', 'Jack London', '/book3.jpg', 'mevaisacomerlapolla',(14.99),'VIVA')");
+			 db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('The arrow of gold', 'Joseph Conrad', '/book4.jpg', 'mevaisacomerlapolla',(13.99),'VIVA')");
+			 db.update("INSERT INTO book(title,autor,path,editorial,precio,descripcion) VALUES('Bold Pursuit', 'Zabrina Faiere', '/book5.jpg', 'mevaisacomerlapolla',(12.99),'VIVA')");
 
 			// Insertamos usuarios
-			// db.update("INSERT INTO users(email,password) VALUES('650010@unizar.es', 'a')");
-			// db.update("INSERT INTO users(email,password) VALUES('admin', 'nimda')");
+			 db.update("INSERT INTO users(email,password) VALUES('650010@unizar.es', 'a')");
+			 db.update("INSERT INTO users(email,password) VALUES('admin', 'nimda')");
 
 			// Probatinas probatinas
 			// db.query(" DELETE FROM sample_table WHERE str_col='Ford'");

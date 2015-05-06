@@ -34,6 +34,8 @@ public class PanelToolBar extends JToolBar implements Action{
 	
 	private static final long serialVersionUID = 1L;
 
+	private String user;
+
 	// Componentes
 	private JButton backward;
 	private JButton forward;
@@ -43,9 +45,10 @@ public class PanelToolBar extends JToolBar implements Action{
 	private JSearchTextField field;
 
 
-	public PanelToolBar(JPanel cards, DbConnector db, List<Book> bookList, JGrid grid) {
+	public PanelToolBar(JPanel cards, DbConnector db, List<Book> bookList, JGrid grid,String user) {
 		//setLayout(new BorderLayout(10, 10));
 		
+		this.user=user;
 		setName("Barra de herramientas");
 		setOpaque(true);
 		setFloatable(false);
@@ -205,7 +208,7 @@ public class PanelToolBar extends JToolBar implements Action{
 			public void actionPerformed(ActionEvent e) {
 				System.out.println("Mis libros");
                 bookList.clear();
-                bookList.addAll(db.getBooksBuy("650010@unizar.es")); // CAMBIAR
+                bookList.addAll(db.getBooksBuy(user));
                 //bookList.add(new Book("a","a","/book0.jpg","a",25,"a"));
                 grid.repaint();
                 CardLayout cl = (CardLayout)(cards.getLayout());

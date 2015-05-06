@@ -24,7 +24,7 @@ public class SendMailTLS {
 		this.autor = autor;
 	}
 
-	public void send() {
+	public void send(String user) {
 
 		final String username = "easybooksps@gmail.com";
 		final String password = "ps20142015";
@@ -55,7 +55,7 @@ public class SendMailTLS {
 			Message message = new MimeMessage(session);
 			message.setFrom(new InternetAddress("easybooksps@gmail.com"));
 			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse("javiermiguel93@gmail.com"));
+					InternetAddress.parse(user));
 			message.setSubject("Compra del libro: " + titulo);
 			message.setText("Apreciado cliente: " + mail
 					+ "\n\nUsted ha comprado el libro " + titulo + " de "
