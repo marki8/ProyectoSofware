@@ -5,12 +5,16 @@ import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
 import com.ps.common.Book;
+import com.ps.db.DbConnector;
 import com.ps.gui.gfx.DropShadow;
 
 import de.jgrid.JGrid;
@@ -24,7 +28,23 @@ public class OpenLibraryGridRenderer extends JComponent implements GridCellRende
 	private static final long serialVersionUID = 1L;
 	private Book book;
 	private boolean isSelected;
+	private String user;
+	private Image tag;
+	private DbConnector db;
 
+
+	public OpenLibraryGridRenderer(String user, DbConnector db) {
+		super();
+		this.user = user;
+		this.db = db;
+		try {
+			tag = ImageIO.read(getClass().getResource(("/assets/tag.png")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 	@Override
 	public Component getGridCellRendererComponent(JGrid grid, Object value,
 			int index, boolean isSelected, boolean cellHasFocus) {
@@ -102,7 +122,11 @@ public class OpenLibraryGridRenderer extends JComponent implements GridCellRende
 			
 			// Imagen del libro
 			g2.drawImage(coverImage, startX, 0, null);
-			g2.drawRect(startX, 0, coverImage.getWidth(),coverImage.getHeight());
+			g2.drawRect(startX, 0, coverImage.getWidth(), coverImage.getHeight());
+			
+			// Tag 
+			if (db.userHaveBook(user, book.getTitle(), book.getAutor()))
+				g2.drawImage(tag, startX, coverImage.getHeight() - tag.getHeight(null), null);
 
 			g2.dispose();
 		}

@@ -412,6 +412,23 @@ public class DbConnector {
 		}
 		return pass;
 	}
+	
+	public boolean userHaveBook(String user, String title, String autor) {
+		Statement st = null;
+		ResultSet rs = null;
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT * FROM posee WHERE email='" + user + "'"
+					+ "AND title='" + title + "'"
+					+ "AND autor='" + autor + "'");
+			if (rs.next()) return true;
+			st.close();
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	// use for SQL commands CREATE, DROP, INSERT and UPDATE
 	public synchronized void update(String expression) throws SQLException {
@@ -518,5 +535,4 @@ public class DbConnector {
 
 		}
 	}
-
 }

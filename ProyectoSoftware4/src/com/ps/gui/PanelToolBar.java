@@ -233,7 +233,7 @@ public class PanelToolBar extends JToolBar implements Action {
 				checkNavigation("PURCHASES");
 				STACK.add("PURCHASES");
 				INDEX++;
-				cards.add(new PanelPurchases(db, user), "PURCHASES");
+				cards.add(new PanelPurchases(db, user, cards), "PURCHASES");
 				CardLayout cl = (CardLayout) (cards.getLayout());
 				cl.show(cards, "PURCHASES");
 				

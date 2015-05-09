@@ -80,7 +80,7 @@ public class MainGUI extends JFrame {
 		bookList = db.getBooks();
 		JGrid grid = new JGrid(new SelectionModel(bookList));
 		grid.getCellRendererManager().setDefaultRenderer(
-				new OpenLibraryGridRenderer());
+				new OpenLibraryGridRenderer(user, db));
 		grid.setUI(new EasyBooksUI("Catalogo"));
 
 		JPanel cards = new JPanel(new CardLayout());

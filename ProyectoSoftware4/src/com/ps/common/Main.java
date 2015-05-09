@@ -1,7 +1,5 @@
 package com.ps.common;
 
-import java.awt.Toolkit;
-
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
