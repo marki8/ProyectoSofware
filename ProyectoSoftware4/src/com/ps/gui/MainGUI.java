@@ -18,7 +18,6 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
 
-
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
 import com.ps.gui.PanelAddBook;
@@ -43,11 +42,9 @@ public class MainGUI extends JFrame {
 	private DbConnector db = null;
 	private List<Book> bookList;
 	private String user;
-	private String pass;
 
-	public MainGUI(int opcion,String user,String pass) {
-		this.user=user;
-		this.pass=pass;
+	public MainGUI(int opcion,String user) {
+		this.user = user;
 		setTitle("Easy Books");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
@@ -91,6 +88,7 @@ public class MainGUI extends JFrame {
 		JScrollPane jsp = new JScrollPane(grid);
 		jsp.setBorder(null);
 		cards.add(jsp, "GRID");
+		PanelToolBar.STACK.add("GRID");
 
 		// Columna derecha (Incrustada en otro panel para que no se redimensione)
 		JPanel panel1 = new JPanel();
@@ -103,7 +101,7 @@ public class MainGUI extends JFrame {
 		grid.addMouseListener(MouseListener(grid, cards, pab));
 		
 		// Panel de opciones
-		PanelOptions po = new PanelOptions(db,user,pass);		
+		PanelOptions po = new PanelOptions(db, user);		
 		cards.add(po, "OPTIONS");
 		
 		getContentPane().add(new PanelToolBar(cards, db,bookList,grid,user), BorderLayout.PAGE_START);
@@ -117,12 +115,11 @@ public class MainGUI extends JFrame {
 	 * 
 	 * @param args
 	 */
-//	public static void main(String[] args) {
-//		MainGUI gui = new MainGUI(1,user);
-//		gui.setVisible(true);
-//		gui.pack();
-//		//new MainGUI(1).setVisible(true);
-//	}
+	public static void main(String[] args) {
+		MainGUI gui = new MainGUI(1, "admin");
+		gui.setVisible(true);
+		gui.pack();
+	}
 
 	/**
 	 * 
@@ -142,12 +139,15 @@ public class MainGUI extends JFrame {
 					if (arg0.getButton() == MouseEvent.BUTTON1) { // Clic
 						// izquierdo
 						if (arg0.getClickCount() == 2) { // Doble clic izquierdo
+							PanelToolBar.checkNavigation("BOOK" + selectedIndex);
+							PanelToolBar.STACK.add("BOOK" + selectedIndex);
+							PanelToolBar.INDEX++;
 							System.out.println("Seleccion " + selectedIndex);
-							cards.add(new PanelBuyBook(cards,book, db, grid,user), "TEST");
+							cards.add(new PanelBuyBook(cards,book, db, grid,user),
+									PanelToolBar.STACK.get(PanelToolBar.STACK.size()-1));
 							CardLayout cl = (CardLayout) (cards.getLayout());
 							//panel1.setVisible(false);
-							cl.show(cards, "TEST");
-
+							cl.show(cards, PanelToolBar.STACK.get(PanelToolBar.STACK.size()-1));
 						} else {
 							pab.setAddModifyText("Modificar");
 							pab.setBook(book.getEditorial(), book.getTitle(),

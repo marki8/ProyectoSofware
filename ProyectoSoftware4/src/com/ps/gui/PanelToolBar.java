@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -30,7 +31,10 @@ import com.ps.gui.gfx.JSearchTextField;
 
 import de.jgrid.JGrid;
 
-public class PanelToolBar extends JToolBar implements Action{
+public class PanelToolBar extends JToolBar implements Action {
+	
+	public static ArrayList<String> STACK = new ArrayList<String>();
+	public static int INDEX = 0;
 	
 	private static final long serialVersionUID = 1L;
 
@@ -60,8 +64,8 @@ public class PanelToolBar extends JToolBar implements Action{
 		backward = new GradientButton("");
 		forward = new GradientButton("");
 		try {
-			backward.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/b.png"))));
-			forward.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/f.png"))));
+			backward.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/assets/backward.png"))));
+			forward.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/assets/forward.png"))));
 		} catch (IOException ex) {}
 		backward.setForeground(Color.WHITE);
 		forward.setForeground(Color.WHITE);
@@ -92,7 +96,7 @@ public class PanelToolBar extends JToolBar implements Action{
 		// Barra de busqueda
         JPanel search = new JPanel();
         field = new JSearchTextField(15);
-        field.setIcon(new ImageIcon("img/search_icon.png"));
+        field.setIcon(new ImageIcon("img/assets/search_icon.png"));
         field.getDocument().addDocumentListener(searchField(db, grid, bookList));
 		search.add(field);
 	    add(search, BorderLayout.EAST);
@@ -144,9 +148,16 @@ public class PanelToolBar extends JToolBar implements Action{
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("<");
-		        CardLayout cl = (CardLayout)(cards.getLayout());
-		        cl.previous(cards);
+				//System.out.println("<");
+		        //CardLayout cl = (CardLayout)(cards.getLayout());
+		        //cl.previous(cards);
+				System.out.println(STACK.toString() + " - " + INDEX);
+
+		        if (INDEX > 0) {
+		        	INDEX--;
+			        CardLayout cl = (CardLayout)(cards.getLayout());
+			        cl.show(cards, STACK.get(INDEX));
+		        }
 			}
         };
 		return al;
@@ -161,9 +172,13 @@ public class PanelToolBar extends JToolBar implements Action{
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println(">");
-		        CardLayout cl = (CardLayout)(cards.getLayout());
-		        cl.next(cards);
+				//System.out.println(">");
+				System.out.println(STACK.toString() + " - " + INDEX);
+		        if (INDEX < STACK.size() - 1) {
+		        	INDEX++;
+			        CardLayout cl = (CardLayout)(cards.getLayout());
+			        cl.show(cards, STACK.get(INDEX));
+		        }
 			}
         };
 		return al;
@@ -182,7 +197,10 @@ public class PanelToolBar extends JToolBar implements Action{
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Inicio");
+				checkNavigation("GRID");
+				STACK.add("GRID");
+				INDEX++;
+				//System.out.println("Inicio");
                 bookList.clear();
 				bookList.addAll(db.getBooks());
 				grid.repaint();
@@ -206,10 +224,9 @@ public class PanelToolBar extends JToolBar implements Action{
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("Mis libros");
+				//System.out.println("Mis libros");
                 bookList.clear();
                 bookList.addAll(db.getBooksBuy(user));
-                //bookList.add(new Book("a","a","/book0.jpg","a",25,"a"));
                 grid.repaint();
                 CardLayout cl = (CardLayout)(cards.getLayout());
                 cl.show(cards, "GRID");       
@@ -228,6 +245,10 @@ public class PanelToolBar extends JToolBar implements Action{
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				checkNavigation("OPTIONS");
+				STACK.add("OPTIONS");
+				INDEX++;
+				System.out.println(STACK.toString());
 				System.out.println("Opciones");
 				CardLayout cl = (CardLayout) (cards.getLayout());
 				cl.show(cards, "OPTIONS");
@@ -291,5 +312,14 @@ public class PanelToolBar extends JToolBar implements Action{
 			
 		};
 		return dl;
+	}
+	
+	public static void checkNavigation(String panel) {
+		ArrayList<String> aux = new ArrayList<String>();
+		if (INDEX < STACK.size() && STACK.get(INDEX) != panel) {
+			for (int i = 0; i <= INDEX; i++)
+				aux.add(STACK.get(i));
+			STACK = aux;
+		}
 	}
 }
