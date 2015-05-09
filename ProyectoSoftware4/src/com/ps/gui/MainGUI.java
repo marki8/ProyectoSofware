@@ -78,12 +78,12 @@ public class MainGUI extends JFrame {
 
 		// Grid de libros
 		bookList = db.getBooks();
-		final JGrid grid = new JGrid(new SelectionModel(bookList));
+		JGrid grid = new JGrid(new SelectionModel(bookList));
 		grid.getCellRendererManager().setDefaultRenderer(
 				new OpenLibraryGridRenderer());
-		grid.setUI(new EasyBooksUI());
+		grid.setUI(new EasyBooksUI("Catalogo"));
 
-		final JPanel cards = new JPanel(new CardLayout());
+		JPanel cards = new JPanel(new CardLayout());
 		cards.setBorder(null);
 		JScrollPane jsp = new JScrollPane(grid);
 		jsp.setBorder(null);

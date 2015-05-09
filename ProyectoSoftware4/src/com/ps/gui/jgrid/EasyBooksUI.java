@@ -2,10 +2,12 @@ package com.ps.gui.jgrid;
 
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.Font;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 
@@ -24,6 +26,11 @@ public class EasyBooksUI extends GridUI {
 	private Color startColor = new Color(200, 200, 200);
 	private Color endColor = new Color(241, 241, 241);
 	private Color shadowColor = new Color(120, 120, 120);
+	private String title;
+
+	public EasyBooksUI(String title) {
+		this.title = title;
+	}
 
 	@Override
 	public void installUI(JComponent c) {
@@ -72,12 +79,12 @@ public class EasyBooksUI extends GridUI {
 	    g2.drawLine(0, 0, c.getWidth(), 0);
 	    
 	    // Texto de encabezado de grid
-//	    ((Graphics2D) g2).setRenderingHint(
-//	            RenderingHints.KEY_TEXT_ANTIALIASING,
-//	            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
-//		g2.setFont(new Font("Helvetica", Font.BOLD, 20));
-//		g2.setColor(Color.BLACK);
-//		g2.drawString("Catalogo de libros", 40, 30);
+	    ((Graphics2D) g2).setRenderingHint(
+	            RenderingHints.KEY_TEXT_ANTIALIASING,
+	            RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+		g2.setFont(new Font("Helvetica", Font.BOLD, 20));
+		g2.setColor(Color.BLACK);
+		g2.drawString(title, 30, 22);
 	    g2.dispose();
 	    
 		super.paint(g, c);
