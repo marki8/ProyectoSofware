@@ -5,8 +5,6 @@ import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +17,7 @@ import java.util.Date;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.mail.MessagingException;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -38,7 +37,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
-import com.ps.gui.gfx.DropShadow;
 import com.ps.gui.jgrid.ImageUtilities;
 import com.ps.mail.SendMailTLS;
 
@@ -71,7 +69,7 @@ public class PanelBuyBook extends Panel {
 	public PanelBuyBook(final JPanel cards, final Book book,
 			final DbConnector db, final JGrid grid,String user) {
 
-		this.user=user;
+		this.user = user;
 		// Leemos la imagen del libro
 		BufferedImage img = null;
 		try {
@@ -253,17 +251,29 @@ public class PanelBuyBook extends Panel {
 			public void actionPerformed(ActionEvent e) {
 				String titulo = book.getTitle();
 				String autor = book.getAutor();
+				boolean exito = true;
 				int puntuacion = 0;
-				db.addBookBuy(user, titulo, autor, puntuacion);
-				JOptionPane j = new JOptionPane();
-				j.showMessageDialog(
-						PanelBuyBook.this,
-						"Usted ha realizado la compra con Exito.\nRecibira un correo con la informacion de la compra",
-						"Compra Realizada", JOptionPane.INFORMATION_MESSAGE);
-				SendMailTLS mail = new SendMailTLS("user", titulo, autor);
-				CardLayout cl = (CardLayout) (cards.getLayout());
-				cl.show(cards, "GRID");
-				mail.send(user);
+				try {
+					SendMailTLS mail = new SendMailTLS(user, titulo, autor);
+					mail.send(user);
+				} catch (MessagingException e1) {
+					exito = false;
+					JOptionPane.showMessageDialog(
+							PanelBuyBook.this,
+							"Error al realizar la compra.\n"
+							+ "Por favor, intentelo de nuevo más tarde",
+							"Error", JOptionPane.INFORMATION_MESSAGE);
+				}
+				if (exito) {
+					db.addBookBuy(user, titulo, autor, puntuacion);
+					JOptionPane.showMessageDialog(
+							PanelBuyBook.this,
+							"Usted ha realizado la compra con Exito.\n"
+							+ "Recibira un correo con la informacion de la compra",
+							"Compra Realizada", JOptionPane.INFORMATION_MESSAGE);
+					CardLayout cl = (CardLayout) (cards.getLayout());
+					cl.show(cards, "GRID");
+				}
 			}
 		};
 		return al;

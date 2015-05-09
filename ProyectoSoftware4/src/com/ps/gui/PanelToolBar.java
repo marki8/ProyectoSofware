@@ -225,11 +225,18 @@ public class PanelToolBar extends JToolBar implements Action {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//System.out.println("Mis libros");
-                bookList.clear();
-                bookList.addAll(db.getBooksBuy(user));
-                grid.repaint();
-                CardLayout cl = (CardLayout)(cards.getLayout());
-                cl.show(cards, "GRID");       
+//                bookList.clear();
+//                bookList.addAll(db.getBooksBuy(user));
+//                grid.repaint();
+//                CardLayout cl = (CardLayout)(cards.getLayout());
+//                cl.show(cards, "GRID");     
+				checkNavigation("PURCHASES");
+				STACK.add("PURCHASES");
+				INDEX++;
+				cards.add(new PanelPurchases(db, user), "PURCHASES");
+				CardLayout cl = (CardLayout) (cards.getLayout());
+				cl.show(cards, "PURCHASES");
+				
 			}
         };
 		return al;

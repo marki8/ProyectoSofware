@@ -24,7 +24,7 @@ public class SendMailTLS {
 		this.autor = autor;
 	}
 
-	public void send(String user) {
+	public void send(String user) throws MessagingException {
 
 		final String username = "easybooksps@gmail.com";
 		final String password = "ps20142015";
@@ -41,29 +41,25 @@ public class SendMailTLS {
 						return new PasswordAuthentication(username, password);
 					}
 				});
+		Date date = new Date();
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		int minutos = cal.get(Calendar.MINUTE);
+		int horas = cal.get(Calendar.HOUR_OF_DAY);
+		int segundos = cal.get(Calendar.SECOND);
+		int dia = cal.get(Calendar.DAY_OF_MONTH);
+		int mes = cal.get(Calendar.MONTH);
+		int year = cal.get(Calendar.YEAR);
+		Message message = new MimeMessage(session);
+		message.setFrom(new InternetAddress("easybooksps@gmail.com"));
+		message.setRecipients(Message.RecipientType.TO,
+				InternetAddress.parse(user));
+		message.setSubject("Compra del libro: " + titulo);
+		message.setText("Apreciado cliente: " + mail
+				+ "\n\nUsted ha comprado el libro " + titulo + " de " + autor
+				+ " a las " + horas + ":" + minutos + ":" + segundos
+				+ " horas del " + dia + "/" + mes + "/" + year);
+		Transport.send(message);
 
-		try {
-			Date date = new Date();
-			Calendar cal = Calendar.getInstance();
-			cal.setTime(date);
-			int minutos = cal.get(Calendar.MINUTE);
-			int horas = cal.get(Calendar.HOUR_OF_DAY);
-			int segundos = cal.get(Calendar.SECOND);
-			int dia = cal.get(Calendar.DAY_OF_MONTH);
-			int mes = cal.get(Calendar.MONTH);
-			int year = cal.get(Calendar.YEAR);
-			Message message = new MimeMessage(session);
-			message.setFrom(new InternetAddress("easybooksps@gmail.com"));
-			message.setRecipients(Message.RecipientType.TO,
-					InternetAddress.parse(user));
-			message.setSubject("Compra del libro: " + titulo);
-			message.setText("Apreciado cliente: " + mail
-					+ "\n\nUsted ha comprado el libro " + titulo + " de "
-					+ autor + " a las " + horas + ":" + minutos + ":"
-					+ segundos + " horas del " + dia + "/" + mes + "/" + year);
-			Transport.send(message);
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
-		}
 	}
 }
