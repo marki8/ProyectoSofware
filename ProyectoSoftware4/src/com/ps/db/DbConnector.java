@@ -372,16 +372,45 @@ public class DbConnector {
 		}
 	}
 
-	public void changePass(String pass, String passViejo) {
+//	public void changePass(String pass, String passViejo) {
+//		Statement st = null;
+//		try {
+//			st = conn.createStatement();
+//			st.executeQuery("UPDATE users SET password = '" + pass
+//					+ "' WHERE password = '" + passViejo + "';");
+//			st.close();
+//		} catch (SQLException e) {
+//			e.printStackTrace();
+//		}
+//	}
+	
+	public synchronized void changePass(String user, String pass) {
 		Statement st = null;
 		try {
 			st = conn.createStatement();
 			st.executeQuery("UPDATE users SET password = '" + pass
-					+ "' WHERE password = '" + passViejo + "';");
+					+ "' WHERE email = '" + user + "';");
 			st.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public synchronized String getPass(String user) {
+		Statement st = null;
+		ResultSet rs = null;
+		String pass = null;
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT password FROM users WHERE email='" + user + "'");
+			if (rs.next()) pass = rs.getString(1);
+			
+			st.close();
+			rs.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return pass;
 	}
 
 	// use for SQL commands CREATE, DROP, INSERT and UPDATE

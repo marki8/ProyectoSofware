@@ -24,12 +24,10 @@ public class PanelOptions extends Panel {
 	private final JTextField textFieldEmail;
 	private final JPasswordField textFieldPass;
 	private String user;
-	private String pass;
 
-	public PanelOptions(final DbConnector db,String user,String pass) {
+	public PanelOptions(final DbConnector db, String user) {
 		
-		this.user=user;
-		this.pass=pass;
+		this.user = user;
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
@@ -54,6 +52,7 @@ public class PanelOptions extends Panel {
 		JLabel labelEmail = new JLabel("         Email: ", SwingUtilities.LEFT);
 	    textFieldEmail = new JTextField(15);
 	    textFieldEmail.setMaximumSize(textFieldEmail.getPreferredSize());
+	    textFieldEmail.setText(user);
 	    option1.add(labelEmail);
 	    option1.add(textFieldEmail);
 	    
@@ -75,6 +74,7 @@ public class PanelOptions extends Panel {
 	    JLabel labelPass = new JLabel("Contrasena: ");
 	    textFieldPass = new JPasswordField(15);
 	    textFieldPass.setMaximumSize(textFieldPass.getPreferredSize());
+	    textFieldPass.setText(db.getPass(user));
 	    option2.add(labelPass, Component.RIGHT_ALIGNMENT);
 	    option2.add(textFieldPass);
 
@@ -102,9 +102,9 @@ public class PanelOptions extends Panel {
 		ActionListener al = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				String passViejo = pass;
+				//String passViejo = pass;
 				String pass = textFieldPass.getText();
-				db.changePass(pass, passViejo);
+				db.changePass(user, pass);
 			}
 		};
 		return al;
