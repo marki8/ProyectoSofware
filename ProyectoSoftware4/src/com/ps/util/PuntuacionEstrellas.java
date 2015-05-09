@@ -20,6 +20,7 @@ import javax.swing.JComponent;
  */
 public class PuntuacionEstrellas extends JComponent implements MouseMotionListener,MouseListener{
 	
+	private static final long serialVersionUID = 1L;
 	private BufferedImage EstrellaVacia,Estrella;
 	private int xpos,ypos,puntuacion;
 	private boolean Seleccionado;
@@ -27,8 +28,8 @@ public class PuntuacionEstrellas extends JComponent implements MouseMotionListen
 	public PuntuacionEstrellas(int xpos,int ypos){
 		try {
 			this.setBounds(xpos, ypos, 5*70, 64);
-			this.EstrellaVacia=ImageIO.read(new File("assets/estrella Vacia.png"));
-			this.Estrella=ImageIO.read(new File("assets/estrella.png"));
+			this.EstrellaVacia=ImageIO.read(new File("img/assets/estrella Vacia.png"));
+			this.Estrella=ImageIO.read(new File("img/assets/estrella.png"));
 			this.puntuacion=0;
 			this.xpos=xpos;
 			this.ypos=ypos;

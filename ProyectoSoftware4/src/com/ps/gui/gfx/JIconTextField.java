@@ -82,7 +82,7 @@ public class JIconTextField extends JTextField {
 					for (int i = 0; i < menu.length; i++) {
 						if (selected == i) {
 							m = new JMenuItem(menu[i], new ImageIcon(
-									"img/selected.png"));
+									"img/assets/selected.png"));
 							popup.add(m);
 						} else {
 							m = new JMenuItem(menu[i], null);
