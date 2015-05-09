@@ -1,6 +1,9 @@
 package com.ps.common;
 
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
+import javax.swing.UIManager;
 
 import com.ps.db.DbConnector;
 import com.ps.gui.PanelLogin;
@@ -10,8 +13,8 @@ public class Main {
 
 
 	private static DbConnector db = null;
-	public static final int Ancho = 420;
-	public static final int Alto = 350;
+	public static final int Ancho = 400;
+	public static final int Alto = 170;
 
 	/**
 	 * 
@@ -26,11 +29,19 @@ public class Main {
 				e.printStackTrace();
 			}
 
+			try {
+			    UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+
+			} catch (Exception e) {
+			    e.printStackTrace();
+			}
 			new SplashScreen(1000);
-			JFrame Login = new JFrame();
+			JFrame Login = new JFrame("Easy Books - Login");
 			Login.setSize(Ancho, Alto);
 			Login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			Login.setLocationRelativeTo(null);
+			Login.setResizable(false);
+			//Login.setIconImage(Toolkit.getDefaultToolkit().getImage(Login.getClass().getResource("/b.png")));
 			Login.add(new PanelLogin(db, Login));
 			Login.setVisible(true);
 

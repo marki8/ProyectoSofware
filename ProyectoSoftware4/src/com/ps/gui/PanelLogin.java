@@ -1,6 +1,5 @@
 package com.ps.gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -20,8 +19,14 @@ public class PanelLogin extends Panel {
 	private String user, pass;
 	private DbConnector db;
 	private JFrame login;
-	public static final int Ancho = 420;
-	public static final int Alto = 350;
+	
+	// Componentes
+	private JLabel usuario;
+	private JLabel contrasena;
+	private JTextField usuarioText;
+	private JPasswordField contrasenaText;
+	private JButton botonAceptar;
+	private JButton botonRegistrarse;
 
 	public PanelLogin(final DbConnector db, JFrame login) {
 		this.user = "";
@@ -30,7 +35,8 @@ public class PanelLogin extends Panel {
 		this.login = login;
 
 		this.setLayout(null);
-		this.setBackground(new Color(103, 191, 206));
+
+		//this.setBackground(new Color(103, 191, 206));
 		LoadLoginData(login);
 	}
 
@@ -39,51 +45,51 @@ public class PanelLogin extends Panel {
 		/*
 		 * Texto de usuario
 		 */
-		JLabel usuario = new JLabel();
-		usuario.setFont(usuario.getFont().deriveFont(20f));
+		usuario = new JLabel();
+		usuario.setFont(usuario.getFont().deriveFont(14f));
 		usuario.setForeground(new Color(30, 30, 30));
 		usuario.setText("Usuario: ");
 		usuario.setBackground(Color.BLACK);
-		usuario.setBounds(100, 100, 150, 30);
+		usuario.setBounds(20, 20, 150, 30);
 
 		/*
 		 * Panel para introducir el usuario
 		 */
-		final JTextField usuarioText = new JTextField(32);
+		usuarioText = new JTextField(32);
 		usuarioText.setEditable(true);
-		usuarioText.setBounds(225, 100, 150, 30);
+		usuarioText.setBounds(140, 20, 220, 30);
 
 		/*
 		 * Texto de la contrasena
 		 */
-		JLabel contrasena = new JLabel();
-		contrasena.setFont(contrasena.getFont().deriveFont(20f));
+		contrasena = new JLabel();
+		contrasena.setFont(contrasena.getFont().deriveFont(14f));
 		contrasena.setForeground(new Color(30, 30, 30));
 		contrasena.setText("Contrasena: ");
 		contrasena.setBackground(Color.BLACK);
-		contrasena.setBounds(100, 150, 150, 30);
+		contrasena.setBounds(20, 60, 150, 30);
 
 		/*
 		 * Field para introducir la contrasena
 		 */
-		final JPasswordField contrasenaText = new JPasswordField(32);
+		contrasenaText = new JPasswordField(32);
 		contrasenaText.setEditable(true);
-		contrasenaText.setBounds(225, 150, 150, 30);
+		contrasenaText.setBounds(140, 60, 220, 30);
 
 		/*
 		 * Boton aceptar
 		 */
-		JButton botonAceptar = new JButton("Aceptar");
-		botonAceptar.setFont(botonAceptar.getFont().deriveFont(10f));
-		botonAceptar.setBounds(125, 225, 100, 25);
+		botonAceptar = new JButton("Aceptar");
+		botonAceptar.setFont(botonAceptar.getFont().deriveFont(12f));
+		botonAceptar.setBounds(60, 110, 100, 25);
 		botonAceptar
 				.addActionListener(acceptButton(usuarioText, contrasenaText));
 		//
 		//
 		//
-		JButton botonRegistrarse = new JButton("Registrarse");
-		botonRegistrarse.setFont(botonAceptar.getFont().deriveFont(10f));
-		botonRegistrarse.setBounds(250, 225, 100, 25);
+		botonRegistrarse = new JButton("Registrarse");
+		botonRegistrarse.setFont(botonAceptar.getFont().deriveFont(12f));
+		botonRegistrarse.setBounds(250, 110, 100, 25);
 		botonRegistrarse.addActionListener(registerButton(usuarioText,
 				contrasenaText));
 		//
@@ -116,28 +122,23 @@ public class PanelLogin extends Panel {
 				 */
 				user = usuarioText.getText();
 				pass = contrasenaText.getText();
+				JFrame gui;
 				System.out.println("Usuario: " + user + " contrasena: " + pass);
 				if (db.userExist(user, pass)) {
 					if (user.equals("admin")) {
-						login.dispose();
-						new MainGUI(1, user, pass).setVisible(true);
+						gui = new MainGUI(1, user);
 					} else {
-						login.dispose();
-						new MainGUI(0, user, pass).setVisible(true);
+						gui = new MainGUI(0, user);
 					}
+					gui.setVisible(true);
+					gui.pack();
+					login.dispose();
 				} else {
-					JOptionPane j = new JOptionPane();
-					j.showMessageDialog(login,
-							"El usuario o la contrase�a que ha introducido son erroneos\n"
+					JOptionPane.showMessageDialog(login,
+							"El usuario o la contrasena que ha introducido son erroneos\n"
 									+ "Por favor vuelva a intentarlo", "Error",
 							JOptionPane.INFORMATION_MESSAGE);
-					// restart de la pantalla de login
-					login.dispose();
-					JFrame Login = new JFrame(BorderLayout.CENTER);
-					Login.setSize(Ancho, Alto);
-					Login.setLocationRelativeTo(null);
-					Login.add(new PanelLogin(db, Login));
-					Login.setVisible(true);
+					contrasenaText.setText("");
 				}
 			}
 		};
@@ -161,7 +162,10 @@ public class PanelLogin extends Panel {
 				pass = contrasenaText.getText();
 				db.addUser(user, pass);
 				login.dispose();
-				new MainGUI(0, user, pass).setVisible(true);
+				
+				JFrame gui = new MainGUI(0, user);
+				gui.setVisible(true);
+				gui.pack();
 			}
 		};
 		return al;
