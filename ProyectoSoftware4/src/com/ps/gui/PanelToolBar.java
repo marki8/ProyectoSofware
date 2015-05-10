@@ -18,6 +18,7 @@ import javax.swing.Action;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JToolBar;
 import javax.swing.event.DocumentEvent;
@@ -49,10 +50,11 @@ public class PanelToolBar extends JToolBar implements Action {
 	private JSearchTextField field;
 
 
-	public PanelToolBar(JPanel cards, DbConnector db, List<Book> bookList, JGrid grid,String user) {
+	public PanelToolBar(JPanel cards, DbConnector db, List<Book> bookList, 
+			JGrid grid, String user) {
 		//setLayout(new BorderLayout(10, 10));
 		
-		this.user=user;
+		this.user = user;
 		setName("Barra de herramientas");
 		setOpaque(true);
 		setFloatable(false);
@@ -64,8 +66,10 @@ public class PanelToolBar extends JToolBar implements Action {
 		backward = new GradientButton("");
 		forward = new GradientButton("");
 		try {
-			backward.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/assets/backward.png"))));
-			forward.setIcon(new ImageIcon(ImageIO.read(getClass().getResource("/assets/forward.png"))));
+			backward.setIcon(new ImageIcon(ImageIO.read(getClass()
+					.getResource("/assets/backward.png"))));
+			forward.setIcon(new ImageIcon(ImageIO.read(getClass()
+					.getResource("/assets/forward.png"))));
 		} catch (IOException ex) {}
 		backward.setForeground(Color.WHITE);
 		forward.setForeground(Color.WHITE);
@@ -74,7 +78,11 @@ public class PanelToolBar extends JToolBar implements Action {
 		b1.add(backward);
 		b1.add(forward);
 		add(b1, BorderLayout.WEST);		
-
+		
+		JLabel nombre = new JLabel("Usuario actual: " + user);
+		nombre.setForeground(Color.white);
+		b1.add(nombre);
+		
         JPanel b2 = new JPanel();
 		// Boton de inicio
 		init = new GradientButton("Inicio");
