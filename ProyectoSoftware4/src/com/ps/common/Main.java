@@ -1,5 +1,7 @@
 package com.ps.common;
 
+import java.awt.Toolkit;
+
 import javax.swing.JFrame;
 import javax.swing.UIManager;
 
@@ -29,6 +31,7 @@ public class Main {
 
 			try {
 			    UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+			    JFrame.setDefaultLookAndFeelDecorated(true);
 
 			} catch (Exception e) {
 			    e.printStackTrace();
@@ -39,7 +42,7 @@ public class Main {
 			Login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			Login.setLocationRelativeTo(null);
 			Login.setResizable(false);
-			//Login.setIconImage(Toolkit.getDefaultToolkit().getImage(Login.getClass().getResource("/b.png")));
+			Login.setIconImage(Toolkit.getDefaultToolkit().getImage(Login.getClass().getResource("/assets/EB.png")));
 			Login.add(new PanelLogin(db, Login));
 			Login.setVisible(true);
 

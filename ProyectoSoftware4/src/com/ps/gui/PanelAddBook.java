@@ -69,21 +69,24 @@ public class PanelAddBook extends JPanel  {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				
-				String editorial =textFieldEditorial.getText();
-				int precio =Integer.parseInt(textFieldPrecio.getText());
-				String descripcion =textFieldDescripcion.getText();
 				String title = textFieldTitle.getText();
 				String autor = textFieldAutor.getText();
 				String path = "/" + textFieldPath.getText();
+				String editorial = textFieldEditorial.getText();
+				double precio = Double.parseDouble(textFieldPrecio.getText());
+				String descripcion =textFieldDescripcion.getText();
+				
 				int index = grid.getSelectedIndex();
-				Book newBook = new Book(title, autor, path, editorial,precio,descripcion);
-				if(index==-1) {
+				Book newBook = new Book(title, autor, path, editorial, precio, descripcion);
+				if (index == -1) {
 	                bookList.add(newBook); 
-	                db.addBook(title, autor, path, editorial);
+	                db.addBook(title, autor, path, editorial, precio, descripcion);
 				}				
 				else if (!bookList.get(index).equals(newBook) && index >= 0) {
+					Book oldBook = bookList.get(index);
 	                bookList.set(index, newBook);
-	                //db.editBook(title, autor, path);
+	                db.updateBook(title, autor, path, editorial, precio, descripcion,
+	                		oldBook.getTitle(), oldBook.getAutor());
 				} 
 				
                 grid.repaint();
@@ -108,11 +111,11 @@ public class PanelAddBook extends JPanel  {
         this.add(buttonDelete);
 	}
 	
-	public void setBook(String editorial,String title, String autor, int precio,String descripcion,String path) {
+	public void setBook(String editorial,String title, String autor, double precio,String descripcion,String path) {
 		textFieldEditorial.setText(editorial);
 		textFieldTitle.setText(title);
 		textFieldAutor.setText(autor);
-		textFieldPrecio.setText(Integer.toString(precio));
+		textFieldPrecio.setText(Double.toString(precio));
 		textFieldDescripcion.setText(descripcion);
 		textFieldPath.setText(path.substring(1));
 	}
@@ -128,4 +131,23 @@ public class PanelAddBook extends JPanel  {
 		buttonAdd.setText(s);
 	}
 
+	public void setEditable(boolean b) {
+		textFieldTitle.setEditable(b);
+		textFieldAutor.setEditable(b);
+		textFieldTitle.setFocusable(b);
+		textFieldAutor.setFocusable(b);
+		
+		if (!b) {
+			textFieldTitle.setForeground(new Color(100, 100, 100));
+			textFieldAutor.setForeground(new Color(100, 100, 100));
+			textFieldTitle.setBackground(new Color(220, 220, 220));
+			textFieldAutor.setBackground(new Color(220, 220, 220));
+		} 
+		else {
+			textFieldTitle.setForeground(Color.BLACK);
+			textFieldAutor.setForeground(Color.BLACK);
+			textFieldTitle.setBackground(Color.WHITE);
+			textFieldAutor.setBackground(Color.WHITE);
+		}
+	}
 }

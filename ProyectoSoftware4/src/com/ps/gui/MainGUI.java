@@ -17,7 +17,6 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
-
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
 import com.ps.gui.PanelAddBook;
@@ -64,7 +63,7 @@ public class MainGUI extends JFrame {
 		// Configuramos el Look & Feel para que cada S0 use su propia GUI
 		try {
 		    UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
-
+		    //UIManager.put("TextField.disabledBackground", Color.GRAY);
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
@@ -153,6 +152,7 @@ public class MainGUI extends JFrame {
 							pab.setBook(book.getEditorial(), book.getTitle(),
 									book.getAutor(), book.getPrecio(),
 									book.getDescripcion(), book.getPath());
+							pab.setEditable(false);
 						}
 
 					} else if (arg0.getButton() == MouseEvent.BUTTON3) { // Clic
@@ -171,6 +171,7 @@ public class MainGUI extends JFrame {
 				} else { // Si no se hace clic en ningun libro, se deselecciona
 					// todo
 					pab.setAddModifyText("Anadir");
+					pab.setEditable(true);
 					grid.getSelectionModel().clearSelection();
 				}
 			}

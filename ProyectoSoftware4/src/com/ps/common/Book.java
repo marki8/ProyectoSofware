@@ -11,14 +11,15 @@ public class Book {
 	private String autor;
 	private String path;
 	private String editorial;
-	private int precio;
+	private double precio;
 	private String descripcion;
 
 	
 
 	private BufferedImage cover;
 
-	public Book(String title, String autor, String path, String editorial,int precio,String descripcion) {
+	public Book(String title, String autor, String path, String editorial,
+			double precio,String descripcion) {
 		
 		this.title = title;
 		this.autor = autor;
@@ -61,7 +62,7 @@ public class Book {
 	public void setDescripcion(String descripcion) {
 		this.descripcion = descripcion;
 	}
-	public int getPrecio() {
+	public double getPrecio() {
 		return precio;
 	}
 
