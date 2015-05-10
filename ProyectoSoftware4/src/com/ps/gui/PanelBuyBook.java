@@ -77,7 +77,7 @@ public class PanelBuyBook extends Panel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// Escala proporcional al tamaÃ±o de la imagen
+		// Escala proporcional al tamaÃƒÂ±o de la imagen
 		Dimension scale = scale(img.getWidth(), img.getHeight());
 		BufferedImage scaled = ImageUtilities.getOptimalScalingImage(img,
 				scale.width, scale.height);
@@ -124,7 +124,7 @@ public class PanelBuyBook extends Panel {
 		leftPanel.add(j, BorderLayout.WEST);
 
 		// Boton de comprar libro
-		JButton b1 = new JButton(book.getPrecio() + " € Comprar libro");
+		JButton b1 = new JButton(book.getPrecio() + " euros‚ Comprar libro");
 		b1.addActionListener(buyButton(cards, book, db));
 		b1.setFont(new Font("Arial", Font.BOLD, 14));
 		leftPanel.add(b1);
@@ -159,7 +159,7 @@ public class PanelBuyBook extends Panel {
 		leftPanelsub.add(Box.createRigidArea(new Dimension(0, 20)));
 
 		// Mas del autor
-		req = new JLabel("MÁS DE " + book.getAutor().toUpperCase());
+		req = new JLabel("Mas DE " + book.getAutor().toUpperCase());
 		req.setFont(new Font("Helvetica", Font.BOLD, 14));
 		leftPanelsub.add(req);
 
@@ -209,7 +209,7 @@ public class PanelBuyBook extends Panel {
 		JPanel val = new JPanel();
 		//val.add(new PuntuacionEstrellas(25,50));
 
-		// PestaÃ±as de detalles y valoraciones
+		// PestaÃƒÂ±as de detalles y valoraciones
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Detalles", null, desc, "Descripcion");
 		tabbedPane.addTab("Valoraciones", null, val, "Valoraciones");
@@ -261,7 +261,7 @@ public class PanelBuyBook extends Panel {
 					JOptionPane.showMessageDialog(
 							PanelBuyBook.this,
 							"Error al realizar la compra.\n"
-							+ "Por favor, intentelo de nuevo más tarde",
+							+ "Por favor, intentelo de nuevo mas tarde",
 							"Error", JOptionPane.INFORMATION_MESSAGE);
 				}
 				if (exito) {
@@ -324,10 +324,10 @@ public class PanelBuyBook extends Panel {
 		desc.setLayout(new BoxLayout(desc, BoxLayout.Y_AXIS));
 		// Descripcion del libro
 		desc.add(Box.createRigidArea(new Dimension(0, 20)));
-		JLabel d1 = new JLabel("Descripción del libro");
+		JLabel d1 = new JLabel("Descripcion del libro");
 		d1.setFont(new Font("Arial", Font.BOLD, 16));
 		desc.add(d1, LEFT_ALIGNMENT);
-		// SeparaciÃ³n
+		// SeparaciÃƒÂ³n
 		desc.add(Box.createRigidArea(new Dimension(0, 10)));
 		// Sinopsis
 		int width = (int) grid.getPreferredSize().getWidth()
@@ -339,7 +339,7 @@ public class PanelBuyBook extends Panel {
 		d2.setFont(new Font("Arial", Font.PLAIN, 12));
 		desc.add(d2, LEFT_ALIGNMENT);
 		// Informacion
-		JLabel d3 = new JLabel("Información");
+		JLabel d3 = new JLabel("Informacion");
 		desc.add(Box.createRigidArea(new Dimension(0, 30)));
 		d3.setFont(new Font("Arial", Font.BOLD, 14));
 		desc.add(d3, LEFT_ALIGNMENT);
@@ -349,9 +349,9 @@ public class PanelBuyBook extends Panel {
 		JTable table = new JTable();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
 		table.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
-				{ "Idioma", "Español", "Publicado", formatter.format(date) },
+				{ "Idioma", "Espanol", "Publicado", formatter.format(date) },
 				{ "Genero", "Historica", "Paginas", pages },
-				{ "Editorial", book.getEditorial(), "TamaÃ±o",
+				{ "Editorial", book.getEditorial(), "Tamano",
 						String.format("%.1f", size) + " MB" }, }, new String[] {
 				"Title 1", "Title 2", "Title 3", "Title 4" }));
 
