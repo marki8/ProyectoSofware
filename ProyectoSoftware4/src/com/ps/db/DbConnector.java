@@ -155,6 +155,29 @@ public class DbConnector {
 			e.printStackTrace();
 		}
 	}
+	
+	/**
+	 * Metodo para obtener la puntuacion media de un libro
+	 * 
+	 * @param user
+	 *            , @param password
+	 */
+	public synchronized double getMedia(String titulo,
+			String autor) {
+		Statement st = null;
+		ResultSet rs = null;
+		double media=0;
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT AVG(puntuacion) FROM posee WHERE title='"+titulo+"' and autor='"+autor+"'");
+			st.close();
+			rs.next();
+			media=rs.getDouble(1);
+		} catch (SQLException e) {
+			media=0;
+		}
+		return media;
+	}
 
 	/**
 	 * Metodo de eliminacion de libros.
@@ -559,7 +582,7 @@ public class DbConnector {
 		}
 
 		try {
-
+			
 			// Insertamos libros
 			db.addBook(
 					"La espada del destino",
@@ -607,7 +630,7 @@ public class DbConnector {
 			// Insertamos usuarios
 			db.addUser("650010@unizar.es", "a");
 			db.addUser("admin", "nimda");
-
+			
 			db.shutdown();
 
 		} catch (SQLException ex3) {
