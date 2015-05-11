@@ -13,6 +13,9 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
 
+import com.ps.common.Book;
+import com.ps.db.DbConnector;
+
 /**
  * Clase que implementa una puntuacion de estrellas, es necesario definir una posicion
  * @author joseangel
@@ -24,8 +27,11 @@ public class PuntuacionEstrellas extends JComponent implements MouseMotionListen
 	private BufferedImage EstrellaVacia,Estrella;
 	private int xpos,ypos,puntuacion;
 	private boolean Seleccionado;
+	private DbConnector db;
+	private Book book;
+	private String user;
 	
-	public PuntuacionEstrellas(int xpos,int ypos){
+	public PuntuacionEstrellas(int xpos,int ypos,DbConnector db,Book book,String user){
 		try {
 			this.setBounds(xpos, ypos, 5*70, 64);
 			this.EstrellaVacia=ImageIO.read(new File("img/assets/estrella Vacia.png"));
@@ -36,6 +42,9 @@ public class PuntuacionEstrellas extends JComponent implements MouseMotionListen
 			this.Seleccionado=false;
 			this.addMouseListener(this);
 			this.addMouseMotionListener(this);
+			this.db=db;
+			this.book=book;
+			this.user=user;
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
@@ -77,7 +86,10 @@ public class PuntuacionEstrellas extends JComponent implements MouseMotionListen
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		this.Seleccionado=!this.Seleccionado;
-		System.out.println("Puntucacion selecionada: "+ this.Seleccionado +"-"+this.puntuacion);
+		String titulo=book.getTitle();
+		String autor=book.getAutor();
+		db.updatePuntuacion(user, titulo, autor, puntuacion);
+		//System.out.println("Puntucacion selecionada: "+ this.Seleccionado +"-"+this.puntuacion);
 		
 	}
 

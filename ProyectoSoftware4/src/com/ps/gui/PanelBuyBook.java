@@ -97,7 +97,7 @@ public class PanelBuyBook extends Panel {
 		 * Puntuacion Estrellas
 		 */
 
-		System.out.println("Estrellas");
+		//System.out.println("Estrellas");
 		
 		
 		pane.setOneTouchExpandable(true);
@@ -222,9 +222,9 @@ public class PanelBuyBook extends Panel {
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Detalles", null, desc, "Descripcion");
 		/*
-		 * Añadimos la puntuacion estrellas
+		 * Aï¿½adimos la puntuacion estrellas
 		 */
-		tabbedPane.addTab("Valoraciones", null, new PuntuacionEstrellas(0, 0), "Valoraciones");
+		tabbedPane.addTab("Valoraciones", null, new PuntuacionEstrellas(0, 0,db,book,user), "Valoraciones");
 		tabbedPane.setAlignmentX(LEFT_ALIGNMENT);
 		rightPanel.add(tabbedPane);
 
