@@ -77,7 +77,7 @@ public class PuntuacionEstrellas extends JComponent implements MouseMotionListen
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 		this.Seleccionado=!this.Seleccionado;
-		System.out.println("Puntucacion selecionada: "+ this.Seleccionado);
+		System.out.println("Puntucacion selecionada: "+ this.Seleccionado +"-"+this.puntuacion);
 		
 	}
 

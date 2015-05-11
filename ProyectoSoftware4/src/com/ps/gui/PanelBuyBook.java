@@ -39,6 +39,7 @@ import com.ps.common.Book;
 import com.ps.db.DbConnector;
 import com.ps.gui.jgrid.ImageUtilities;
 import com.ps.mail.SendMailTLS;
+import com.ps.util.PuntuacionEstrellas;
 
 import de.jgrid.JGrid;
 
@@ -89,7 +90,16 @@ public class PanelBuyBook extends Panel {
 		final JSplitPane pane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT,
 				panelIzquierdo(cards, book, db, scaled), panelDerecho(book, db,
 						grid));
+		
+		
+		
+		/**
+		 * Puntuacion Estrellas
+		 */
 
+		System.out.println("Estrellas");
+		
+		
 		pane.setOneTouchExpandable(true);
 		pane.setDividerLocation(divider);
 		pane.setEnabled(false);
@@ -206,13 +216,15 @@ public class PanelBuyBook extends Panel {
 		addComponentListener(panelResized(desc, book, grid));
 
 		// Panel de valoraciones
-		JPanel val = new JPanel();
-		//val.add(new PuntuacionEstrellas(25,50));
-
+		
+		
 		// PestaÃƒÂ±as de detalles y valoraciones
 		JTabbedPane tabbedPane = new JTabbedPane();
 		tabbedPane.addTab("Detalles", null, desc, "Descripcion");
-		tabbedPane.addTab("Valoraciones", null, val, "Valoraciones");
+		/*
+		 * A�adimos la puntuacion estrellas
+		 */
+		tabbedPane.addTab("Valoraciones", null, new PuntuacionEstrellas(0, 0), "Valoraciones");
 		tabbedPane.setAlignmentX(LEFT_ALIGNMENT);
 		rightPanel.add(tabbedPane);
 

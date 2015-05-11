@@ -193,6 +193,7 @@ public class MainGUI extends JFrame {
 				pab.setBook(book.getEditorial(), book.getTitle(),
 						book.getAutor(), book.getPrecio(),
 						book.getDescripcion(), book.getPath());
+				System.out.println("Libro selecionado");
 			}
 		};
 		return al;
