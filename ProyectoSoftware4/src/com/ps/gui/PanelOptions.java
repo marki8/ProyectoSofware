@@ -71,7 +71,7 @@ public class PanelOptions extends Panel {
 
 
 		// Titulo
-		JLabel title = new JLabel("Opciones", SwingUtilities.LEFT);
+		JLabel title = new JLabel("Búsqueda Avanzada", SwingUtilities.LEFT);
 		title.setFont(new Font("Helvetica", Font.BOLD, 20));
 		add(title);
 		add(Box.createRigidArea(new Dimension(0, 20)));
@@ -170,13 +170,13 @@ public class PanelOptions extends Panel {
 	    searchLeft.add(Box.createRigidArea(new Dimension(0, 10)));
 		
 		// Genero
-		JLabel labelGenero = new JLabel("Genero", SwingUtilities.LEFT);
+		JLabel labelGenero = new JLabel("Género", SwingUtilities.LEFT);
 		labelGenero.setFont(new Font("Arial", Font.BOLD, 14));
 		labelGenero.setAlignmentX(LEFT_ALIGNMENT);
 		List<String> list = db.getGeneros();
 		list.add(0, "Ninguno");
-		String[] petStrings = list.toArray(new String[list.size()]);
-		comboBoxGenero = new JComboBox(petStrings);
+		String[] Strings = list.toArray(new String[list.size()]);
+		comboBoxGenero = new JComboBox(Strings);
 		comboBoxGenero.setMaximumSize(new Dimension(200, comboBoxGenero.getPreferredSize().height));
 		comboBoxGenero.setAlignmentX(LEFT_ALIGNMENT);
 		searchLeft.add(labelGenero);
@@ -317,7 +317,8 @@ public class PanelOptions extends Panel {
 			    List<String[]> values = new ArrayList<String[]>();
 			    
 			    String title = null, autor = null, editorial = null, genero = null;
-			    int pmin = 0, pmax = 1000, score = -1;
+			    double pmin = 0, pmax = 1000;
+			    int score = -1;
 			    
 			    if (textFieldTitle.getText().length() != 0) title = textFieldTitle.getText();
 			    if (textFieldAutor.getText().length() != 0) autor = textFieldAutor.getText();
@@ -325,8 +326,8 @@ public class PanelOptions extends Panel {
 			    if (!comboBoxGenero.getSelectedItem().toString().equals("Ninguno")) genero = comboBoxGenero.getSelectedItem().toString();
 			    if (!comboBoxScore.getSelectedItem().toString().equals("No")) score = Integer.valueOf(comboBoxScore.getSelectedItem().toString());
 
-			    pmin = Integer.valueOf(textFieldPrecioMin.getText());
-			    pmax = Integer.valueOf(textFieldPrecioMax.getText());
+			    pmin = Double.valueOf(textFieldPrecioMin.getText());
+			    pmax = Double.valueOf(textFieldPrecioMax.getText());
 
 			    books = db.getBooksAdvance(title, autor, editorial, genero, pmin, pmax, score);
 

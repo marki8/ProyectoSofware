@@ -217,7 +217,7 @@ public class DbConnector {
 			bookList = new ArrayList<Book>();
 			for (; rs.next();) {
 				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
-						.getString(3), rs.getString(4), rs.getInt(5), rs
+						.getString(3), rs.getString(4), rs.getDouble(5), rs
 						.getString(6), rs.getString(7)));
 			}
 
@@ -251,7 +251,7 @@ public class DbConnector {
 			bookList = new ArrayList<Book>();
 			for (; rs.next();) {
 				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
-						.getString(3), rs.getString(4), rs.getInt(5), rs
+						.getString(3), rs.getString(4), rs.getDouble(5), rs
 						.getString(6), rs.getString(7)));
 			}
 
@@ -295,7 +295,7 @@ public class DbConnector {
 			bookList = new ArrayList<Book>();
 			for (; rs.next();) {
 				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
-						.getString(3), rs.getString(4), rs.getInt(5), rs
+						.getString(3), rs.getString(4), rs.getDouble(5), rs
 						.getString(6), rs.getString(7)));
 			}
 
@@ -334,7 +334,7 @@ public class DbConnector {
 			bookList = new ArrayList<Book>();
 			for (; rs.next();) {
 				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
-						.getString(3), rs.getString(4), rs.getInt(5), rs
+						.getString(3), rs.getString(4), rs.getDouble(5), rs
 						.getString(6), rs.getString(7)));
 			}
 
@@ -349,7 +349,7 @@ public class DbConnector {
 	 * 
 	 */
 	public synchronized List<Book> getBooksAdvance(String title, String autor,
-			String editorial, String genero, int pmin, int pmax, int score) {
+			String editorial, String genero, double pmin, double pmax, int score) {
 		Statement st = null;
 		ResultSet rs = null;
 		List<Book> bookList = new ArrayList<Book>();
@@ -373,8 +373,8 @@ public class DbConnector {
 			st = conn.createStatement();
 			rs = st.executeQuery("SELECT b.title, b.autor, b.path, b.editorial,"
 					+ "b.precio, b.descripcion, b.genero "
-					+ "FROM book b WHERE b.precio > " + pmin
-					+ "AND b.precio < " + pmax
+					+ "FROM book b WHERE b.precio >= " + pmin
+					+ "AND b.precio <= " + pmax
 					+ titleSearch + autorSearch + editorialSearch
 					+ generoSearch + scoreSearch);
 			st.close();
@@ -382,7 +382,7 @@ public class DbConnector {
 			bookList = new ArrayList<Book>();
 			for (; rs.next();) {
 				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
-						.getString(3), rs.getString(4), rs.getInt(5), rs
+						.getString(3), rs.getString(4), rs.getDouble(5), rs
 						.getString(6), rs.getString(7)));
 			}
 
@@ -455,7 +455,7 @@ public class DbConnector {
 			bookList = new ArrayList<Book>();
 			for (; rs.next();) {
 				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
-						.getString(3), rs.getString(4), rs.getInt(5), rs
+						.getString(3), rs.getString(4), rs.getDouble(5), rs
 						.getString(6), rs.getString(7)));
 			}
 		} catch (SQLException e) {
@@ -482,7 +482,7 @@ public class DbConnector {
 			bookList = new ArrayList<Book>();
 			for (; rs.next();) {
 				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
-						.getString(3), rs.getString(4), rs.getInt(5), rs
+						.getString(3), rs.getString(4), rs.getDouble(5), rs
 						.getString(6), rs.getString(7)));
 			}
 		} catch (SQLException e) {

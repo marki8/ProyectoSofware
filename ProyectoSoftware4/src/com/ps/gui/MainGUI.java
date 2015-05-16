@@ -2,6 +2,7 @@ package com.ps.gui;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -17,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.UIManager;
+
 import com.ps.common.Book;
 import com.ps.db.DbConnector;
 import com.ps.gui.PanelAddBook;
@@ -45,6 +47,7 @@ public class MainGUI extends JFrame {
 	public MainGUI(int opcion,String user) {
 		this.user = user;
 		setTitle("Easy Books");
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/assets/EB.png")));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		// Evento para cerrar la ventana y la base de datos

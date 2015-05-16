@@ -31,7 +31,7 @@ public class Main {
 
 			try {
 			    UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
-			    JFrame.setDefaultLookAndFeelDecorated(true);
+			    JFrame.setDefaultLookAndFeelDecorated(false);
 
 			} catch (Exception e) {
 			    e.printStackTrace();
