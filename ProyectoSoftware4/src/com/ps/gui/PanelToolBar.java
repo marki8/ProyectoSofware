@@ -95,7 +95,7 @@ public class PanelToolBar extends JToolBar implements Action {
 		purchases.addActionListener(purchasesButton(cards, db, bookList, grid));
 		b2.add(purchases);
 		// Boton de opciones
-		options = new GradientButton("Opciones");
+		options = new GradientButton("Busqueda Avanzada");
 		options.setForeground(Color.WHITE);
 		options.addActionListener(optionsButton(cards,db));
 		b2.add(options);

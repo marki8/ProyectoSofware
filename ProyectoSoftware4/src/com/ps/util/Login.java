@@ -64,22 +64,22 @@ private void LoadLoginData(){
 		});
 //		
 //		/*
-//		 * Texto de la contraseña
+//		 * Texto de la constrasena
 //		 */
-		JLabel contraseña= new JLabel();
-		contraseña.setFont(contraseña.getFont().deriveFont(20f));
-		contraseña.setForeground(Color.WHITE);
-		contraseña.setText("Contraseña: ");
-		contraseña.setBackground(Color.BLACK);
-		contraseña.setBounds(300,350, 150, 30);
+		JLabel constrasena= new JLabel();
+		constrasena.setFont(constrasena.getFont().deriveFont(20f));
+		constrasena.setForeground(Color.WHITE);
+		constrasena.setText("constrasena: ");
+		constrasena.setBackground(Color.BLACK);
+		constrasena.setBounds(300,350, 150, 30);
 		
 		/*
-		 * Field para introducir la contraseña
+		 * Field para introducir la constrasena
 		 */
-		final JPasswordField contraseñaText = new JPasswordField(32);
-		contraseñaText.setEditable(true);
-		contraseñaText.setBounds(425,350, 150, 30);
-		contraseñaText.addKeyListener(new KeyListener() {			
+		final JPasswordField constrasenaText = new JPasswordField(32);
+		constrasenaText.setEditable(true);
+		constrasenaText.setBounds(425,350, 150, 30);
+		constrasenaText.addKeyListener(new KeyListener() {			
 			@Override
 			public void keyTyped(KeyEvent arg0) {
 				// TODO Auto-generated method stub
@@ -112,8 +112,8 @@ private void LoadLoginData(){
 			public void actionPerformed(ActionEvent arg0) {
 				// TODO Auto-generated method stub
 				user=usuarioText.getText();
-				pass=contraseñaText.getText();
-				System.out.println("Usuario: "+user+" Contraseña: "+pass);
+				pass=constrasenaText.getText();
+				System.out.println("Usuario: "+user+" constrasena: "+pass);
 				/**
 				 * Hacer login
 				 */
@@ -136,13 +136,13 @@ private void LoadLoginData(){
 		});
 //		
 //		/*
-//		 * Añadimos los componentes
+//		 * Aï¿½adimos los componentes
 //		 */
-		this.add(contraseña);
+		this.add(constrasena);
 		this.add(usuario);
 //		
 //
-		this.add(contraseñaText);
+		this.add(constrasenaText);
 		this.add(usuarioText);
 //		
 		this.add(botonAceptar);

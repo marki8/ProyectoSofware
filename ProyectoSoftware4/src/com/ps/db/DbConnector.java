@@ -96,18 +96,18 @@ public class DbConnector {
 	 * Annadir libros a la base de datos.
 	 */
 	public synchronized void addBook(String title, String autor, String path,
-			String editorial, double precio, String descripcion) {
+			String editorial, double precio, String descripcion, String genero) {
 
 		try {
-			update("INSERT INTO book(title, autor, path, editorial, precio, descripcion) "
+			update("INSERT INTO book(title, autor, path, editorial, precio, descripcion, genero) "
 					+ "VALUES('"
-					+ title
-					+ "','"
-					+ autor
-					+ "','"
-					+ path
-					+ "','"
-					+ editorial + "','" + precio + "','" + descripcion + "')");
+					+ title + "','"
+					+ autor	+ "','"
+					+ path + "','"
+					+ editorial + "','" 
+					+ precio + "','" 
+					+ descripcion + "','" 
+					+ genero + "')");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
@@ -218,7 +218,7 @@ public class DbConnector {
 			for (; rs.next();) {
 				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
 						.getString(3), rs.getString(4), rs.getInt(5), rs
-						.getString(6)));
+						.getString(6), rs.getString(7)));
 			}
 
 		} catch (SQLException e) {
@@ -252,7 +252,7 @@ public class DbConnector {
 			for (; rs.next();) {
 				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
 						.getString(3), rs.getString(4), rs.getInt(5), rs
-						.getString(6)));
+						.getString(6), rs.getString(7)));
 			}
 
 			// ALTERNATIVA
@@ -296,7 +296,7 @@ public class DbConnector {
 			for (; rs.next();) {
 				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
 						.getString(3), rs.getString(4), rs.getInt(5), rs
-						.getString(6)));
+						.getString(6), rs.getString(7)));
 			}
 
 		} catch (SQLException e) {
@@ -335,7 +335,7 @@ public class DbConnector {
 			for (; rs.next();) {
 				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
 						.getString(3), rs.getString(4), rs.getInt(5), rs
-						.getString(6)));
+						.getString(6), rs.getString(7)));
 			}
 
 		} catch (SQLException e) {
@@ -343,6 +343,79 @@ public class DbConnector {
 		}
 
 		return bookList;
+	}
+	
+	/**
+	 * 
+	 */
+	public synchronized List<Book> getBooksAdvance(String title, String autor,
+			String editorial, String genero, int pmin, int pmax, int score) {
+		Statement st = null;
+		ResultSet rs = null;
+		List<Book> bookList = new ArrayList<Book>();
+		String titleSearch = "";
+		String autorSearch = "";
+		String editorialSearch = "";
+		String generoSearch = "";
+		String scoreSearch = "";
+		
+		if (title != null) 
+			titleSearch = " AND UPPER(b.title) LIKE '%" + title.toUpperCase() + "%'";
+		if (autor != null) 
+			autorSearch = " AND UPPER(b.autor) LIKE '%" + autor.toUpperCase() + "%'";
+		if (editorial != null) 
+			editorialSearch = " AND UPPER(b.editorial) LIKE '%" + editorial.toUpperCase() + "%'";
+		if (genero != null) 
+			generoSearch = " AND UPPER(b.genero) LIKE '%" + genero.toUpperCase() + "%'";
+		//if (score != -1) scoreSearch = " AND b.score LIKE '%" + score + "%'";
+
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT b.title, b.autor, b.path, b.editorial,"
+					+ "b.precio, b.descripcion, b.genero "
+					+ "FROM book b WHERE b.precio > " + pmin
+					+ "AND b.precio < " + pmax
+					+ titleSearch + autorSearch + editorialSearch
+					+ generoSearch + scoreSearch);
+			st.close();
+
+			bookList = new ArrayList<Book>();
+			for (; rs.next();) {
+				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
+						.getString(3), rs.getString(4), rs.getInt(5), rs
+						.getString(6), rs.getString(7)));
+			}
+
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return bookList;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public synchronized List<String> getGeneros() {
+		Statement st = null;
+		ResultSet rs = null;
+		List<String> generos = null;
+
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT * FROM book");
+			st.close();
+
+			generos = new ArrayList<String>();
+			for (; rs.next();) {
+				generos.add(rs.getString(7));
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return generos;
 	}
 
 	/**
@@ -383,7 +456,7 @@ public class DbConnector {
 			for (; rs.next();) {
 				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
 						.getString(3), rs.getString(4), rs.getInt(5), rs
-						.getString(6)));
+						.getString(6), rs.getString(7)));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -410,7 +483,7 @@ public class DbConnector {
 			for (; rs.next();) {
 				bookList.add(new Book(rs.getString(1), rs.getString(2), rs
 						.getString(3), rs.getString(4), rs.getInt(5), rs
-						.getString(6)));
+						.getString(6), rs.getString(7)));
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -482,16 +555,19 @@ public class DbConnector {
 	}
 
 	public synchronized void updateBook(String title, String autor,
-			String path, String editorial, double precio, String descripcion,
-			String oldtitle, String oldautor) {
+			String path, String editorial, double precio, String descripcion,	
+			String genero, String oldtitle, String oldautor) {
 		Statement st = null;
 		try {
 			st = conn.createStatement();
 			st.executeQuery("UPDATE book SET title = '" + title
-					+ "', autor = '" + autor + "', path = '" + path
-					+ "', editorial ='" + editorial + "', precio ='" + precio
-					+ "', descripcion ='" + descripcion + "' WHERE title = '"
-					+ oldtitle + "' AND autor = '" + oldautor + "';");
+					+ "', autor = '" + autor 
+					+ "', path = '" + path
+					+ "', editorial ='" + editorial 
+					+ "', precio ='" + precio
+					+ "', descripcion ='" + descripcion
+					+ "', genero = '" + genero 
+					+ "' WHERE title = '" + oldtitle + "' AND autor = '" + oldautor + "';");
 			st.close();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -560,7 +636,8 @@ public class DbConnector {
 			db.update("CREATE TABLE book "
 					+ "(title VARCHAR(256), autor VARCHAR(256), path VARCHAR(256),"
 					+ " editorial VARCHAR(256), precio NUMERIC(5, 2), "
-					+ "descripcion VARCHAR(1000), PRIMARY KEY (title, autor))");
+					+ "descripcion VARCHAR(1000), genero VARCHAR(100),"
+					+ "PRIMARY KEY (title, autor))");
 
 			// Creacion de la segunda tabla, esta vez de usuarios.
 			db.update("CREATE TABLE users "
@@ -590,42 +667,48 @@ public class DbConnector {
 					"/book0.jpg",
 					"2002 Bibliopolis",
 					11.99,
-					"La vida de un brujo cazador de monstruos no es f�cil. Tan pronto puede uno tener que meterse hasta el cuello en un estercolero para eliminar a la bestia carro�era que amenaza la ciudad, intentado no atrapar una infecci�n incurable, como se puede encontrar unido a la cacer�a de uno de los �ltimos dragones, en la que la cuesti�n no es si los cazadores conseguir�n matar a la pobre bestia, sino qu� pasar� cuando tengan que repartirse el bot�n. Magos, pr�ncipes, estarostas, voievodas, druidas, vexlings, dr�adas, juglares y criaturas de todo pelaje pueblan esta tierra, enzarzados en conflictos de supervivencia, codicia y amor, y entre ellos avanza, solitario, el brujo Geralt de Rivia.");
+					"La vida de un brujo cazador de monstruos no es f�cil. Tan pronto puede uno tener que meterse hasta el cuello en un estercolero para eliminar a la bestia carro�era que amenaza la ciudad, intentado no atrapar una infecci�n incurable, como se puede encontrar unido a la cacer�a de uno de los �ltimos dragones, en la que la cuesti�n no es si los cazadores conseguir�n matar a la pobre bestia, sino qu� pasar� cuando tengan que repartirse el bot�n. Magos, pr�ncipes, estarostas, voievodas, druidas, vexlings, dr�adas, juglares y criaturas de todo pelaje pueblan esta tierra, enzarzados en conflictos de supervivencia, codicia y amor, y entre ellos avanza, solitario, el brujo Geralt de Rivia.",
+					"A");
 			db.addBook(
 					"Destiny of the sword",
 					"Jeremy Twigg",
 					"/book1.jpg",
 					"Legend paperbacks",
 					15.99,
-					"Wally Smith, having died on Earth, finds himself reincarnated as a swordsman in another world and entrusted by the presiding goddess with a mission that has no appeal for him at all. Can he bring together all the swordsmen to finally defeat the sorcerors and their terrible technology? Wally is not quite convinced he should, but goddesses can be very persuasive");
+					"Wally Smith, having died on Earth, finds himself reincarnated as a swordsman in another world and entrusted by the presiding goddess with a mission that has no appeal for him at all. Can he bring together all the swordsmen to finally defeat the sorcerors and their terrible technology? Wally is not quite convinced he should, but goddesses can be very persuasive",
+					"B");
 			db.addBook(
 					"Nathe the great and the Sticky Case",
 					"Ugo Sanchez",
 					"/book2.jpg",
 					"RANDOM HOUSE-Children Bks",
 					10.99,
-					"A stegosaurus stamp belonging to Nates friend Claude disappears, and the indomitable Nate the Great is called in on the case. At first, even Nate is stumped -- the stamp has just vanished without a trace! But with clues from the weather and his ever-faithful dog, Sludge, Nate is soon on his way to wrapping up his stickiest case yet.");
+					"A stegosaurus stamp belonging to Nates friend Claude disappears, and the indomitable Nate the Great is called in on the case. At first, even Nate is stumped -- the stamp has just vanished without a trace! But with clues from the weather and his ever-faithful dog, Sludge, Nate is soon on his way to wrapping up his stickiest case yet.",
+					"AAA");
 			db.addBook(
 					"The Iron Hell",
 					"Jack London",
 					"/book3.jpg",
 					"Macmillan Publishers",
 					14.99,
-					"The Iron Heel is interesting as an example of a dystopian novel which anticipates and influenced George Orwells Nineteen Eighty-Four. Jack Londons (1876-1916) socialist politics are explicitly on display here. Its description of the capitalist class forming an organised, totalitarian, violent oligarchy to crush the working-class forewarned in some detail the Fascist dictatorships of Europe. Given it was written in 1908, this prediction was some-what uncanny, as Trotsky noted while commenting on the book in the 30s.");
+					"The Iron Heel is interesting as an example of a dystopian novel which anticipates and influenced George Orwells Nineteen Eighty-Four. Jack Londons (1876-1916) socialist politics are explicitly on display here. Its description of the capitalist class forming an organised, totalitarian, violent oligarchy to crush the working-class forewarned in some detail the Fascist dictatorships of Europe. Given it was written in 1908, this prediction was some-what uncanny, as Trotsky noted while commenting on the book in the 30s.",
+					"Fantasia");
 			db.addBook(
 					"The arrow of gold",
 					"Joseph Conrad",
 					"/book4.jpg",
 					"ReadHowYouWant",
 					13.99,
-					"An entrancing story of adventure and love, Joseph Conrads The Arrow of Gold (1919) is the tale of a sailor whose youth and passion are exploited by the Carlists. Having fallen for the charming Spanish beauty Dona Rita, the captain ensnares himself in the Carlist gun-smuggling expedition.");
+					"An entrancing story of adventure and love, Joseph Conrads The Arrow of Gold (1919) is the tale of a sailor whose youth and passion are exploited by the Carlists. Having fallen for the charming Spanish beauty Dona Rita, the captain ensnares himself in the Carlist gun-smuggling expedition.",
+					"Fuegooo");
 			db.addBook(
 					"Bold Pursuit",
 					"Zabrina Faiere",
 					"/book5.jpg",
 					"Warner Books",
 					12.99,
-					"Love left her at the chapel, so Livia began a breathless, daring chase after romance.A young man and woman are deserted at the altar by their fiancees, who have shockingly eloped together! Disguised as a young boy, braving adventures on the road and the ever increasing danger of losing her heart to the infuriating, fascinating Sir Justin Ware who had also been left at the altar. At what was to be a double wedding, Sir Justin Warre and Livia Pemberton are left at the altar when their partners elope . . . with each other . . . so the two set off in pursuit!");
+					"Love left her at the chapel, so Livia began a breathless, daring chase after romance.A young man and woman are deserted at the altar by their fiancees, who have shockingly eloped together! Disguised as a young boy, braving adventures on the road and the ever increasing danger of losing her heart to the infuriating, fascinating Sir Justin Ware who had also been left at the altar. At what was to be a double wedding, Sir Justin Warre and Livia Pemberton are left at the altar when their partners elope . . . with each other . . . so the two set off in pursuit!",
+					"A saber...");
 
 			// Insertamos usuarios
 			db.addUser("650010@unizar.es", "a");

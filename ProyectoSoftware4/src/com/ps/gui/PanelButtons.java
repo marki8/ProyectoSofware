@@ -63,7 +63,7 @@ public class PanelButtons extends JPanel {
 			public void actionPerformed(ActionEvent e) {
                 bookList.clear();
                 //bookList.addAll(db.getBooksBuy("ejemplo"));
-                bookList.add(new Book("a","a","/book0.jpg","a",25,"a"));
+                ///bookList.add(new Book("a","a","/book0.jpg","a",25,"a"));
                 grid.repaint();
                 CardLayout cl = (CardLayout)(cards.getLayout());
 		        cl.next(cards);

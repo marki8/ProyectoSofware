@@ -13,19 +13,21 @@ public class Book {
 	private String editorial;
 	private double precio;
 	private String descripcion;
+	private String genero;
 
 	
 
 	private BufferedImage cover;
 
 	public Book(String title, String autor, String path, String editorial,
-			double precio,String descripcion) {
+			double precio, String descripcion, String genero) {
 		
 		this.title = title;
 		this.autor = autor;
 		this.path = path;
 		this.editorial= editorial;
 		this.descripcion=descripcion;
+		this.genero = genero;
 		this.precio=precio;
 		try {
 			cover = ImageIO.read(getClass().getResource(path));
@@ -69,6 +71,13 @@ public class Book {
 	public void setPrecio(int precio) {
 		this.precio = precio;
 	}
+	
+	public String getGenero() {
+		return genero;
+	}
 
+	public void setGenero(String genero) {
+		this.genero = genero;
+	}
 	
 }

@@ -23,6 +23,7 @@ public class PanelAddBook extends JPanel  {
 	private final JTextField textFieldPrecio;
 	private final JTextField textFieldDescripcion;
 	private final JTextField textFieldPath;
+	private final JTextField textFieldGenero;
 	private JButton buttonAdd;
 
 	
@@ -63,6 +64,12 @@ public class PanelAddBook extends JPanel  {
         this.add(labelPath);
         this.add(textFieldPath);
         
+	    JLabel labelGenero = new JLabel("Genero: ");
+	    textFieldGenero = new JTextField("", 15);
+        this.add(labelGenero);
+        this.add(textFieldGenero);
+       
+        
         buttonAdd = new JButton("Anadir");
         buttonAdd.addActionListener(new ActionListener() {
 
@@ -74,18 +81,19 @@ public class PanelAddBook extends JPanel  {
 				String path = "/" + textFieldPath.getText();
 				String editorial = textFieldEditorial.getText();
 				double precio = Double.parseDouble(textFieldPrecio.getText());
-				String descripcion =textFieldDescripcion.getText();
+				String descripcion = textFieldDescripcion.getText();
+				String genero = textFieldGenero.getText();
 				
 				int index = grid.getSelectedIndex();
-				Book newBook = new Book(title, autor, path, editorial, precio, descripcion);
+				Book newBook = new Book(title, autor, path, editorial, precio, descripcion, genero);
 				if (index == -1) {
 	                bookList.add(newBook); 
-	                db.addBook(title, autor, path, editorial, precio, descripcion);
+	                db.addBook(title, autor, path, editorial, precio, descripcion, genero);
 				}				
 				else if (!bookList.get(index).equals(newBook) && index >= 0) {
 					Book oldBook = bookList.get(index);
 	                bookList.set(index, newBook);
-	                db.updateBook(title, autor, path, editorial, precio, descripcion,
+	                db.updateBook(title, autor, path, editorial, precio, descripcion, genero,
 	                		oldBook.getTitle(), oldBook.getAutor());
 				} 
 				
@@ -111,13 +119,15 @@ public class PanelAddBook extends JPanel  {
         this.add(buttonDelete);
 	}
 	
-	public void setBook(String editorial,String title, String autor, double precio,String descripcion,String path) {
+	public void setBook(String editorial,String title, String autor, double precio,
+			String descripcion, String path, String genero) {
 		textFieldEditorial.setText(editorial);
 		textFieldTitle.setText(title);
 		textFieldAutor.setText(autor);
 		textFieldPrecio.setText(Double.toString(precio));
 		textFieldDescripcion.setText(descripcion);
 		textFieldPath.setText(path.substring(1));
+		textFieldGenero.setText(genero);
 	}
 	
 	public void deleteBook(String title, String autor, String path, final JGrid grid, final List<Book> bookList, final DbConnector db) {

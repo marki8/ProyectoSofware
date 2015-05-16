@@ -100,7 +100,7 @@ public class MainGUI extends JFrame {
 		grid.addMouseListener(MouseListener(grid, cards, pab));
 		
 		// Panel de opciones
-		PanelOptions po = new PanelOptions(db, user);		
+		PanelOptions po = new PanelOptions(db, user, cards, grid);		
 		cards.add(po, "OPTIONS");
 		
 		getContentPane().add(new PanelToolBar(cards, db,bookList,grid,user), BorderLayout.PAGE_START);
@@ -138,10 +138,10 @@ public class MainGUI extends JFrame {
 					if (arg0.getButton() == MouseEvent.BUTTON1) { // Clic
 						// izquierdo
 						if (arg0.getClickCount() == 2) { // Doble clic izquierdo
-							PanelToolBar.checkNavigation("BOOK" + selectedIndex);
-							PanelToolBar.STACK.add("BOOK" + selectedIndex);
+							PanelToolBar.checkNavigation("BOOK" + book.getAutor() + book.getTitle());
+							PanelToolBar.STACK.add("BOOK" + book.getAutor() + book.getTitle());
 							PanelToolBar.INDEX++;
-							System.out.println("Seleccion " + selectedIndex);
+							System.out.println("Seleccion " + book.getAutor() + book.getTitle());
 							cards.add(new PanelBuyBook(cards,book, db, grid,user),
 									PanelToolBar.STACK.get(PanelToolBar.STACK.size()-1));
 							CardLayout cl = (CardLayout) (cards.getLayout());
@@ -151,7 +151,7 @@ public class MainGUI extends JFrame {
 							pab.setAddModifyText("Modificar");
 							pab.setBook(book.getEditorial(), book.getTitle(),
 									book.getAutor(), book.getPrecio(),
-									book.getDescripcion(), book.getPath());
+									book.getDescripcion(), book.getPath(), book.getGenero());
 							pab.setEditable(false);
 						}
 
@@ -192,7 +192,7 @@ public class MainGUI extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				pab.setBook(book.getEditorial(), book.getTitle(),
 						book.getAutor(), book.getPrecio(),
-						book.getDescripcion(), book.getPath());
+						book.getDescripcion(), book.getPath(), book.getGenero());
 				System.out.println("Libro selecionado");
 			}
 		};

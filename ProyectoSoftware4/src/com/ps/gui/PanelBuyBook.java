@@ -362,7 +362,7 @@ public class PanelBuyBook extends Panel {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
 		table.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
 				{ "Idioma", "Espanol", "Publicado", formatter.format(date) },
-				{ "Genero", "Historica", "Paginas", pages },
+				{ "Genero", book.getGenero(), "Paginas", pages },
 				{ "Editorial", book.getEditorial(), "Tamaño",
 						String.format("%.1f", size) + " MB" }, }, new String[] {
 				"Title 1", "Title 2", "Title 3", "Title 4" }));
