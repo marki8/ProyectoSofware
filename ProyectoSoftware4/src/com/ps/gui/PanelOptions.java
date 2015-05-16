@@ -190,7 +190,7 @@ public class PanelOptions extends Panel {
 		//searchRight.setMinimumSize(new Dimension(200, 400));
 		
 		// Precio minimo
-		JLabel precioMin = new JLabel("Precio Minimo", SwingUtilities.LEFT);
+		JLabel precioMin = new JLabel("Precio Mínimo", SwingUtilities.LEFT);
 		precioMin.setFont(new Font("Arial", Font.BOLD, 14));
 		precioMin.setAlignmentX(LEFT_ALIGNMENT);
 		JPanel precioMinLabel = new JPanel();
@@ -210,7 +210,7 @@ public class PanelOptions extends Panel {
 		searchRight.add(Box.createRigidArea(new Dimension(0, 10)));
 		
 		// Precio maximo
-		JLabel precioMax = new JLabel("Precio Maximo", SwingUtilities.LEFT);
+		JLabel precioMax = new JLabel("Precio Máximo", SwingUtilities.LEFT);
 		precioMax.setFont(new Font("Arial", Font.BOLD, 14));
 		precioMax.setAlignmentX(LEFT_ALIGNMENT);
 		JPanel precioMaxLabel = new JPanel();
@@ -230,10 +230,10 @@ public class PanelOptions extends Panel {
 	    searchRight.add(Box.createRigidArea(new Dimension(0, 10)));
 		
 		// Puntuacion
-		JLabel labelScore = new JLabel("Puntuacion", SwingUtilities.LEFT);
+		JLabel labelScore = new JLabel("Puntuación", SwingUtilities.LEFT);
 		labelScore.setFont(new Font("Arial", Font.BOLD, 14));
 		labelScore.setAlignmentX(LEFT_ALIGNMENT);
-		String[] scores = { "No", "0", "1", "2", "3", "4", "5" };
+		String[] scores = { "No", "Mayor que 0", "Mayor que 1", "Mayor que 2", "Mayor que 3", "Mayor que 4"};
 		comboBoxScore = new JComboBox(scores);
 		comboBoxScore.setMaximumSize(new Dimension(200,comboBoxScore.getPreferredSize().height));
 		comboBoxScore.setAlignmentX(LEFT_ALIGNMENT);
@@ -317,27 +317,27 @@ public class PanelOptions extends Panel {
 			    List<String[]> values = new ArrayList<String[]>();
 			    
 			    String title = null, autor = null, editorial = null, genero = null;
-			    double pmin = 0, pmax = 1000;
-			    int score = -1;
+			    double pmin = 0, pmax = 1000, score = -1;
 			    
 			    if (textFieldTitle.getText().length() != 0) title = textFieldTitle.getText();
 			    if (textFieldAutor.getText().length() != 0) autor = textFieldAutor.getText();
 			    if (textFieldPublisher.getText().length() != 0) editorial = textFieldPublisher.getText();
 			    if (!comboBoxGenero.getSelectedItem().toString().equals("Ninguno")) genero = comboBoxGenero.getSelectedItem().toString();
-			    if (!comboBoxScore.getSelectedItem().toString().equals("No")) score = Integer.valueOf(comboBoxScore.getSelectedItem().toString());
-
+			    if (!comboBoxScore.getSelectedItem().toString().equals("No")) score = Integer.valueOf(comboBoxScore.getSelectedItem().toString().substring(10));
 			    pmin = Double.valueOf(textFieldPrecioMin.getText());
 			    pmax = Double.valueOf(textFieldPrecioMax.getText());
 
-			    books = db.getBooksAdvance(title, autor, editorial, genero, pmin, pmax, score);
+			    books = db.getBooksAdvance(title, autor, editorial, genero, pmin, pmax);
 
 		        for (int i = 0; i < books.size(); i++) {
-		            values.add(new String[] {books.get(i).getTitle(), 
-		            		books.get(i).getAutor(),
-		            		books.get(i).getEditorial(),
-		            		books.get(i).getGenero(),
-		            		String.valueOf(db.getMedia(books.get(i).getTitle(), books.get(i).getAutor())),
-		            	    String.valueOf(books.get(i).getPrecio())});
+		        	double bookscore = db.getMedia(books.get(i).getTitle(), books.get(i).getAutor());
+		        	if (bookscore > score)
+		        		values.add(new String[] {books.get(i).getTitle(), 
+		        				books.get(i).getAutor(),
+		        				books.get(i).getEditorial(),
+		        				books.get(i).getGenero(),
+		        				String.valueOf(bookscore),
+		        				String.valueOf(books.get(i).getPrecio())});
 		        }
 		        TableModel tableModel = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());
 		        tableSearch.setModel(tableModel);

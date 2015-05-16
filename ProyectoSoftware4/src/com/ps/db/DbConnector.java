@@ -349,7 +349,7 @@ public class DbConnector {
 	 * 
 	 */
 	public synchronized List<Book> getBooksAdvance(String title, String autor,
-			String editorial, String genero, double pmin, double pmax, int score) {
+			String editorial, String genero, double pmin, double pmax) {
 		Statement st = null;
 		ResultSet rs = null;
 		List<Book> bookList = new ArrayList<Book>();

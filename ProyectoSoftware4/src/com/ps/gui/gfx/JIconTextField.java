@@ -18,8 +18,8 @@ import javax.swing.JTextField;
 
 public class JIconTextField extends JTextField {
 
-	private String[] menu = { "Buscar en todo el catalogo", "Por titulo",
-			"Por autor", "Por editorial", "Por puntuacion" };
+	private String[] menu = { "Buscar en todo el catálogo", "Por titulo",
+			"Por autor", "Por editorial", "Por puntuación" };
 
 	private static final long serialVersionUID = 1L;
 	private Icon icon;
@@ -102,8 +102,6 @@ public class JIconTextField extends JTextField {
 			    if (mx > iconBounds.x && mx < iconBounds.x + iconBounds.width && my > iconBounds.y
 			            && my < iconBounds.y + iconBounds.height) {
 			    	//Icon icon = new ImageIcon("img/search_icon.png");
-			    	System.out.println("DENTRO");
-
 			    } else {
 			    	//Icon icon = new ImageIcon("img/search_icon1.png");
 			    }		

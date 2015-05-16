@@ -315,7 +315,19 @@ public class PanelToolBar extends JToolBar implements Action {
 					books = db.getBookEditorial(field.getText());
 					break;
 				case 4:
-					books = db.getBooks(); // POR TERMINAR
+					List<Book> booksAux = db.getBooks();
+					books = new ArrayList<Book>();
+					for (int i = 0; i < booksAux.size(); i++) {
+						double score = -1;
+						try {
+							if (field.getText().length() != 0) score = Double.valueOf(field.getText());
+						} catch (Exception e) {
+							books = booksAux;
+							break;
+						}
+						if (db.getMedia(booksAux.get(i).getTitle(), booksAux.get(i).getAutor()) >= score)
+							books.add(booksAux.get(i));
+					}
 					break;
 				default:
 					books = db.getBooks();
