@@ -473,7 +473,7 @@ public class DbConnector {
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery("SELECT b.title, b.autor, b.path, b.editorial,"
-					+ " b.precio, b.descripcion "
+					+ " b.precio, b.descripcion, b.genero "
 					+ "FROM book b, users u, posee p "
 					+ "WHERE u.email=p.email AND b.title=p.title "
 					+ "AND b.autor=p.autor AND p.email='" + user + "'");
