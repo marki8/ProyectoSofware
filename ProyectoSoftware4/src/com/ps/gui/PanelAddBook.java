@@ -78,7 +78,7 @@ public class PanelAddBook extends JPanel  {
 				
 				String title = textFieldTitle.getText();
 				String autor = textFieldAutor.getText();
-				String path = "/" + textFieldPath.getText();
+				String path = textFieldPath.getText();
 				String editorial = textFieldEditorial.getText();
 				double precio = Double.parseDouble(textFieldPrecio.getText());
 				String descripcion = textFieldDescripcion.getText();
@@ -109,7 +109,7 @@ public class PanelAddBook extends JPanel  {
 			public void actionPerformed(ActionEvent e) {
 				String title = textFieldTitle.getText();
 				String autor = textFieldAutor.getText();
-				String path = "/" + textFieldPath.getText();
+				String path = textFieldPath.getText();
 				int index = grid.getSelectedIndex();
 	            db.deleteBook(title, autor, path);
 	            bookList.remove(index);
@@ -126,7 +126,7 @@ public class PanelAddBook extends JPanel  {
 		textFieldAutor.setText(autor);
 		textFieldPrecio.setText(Double.toString(precio));
 		textFieldDescripcion.setText(descripcion);
-		textFieldPath.setText(path.substring(1));
+		textFieldPath.setText(path);
 		textFieldGenero.setText(genero);
 	}
 	

@@ -47,7 +47,7 @@ public class MainGUI extends JFrame {
 	public MainGUI(int opcion,String user) {
 		this.user = user;
 		setTitle("Easy Books");
-		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/assets/EB.png")));
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource("/EB.png")));
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		// Evento para cerrar la ventana y la base de datos
@@ -196,7 +196,6 @@ public class MainGUI extends JFrame {
 				pab.setBook(book.getEditorial(), book.getTitle(),
 						book.getAutor(), book.getPrecio(),
 						book.getDescripcion(), book.getPath(), book.getGenero());
-				System.out.println("Libro selecionado");
 			}
 		};
 		return al;

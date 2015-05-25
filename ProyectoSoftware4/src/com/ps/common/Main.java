@@ -30,7 +30,7 @@ public class Main {
 			}
 
 			try {
-			    UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+			    //UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
 			    JFrame.setDefaultLookAndFeelDecorated(false);
 
 			} catch (Exception e) {
@@ -42,7 +42,7 @@ public class Main {
 			Login.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 			Login.setLocationRelativeTo(null);
 			Login.setResizable(false);
-			Login.setIconImage(Toolkit.getDefaultToolkit().getImage(Login.getClass().getResource("/assets/EB.png")));
+			Login.setIconImage(Toolkit.getDefaultToolkit().getImage(Login.getClass().getResource("/EB.png")));
 			Login.add(new PanelLogin(db, Login));
 			Login.setVisible(true);
 

@@ -38,7 +38,7 @@ public class OpenLibraryGridRenderer extends JComponent implements GridCellRende
 		this.user = user;
 		this.db = db;
 		try {
-			tag = ImageIO.read(getClass().getResource(("/assets/tag.png")));
+			tag = ImageIO.read(getClass().getResource(("/tag.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

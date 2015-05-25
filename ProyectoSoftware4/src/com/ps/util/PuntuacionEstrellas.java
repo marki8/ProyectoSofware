@@ -34,8 +34,8 @@ public class PuntuacionEstrellas extends JComponent implements MouseMotionListen
 	public PuntuacionEstrellas(int xpos,int ypos,DbConnector db,Book book,String user){
 		try {
 			this.setBounds(xpos, ypos, 5*70, 64);
-			this.EstrellaVacia=ImageIO.read(new File("img/assets/estrella Vacia.png"));
-			this.Estrella=ImageIO.read(new File("img/assets/estrella.png"));
+			this.EstrellaVacia=ImageIO.read(getClass().getResource("/estrella Vacia.png"));
+			this.Estrella=ImageIO.read(getClass().getResource("/estrella.png"));
 			this.puntuacion=0;
 			this.xpos=xpos;
 			this.ypos=ypos;

@@ -36,8 +36,7 @@ public class EasyBooksUI extends GridUI {
 	public void installUI(JComponent c) {
 		super.installUI(c);
 		try {
-			backgroundImage = ImageIO.read(getClass().getResource(
-					"/bookshelf.png"));
+			backgroundImage = ImageIO.read(getClass().getResource("/bookshelf.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

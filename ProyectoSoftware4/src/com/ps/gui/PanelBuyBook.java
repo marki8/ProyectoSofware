@@ -11,6 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -74,11 +75,11 @@ public class PanelBuyBook extends Panel {
 		// Leemos la imagen del libro
 		BufferedImage img = null;
 		try {
-			img = ImageIO.read(getClass().getResource(book.getPath()));
+			img = ImageIO.read(new File(book.getPath()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		// Escala proporcional al tamaño de la imagen
+		// Escala proporcional al tamaï¿½o de la imagen
 		Dimension scale = scale(img.getWidth(), img.getHeight());
 		BufferedImage scaled = ImageUtilities.getOptimalScalingImage(img,
 				scale.width, scale.height);
@@ -134,7 +135,7 @@ public class PanelBuyBook extends Panel {
 		leftPanel.add(j, BorderLayout.WEST);
 
 		// Boton de comprar libro
-		JButton b1 = new JButton(book.getPrecio() + "€ Comprar libro");
+		JButton b1 = new JButton(book.getPrecio() + "ï¿½ Comprar libro");
 		b1.addActionListener(buyButton(cards, book, db));
 		b1.setFont(new Font("Arial", Font.BOLD, 14));
 		leftPanel.add(b1);
@@ -220,7 +221,7 @@ public class PanelBuyBook extends Panel {
 		
 		// PestaÃƒÆ’Ã‚Â±as de detalles y valoraciones
 		JTabbedPane tabbedPane = new JTabbedPane();
-		tabbedPane.addTab("Detalles", null, desc, "Descripción");
+		tabbedPane.addTab("Detalles", null, desc, "Descripciï¿½n");
 		/*
 		 * Aï¿½adimos la puntuacion estrellas
 		 */
@@ -273,15 +274,15 @@ public class PanelBuyBook extends Panel {
 					JOptionPane.showMessageDialog(
 							PanelBuyBook.this,
 							"Error al realizar la compra.\n"
-							+ "Por favor, intentelo de nuevo más tarde",
+							+ "Por favor, intentelo de nuevo mï¿½s tarde",
 							"Error", JOptionPane.INFORMATION_MESSAGE);
 				}
 				if (exito) {
 					db.addBookBuy(user, titulo, autor, puntuacion);
 					JOptionPane.showMessageDialog(
 							PanelBuyBook.this,
-							"Usted ha realizado la compra con éxito.\n"
-							+ "Recibira un correo con la información de la compra",
+							"Usted ha realizado la compra con ï¿½xito.\n"
+							+ "Recibira un correo con la informaciï¿½n de la compra",
 							"Compra Realizada", JOptionPane.INFORMATION_MESSAGE);
 					CardLayout cl = (CardLayout) (cards.getLayout());
 					cl.show(cards, "GRID");
@@ -336,7 +337,7 @@ public class PanelBuyBook extends Panel {
 		desc.setLayout(new BoxLayout(desc, BoxLayout.Y_AXIS));
 		// Descripcion del libro
 		desc.add(Box.createRigidArea(new Dimension(0, 20)));
-		JLabel d1 = new JLabel("Descripción del libro");
+		JLabel d1 = new JLabel("Descripciï¿½n del libro");
 		d1.setFont(new Font("Arial", Font.BOLD, 16));
 		desc.add(d1, LEFT_ALIGNMENT);
 		// Separacion
@@ -361,9 +362,9 @@ public class PanelBuyBook extends Panel {
 		JTable table = new JTable();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
 		table.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
-				{ "Idioma", "Español", "Publicado", formatter.format(date) },
-				{ "Genero", book.getGenero(), "Páginas", pages },
-				{ "Editorial", book.getEditorial(), "Tamaño",
+				{ "Idioma", "Espaï¿½ol", "Publicado", formatter.format(date) },
+				{ "Genero", book.getGenero(), "Pï¿½ginas", pages },
+				{ "Editorial", book.getEditorial(), "Tamaï¿½o",
 						String.format("%.1f", size) + " MB" }, }, new String[] {
 				"Title 1", "Title 2", "Title 3", "Title 4" }));
 

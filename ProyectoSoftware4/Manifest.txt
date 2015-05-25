@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Class-Path: lib/hsqldb.jar lib/javax.mail.jar lib/JGrid.jar lib/seaglasslookandfeel-0.2.jar
+Main-Class: com.ps.common.Main
+

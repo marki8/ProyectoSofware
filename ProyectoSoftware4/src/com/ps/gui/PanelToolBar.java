@@ -67,9 +67,9 @@ public class PanelToolBar extends JToolBar implements Action {
 		forward = new GradientButton("");
 		try {
 			backward.setIcon(new ImageIcon(ImageIO.read(getClass()
-					.getResource("/assets/backward.png"))));
+					.getResource("/backward.png"))));
 			forward.setIcon(new ImageIcon(ImageIO.read(getClass()
-					.getResource("/assets/forward.png"))));
+					.getResource("/forward.png"))));
 		} catch (IOException ex) {}
 		backward.setForeground(Color.WHITE);
 		forward.setForeground(Color.WHITE);
