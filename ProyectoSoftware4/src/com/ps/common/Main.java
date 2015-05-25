@@ -23,6 +23,7 @@ public class Main {
 	 */
 	public static void main(String[] args) throws SiguienteException {
 		try {
+			//DbConnector.main();
 			try {
 				db = new DbConnector("db_file");
 			} catch (Exception e) {
