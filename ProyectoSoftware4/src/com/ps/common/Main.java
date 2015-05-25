@@ -23,6 +23,7 @@ public class Main {
 	 */
 	public static void main(String[] args) throws SiguienteException {
 		try {
+			//DbConnector.main();
 			try {
 				db = new DbConnector("db_file");
 			} catch (Exception e) {
@@ -30,7 +31,7 @@ public class Main {
 			}
 
 			try {
-			    UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
+			    //UIManager.setLookAndFeel("com.seaglasslookandfeel.SeaGlassLookAndFeel");
 			    JFrame.setDefaultLookAndFeelDecorated(false);
 
 			} catch (Exception e) {

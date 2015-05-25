@@ -89,7 +89,7 @@ public class PanelLogin extends Panel {
 		//
 		botonRegistrarse = new JButton("Registrarse");
 		botonRegistrarse.setFont(botonAceptar.getFont().deriveFont(12f));
-		botonRegistrarse.setBounds(250, 110, 100, 25);
+		botonRegistrarse.setBounds(250, 110, 110, 25);
 		botonRegistrarse.addActionListener(registerButton(usuarioText,
 				contrasenaText));
 		//

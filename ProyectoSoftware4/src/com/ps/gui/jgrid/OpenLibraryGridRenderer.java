@@ -57,13 +57,13 @@ public class OpenLibraryGridRenderer extends JComponent implements GridCellRende
 		return this;
 	}
 
-	@Override
-	public String getToolTipText() {
-		if (book != null) {
-			return book.getTitle();
-		}
-		return super.getToolTipText();
-	}
+//	@Override
+//	public String getToolTipText() {
+//		if (book != null) {
+//			return book.getTitle();
+//		}
+//		return super.getToolTipText();
+//	}
 
 	@Override
 	protected void paintComponent(Graphics g) {
