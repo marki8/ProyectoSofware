@@ -210,7 +210,7 @@ public class DbConnector {
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery("SELECT b.title, b.autor, b.path, b.editorial , "
-					+ "b.precio, b.descripcion "
+					+ "b.precio, b.descripcion, b.genero "
 					+ "FROM book b WHERE UPPER(b.autor) LIKE '%" + autor + "%'");
 			st.close();
 
@@ -242,7 +242,7 @@ public class DbConnector {
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery("SELECT b.title, b.autor, b.path, b.editorial,"
-					+ "b.precio, b.descripcion"
+					+ "b.precio, b.descripcion, b.genero"
 					+ " FROM book b WHERE UPPER(b.title) LIKE '%"
 					+ titulo
 					+ "%'");
@@ -287,7 +287,7 @@ public class DbConnector {
 
 		try {
 			st = conn.createStatement();
-			rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion "
+			rs = st.executeQuery("SELECT b.title,b.autor,b.path, b.editorial ,b.precio,b.descripcion, b.genero "
 					+ "FROM book b WHERE UPPER(b.editorial) LIKE '%"
 					+ editorial + "%'");
 			st.close();
@@ -321,7 +321,7 @@ public class DbConnector {
 		try {
 			st = conn.createStatement();
 			rs = st.executeQuery(("SELECT b.title, b.autor, b.path, b.editorial, "
-					+ "b.precio, b.descripcion "
+					+ "b.precio, b.descripcion, b.genero "
 					+ "FROM book b WHERE UPPER(b.autor) LIKE '%"
 					+ cadena
 					+ "%' "
