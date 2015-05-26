@@ -104,7 +104,7 @@ public class PanelToolBar extends JToolBar implements Action {
 		// Barra de busqueda
         JPanel search = new JPanel();
         field = new JSearchTextField(15);
-        field.setIcon(new ImageIcon("assets/search_icon.png"));
+        field.setIcon(new ImageIcon(getClass().getResource("/search_icon.png")));
         field.getDocument().addDocumentListener(searchField(db, grid, bookList));
 		search.add(field);
 	    add(search, BorderLayout.EAST);
