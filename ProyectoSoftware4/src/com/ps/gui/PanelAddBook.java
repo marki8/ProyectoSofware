@@ -32,7 +32,7 @@ public class PanelAddBook extends JPanel  {
 		GridLayout layout = new GridLayout(20, 1);
 		layout.setHgap(5); layout.setVgap(5);
 		this.setLayout(layout);
-		this.setBorder(new TitledBorder(new EtchedBorder(), "Anadir Libro"));
+		this.setBorder(new TitledBorder(new EtchedBorder(), "Añadir Libro"));
         
 	    JLabel labelTitle = new JLabel("Titulo: ");
 	    textFieldTitle = new JTextField("", 15);
@@ -54,7 +54,7 @@ public class PanelAddBook extends JPanel  {
         this.add(labelPrecio);
         this.add(textFieldPrecio);
         
-        JLabel labelDescripcion = new JLabel("Descripcion: ");
+        JLabel labelDescripcion = new JLabel("Descripción: ");
 		textFieldDescripcion = new JTextField("", 15);
         this.add(labelDescripcion);
         this.add(textFieldDescripcion);
@@ -64,13 +64,13 @@ public class PanelAddBook extends JPanel  {
         this.add(labelPath);
         this.add(textFieldPath);
         
-	    JLabel labelGenero = new JLabel("Genero: ");
+	    JLabel labelGenero = new JLabel("Género: ");
 	    textFieldGenero = new JTextField("", 15);
         this.add(labelGenero);
         this.add(textFieldGenero);
        
         
-        buttonAdd = new JButton("Anadir");
+        buttonAdd = new JButton("Añadir");
         buttonAdd.addActionListener(new ActionListener() {
 
 			@Override
@@ -139,7 +139,7 @@ public class PanelAddBook extends JPanel  {
 	
 	public void setAddModifyText(String s) {
 		buttonAdd.setText(s);
-	}
+		this.setBorder(new TitledBorder(new EtchedBorder(), s + " Libro"));	}
 
 	public void setEditable(boolean b) {
 		textFieldTitle.setEditable(b);

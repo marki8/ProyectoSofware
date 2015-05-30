@@ -33,7 +33,11 @@ public class Book {
 		try {
 			cover = ImageIO.read(new File(path));
 		} catch (IOException e) {
-			e.printStackTrace();
+			try {
+				cover = ImageIO.read(this.getClass().getResource("/no_cover.png"));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 	}
 

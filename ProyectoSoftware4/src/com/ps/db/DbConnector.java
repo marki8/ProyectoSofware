@@ -619,7 +619,7 @@ public class DbConnector {
 	/**
 	 * Metodo main, creacion de las bases de datos de libros.
 	 */
-	public static void main() {
+	public static void main(String [] args) {
 
 		DbConnector db = null;
 
