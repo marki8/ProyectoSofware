@@ -32,7 +32,7 @@ public class SplashScreen extends JWindow {
 	}
 	
 	private void LoadImage(){
-			this.logo = new ImageIcon("img/assets/fondo.gif");
+			this.logo = new ImageIcon("assets/fondo.gif");
 			JLabel logolabel = new JLabel(this.logo);
 			this.getContentPane().add(logolabel, BorderLayout.CENTER);
 	}
