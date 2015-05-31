@@ -80,24 +80,27 @@ public class PanelAddBook extends JPanel  {
 				String autor = textFieldAutor.getText();
 				String path = textFieldPath.getText();
 				String editorial = textFieldEditorial.getText();
-				double precio = Double.parseDouble(textFieldPrecio.getText());
+				double precio = 0.0;
+				if (textFieldPrecio.getText().length()>0) {precio = Double.parseDouble(textFieldPrecio.getText());}
 				String descripcion = textFieldDescripcion.getText();
 				String genero = textFieldGenero.getText();
 				
 				int index = grid.getSelectedIndex();
-				Book newBook = new Book(title, autor, path, editorial, precio, descripcion, genero);
-				if (index == -1) {
-	                bookList.add(newBook); 
-	                db.addBook(title, autor, path, editorial, precio, descripcion, genero);
-				}				
-				else if (!bookList.get(index).equals(newBook) && index >= 0) {
-					Book oldBook = bookList.get(index);
-	                bookList.set(index, newBook);
-	                db.updateBook(title, autor, path, editorial, precio, descripcion, genero,
-	                		oldBook.getTitle(), oldBook.getAutor());
-				} 
-				
-                grid.repaint();
+				if ((title.length()>0)&&(autor.length()>0)&&(precio>0.0)) {
+					Book newBook = new Book(title, autor, path, editorial, precio, descripcion, genero);
+					if (index == -1) {
+		                bookList.add(newBook); 
+		                db.addBook(title, autor, path, editorial, precio, descripcion, genero);
+					}				
+					else if (!bookList.get(index).equals(newBook) && index >= 0) {
+						Book oldBook = bookList.get(index);
+		                bookList.set(index, newBook);
+		                db.updateBook(title, autor, path, editorial, precio, descripcion, genero,
+		                		oldBook.getTitle(), oldBook.getAutor());
+					} 
+					
+	                grid.repaint();
+				}
 			}
         });
         this.add(buttonAdd);
@@ -112,7 +115,9 @@ public class PanelAddBook extends JPanel  {
 				String path = textFieldPath.getText();
 				int index = grid.getSelectedIndex();
 	            db.deleteBook(title, autor, path);
-	            bookList.remove(index);
+	            if (index!=-1){
+	            	bookList.remove(index);
+	            }
                 grid.repaint();
 			}
         });
