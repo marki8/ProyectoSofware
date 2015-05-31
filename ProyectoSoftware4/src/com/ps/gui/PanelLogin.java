@@ -124,6 +124,7 @@ public class PanelLogin extends Panel {
 				pass = contrasenaText.getText();
 				JFrame gui;
 				System.out.println("Usuario: " + user + " contrasena: " + pass);
+				
 				if (db.userExist(user, pass)) {
 					if (user.equals("admin")) {
 						gui = new MainGUI(1, user);
@@ -133,7 +134,8 @@ public class PanelLogin extends Panel {
 					gui.setVisible(true);
 					gui.pack();
 					login.dispose();
-				} else {
+				} 
+				else {
 					JOptionPane.showMessageDialog(login,
 							"El usuario o la contrasena que ha introducido son erroneos\n"
 									+ "Por favor vuelva a intentarlo", "Error",
@@ -155,20 +157,51 @@ public class PanelLogin extends Panel {
 			final JTextField contrasenaText) {
 		ActionListener al = new ActionListener() {
 
-			// Funcion que se activa cuando se pulsa el boton
+			// Funcion que se activa cuando se pulsa el boton Registrar
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				user = usuarioText.getText();
 				pass = contrasenaText.getText();
-				db.addUser(user, pass);
-				login.dispose();
-				
-				JFrame gui = new MainGUI(0, user);
-				gui.setVisible(true);
-				gui.pack();
+				if (user.length()==0) {									//Si no se introduce nombre de usuario
+					JOptionPane.showMessageDialog(login,
+												  "El nombre de usuario a registrar debe contener más carácteres\n"
+												  + "Por favor vuelva a intentarlo", "Error",
+												  JOptionPane.INFORMATION_MESSAGE);
+				}
+				else if (pass.length()==0) {							//Si no se introduce contraseña de usuario
+					JOptionPane.showMessageDialog(login,
+												  "La contraseña del usuario a registrar debe contener más carácteres\n"
+												  + "Por favor vuelva a intentarlo", "Error",
+												  JOptionPane.INFORMATION_MESSAGE);
+				}
+				else if ((user.length()>255)||(pass.length()>255)) {	//Si el tamaño del usuario o contraseña son demasiado largos
+					JOptionPane.showMessageDialog(login,
+												  "El nombre de usuario o la contraseña son demasiado largos.\n"
+												  + "Por favor vuelva a intentarlo", "Error",
+												  JOptionPane.INFORMATION_MESSAGE);
+					usuarioText.setText("");
+					contrasenaText.setText("");
+				}
+				else {													
+					if (db.userExist2(user)) {							//Si el usuario ya existe en la BD
+						JOptionPane.showMessageDialog(login,
+													  "El usuario "+ user +" ya ha sido registrado en la aplicación\n"
+													  + "Por favor vuelva a intentarlo", "Error",
+													  JOptionPane.INFORMATION_MESSAGE);
+						usuarioText.setText("");
+						contrasenaText.setText("");
+					}
+					else {												//Si no ocurre ningún problema se lleva a cabo el registro
+						db.addUser(user, pass);
+						login.dispose();
+						
+						JFrame gui = new MainGUI(0, user);
+						gui.setVisible(true);
+						gui.pack();
+					}
+				}
 			}
 		};
 		return al;
 	}
-
 }

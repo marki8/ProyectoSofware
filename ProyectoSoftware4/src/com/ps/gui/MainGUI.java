@@ -210,12 +210,15 @@ public class MainGUI extends JFrame {
 	 */
 	private ActionListener deleteBook(final JGrid grid, final Book book,
 			final PanelAddBook pab) {
-		ActionListener al = new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				pab.deleteBook(book.getTitle(), book.getAutor(),
-						book.getPath(), grid, bookList, db);
-			}
-		};
+		ActionListener al = null;
+		if (book!=null) {
+			 al = new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					pab.deleteBook(book.getTitle(), book.getAutor(),
+							book.getPath(), grid, bookList, db);
+				}
+			};
+		}
 		return al;
 	}
 }

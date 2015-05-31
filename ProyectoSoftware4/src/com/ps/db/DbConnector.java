@@ -419,7 +419,7 @@ public class DbConnector {
 	}
 
 	/**
-	 * Metodo para comprobar si el usuario existe en la BD.
+	 * Metodo para comprobar si el usuario [user] con password [pass] existe en la BD.
 	 */
 	public synchronized boolean userExist(String user, String pass) {
 		Statement st = null;
@@ -441,6 +441,37 @@ public class DbConnector {
 		}
 		return respuesta;
 	}
+	
+	
+	/**
+	 * Metodo para comprobar si el usuario [user] existe en la BD.
+	 */
+	public synchronized boolean userExist2(String user) {
+		Statement st = null;
+		ResultSet rs = null;
+		boolean respuesta = false;
+
+		try {
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT * FROM users WHERE email='" + user + "'");
+			st.close();
+			rs.next();
+			if (rs.getString(1).isEmpty()) {
+				respuesta = false;
+			} else {
+				respuesta = true;
+			}
+		} catch (SQLException e) {
+		}
+		return respuesta;
+	}
+	
+	
+	
+	
+	
+	
+	
 
 	public synchronized List<Book> getBooks() {
 		Statement st = null;
