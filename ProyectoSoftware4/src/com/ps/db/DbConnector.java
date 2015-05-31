@@ -81,35 +81,53 @@ public class DbConnector {
 
 	/**
 	 * Annadir un usario a la base de datos.
+	 * @return 
 	 */
-	public synchronized void addUser(String email, String pass) {
+	public synchronized boolean addUser(String email, String pass) {
 
 		try {
+			if(email==null) return false;
+			else if(pass==null) return false;
+			else{
 			update("INSERT INTO users(email,password) VALUES('" + email + "','"
 					+ pass + "')");
+			return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 
 	/**
 	 * Annadir libros a la base de datos.
 	 */
-	public synchronized void addBook(String title, String autor, String path,
+	public synchronized boolean addBook(String title, String autor, String path,
 			String editorial, double precio, String descripcion, String genero) {
 
 		try {
-			update("INSERT INTO book(title, autor, path, editorial, precio, descripcion, genero) "
-					+ "VALUES('"
-					+ title + "','"
-					+ autor	+ "','"
-					+ path + "','"
-					+ editorial + "','" 
-					+ precio + "','" 
-					+ descripcion + "','" 
-					+ genero + "')");
+			
+			if(title==null){System.out.println("Titulo nulo"); return false;}
+			else if(autor==null){System.out.println("Autor nulo"); return false;}
+			else if(path==null){System.out.println("Ruta Imagen nula"); return false;}
+			else if(editorial==null){System.out.println("Editorial nula"); return false;}
+			else if(descripcion==null){System.out.println("Descripcion nula"); return false;}
+			else if(genero==null){System.out.println("genero nulo"); return false;}
+			else{
+				update("INSERT INTO book(title, autor, path, editorial, precio, descripcion, genero) "
+						+ "VALUES('"
+						+ title + "','"
+						+ autor	+ "','"
+						+ path + "','"
+						+ editorial + "','" 
+						+ precio + "','" 
+						+ descripcion + "','" 
+						+ genero + "')");
+				return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -182,15 +200,18 @@ public class DbConnector {
 	/**
 	 * Metodo de eliminacion de libros.
 	 */
-	public synchronized void deleteBook(String title, String autor, String path) {
+	public synchronized boolean deleteBook(String title, String autor, String path) {
 
 		try {
-			// update("DELETE FROM posee WHERE title='" + title + "AND autor="
-			// + autor + "'");
+			if(title==null) return false;
+			else{
 			update("DELETE FROM book WHERE title='" + title + "' AND autor='"
 					+ autor + "'");
+			return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -492,27 +513,40 @@ public class DbConnector {
 		return bookList;
 	}
 
-	public synchronized void changeEmail(String email, String emailViejo) {
+	public synchronized boolean changeEmail(String email, String emailViejo) {
 		Statement st = null;
 		try {
+			if(email==null) return false;
+			else if(emailViejo==null) return false;
+			else{
 			st = conn.createStatement();
 			st.executeQuery("UPDATE users SET email = '" + email
 					+ "' WHERE email = '" + emailViejo + "';");
+			
 			st.close();
+			return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 
-	public synchronized void changePass(String user, String pass) {
+	public synchronized boolean changePass(String user, String pass) {
 		Statement st = null;
 		try {
+			if(user==null)return false;
+			else if (pass==null) return false;
+			else{
 			st = conn.createStatement();
 			st.executeQuery("UPDATE users SET password = '" + pass
 					+ "' WHERE email = '" + user + "';");
 			st.close();
+			return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 
@@ -554,11 +588,20 @@ public class DbConnector {
 		return false;
 	}
 
-	public synchronized void updateBook(String title, String autor,
+	public synchronized boolean updateBook(String title, String autor,
 			String path, String editorial, double precio, String descripcion,	
 			String genero, String oldtitle, String oldautor) {
 		Statement st = null;
 		try {
+			if(title==null)return false;
+			else if(autor==null) return false;
+			else if(path==null) return false;
+			else if(editorial==null) return false;
+			else if(descripcion==null) return false;
+			else if(genero==null) return false;
+			else if(oldtitle==null)return false;
+			else if(oldautor==null)return false;
+			else{
 			st = conn.createStatement();
 			st.executeQuery("UPDATE book SET title = '" + title
 					+ "', autor = '" + autor 
@@ -569,8 +612,11 @@ public class DbConnector {
 					+ "', genero = '" + genero 
 					+ "' WHERE title = '" + oldtitle + "' AND autor = '" + oldautor + "';");
 			st.close();
+			return true;
+			}
 		} catch (SQLException e) {
 			e.printStackTrace();
+			return false;
 		}
 	}
 
