@@ -145,10 +145,10 @@ public class PanelBuyBook extends Panel {
 		leftPanel.add(b1);
 
 		// Boton de obtener muestra
-		JButton b2 = new JButton("Obtener muestra");
-		b2.setFont(new Font("Arial", Font.BOLD, 14));
-		b2.setPreferredSize(b1.getPreferredSize());
-		leftPanel.add(b2);
+//		JButton b2 = new JButton("Obtener muestra");
+//		b2.setFont(new Font("Arial", Font.BOLD, 14));
+//		b2.setPreferredSize(b1.getPreferredSize());
+//		leftPanel.add(b2);
 
 		JPanel leftPanelsub = new JPanel();
 		BoxLayout bl = new BoxLayout(leftPanelsub, BoxLayout.Y_AXIS);
