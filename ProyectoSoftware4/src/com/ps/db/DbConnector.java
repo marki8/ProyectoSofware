@@ -183,7 +183,7 @@ public class DbConnector {
 		double media=0;
 		try {
 			st = conn.createStatement();
-			rs = st.executeQuery("SELECT AVG(puntuacion) FROM posee WHERE title='"+titulo+"' and autor='"+autor+"'");
+			rs = st.executeQuery("SELECT AVG(puntuacion) FROM posee WHERE title='"+titulo+"' and autor='"+autor+"' and puntuacion!=0");
 			st.close();
 			rs.next();
 			media=rs.getDouble(1);
