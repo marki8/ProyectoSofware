@@ -29,8 +29,9 @@ public class AñadirLibro {
 		} catch (SQLException ex1) {
 			System.out.println("Error 1");
 		}
-		boolean test=db.addBook("titulo", "autor", "path", "editorial", 0.0,"descripcion","genero");
+		boolean test=db.addBook("titulo21", "autor2", "path", "editorial", 0.0,"descripcion","genero");
 		assertTrue(test==true);
+		db.shutdown();
 		
 	}
 	
@@ -54,6 +55,8 @@ public class AñadirLibro {
 		}
 		boolean test=db.addBook(null, "autor", "path", "editorial", 0.0,"descripcion","genero");
 		assertTrue(test==false);
+		db.shutdown();
+
 		
 	}
 	/*
@@ -75,6 +78,8 @@ public class AñadirLibro {
 		}
 		boolean test=db.addBook("titulo",null, "path", "editorial", 0.0,"descripcion","genero");
 		assertTrue(test==false);
+		db.shutdown();
+
 	}
 	/*
 	 * Prueba añadir path nulo
@@ -96,6 +101,8 @@ public class AñadirLibro {
 		}
 		boolean test=db.addBook("autor", "autor", null, "editorial", 0.0,"descripcion","genero");
 		assertTrue(test==false);
+		db.shutdown();
+
 	}
 	/*
 	 * Prueba añadir Editorial nulo
@@ -117,6 +124,8 @@ public class AñadirLibro {
 		}
 		boolean test=db.addBook("titulo", "autor", "path", null, 0.0,"descripcion","genero");
 		assertTrue(test==false);
+		db.shutdown();
+
 	}
 	
 	/*
@@ -136,8 +145,10 @@ public class AñadirLibro {
 		} catch (SQLException ex1) {
 			System.out.println("Error 1");
 		}
-		boolean test=db.addBook("titulo", "autor", "path", "editorial", 0.0,"descripcion","genero");
+		boolean test=db.addBook("titulo", "autor", "path", "editorial", 0,"descripcion","genero");
 		assertTrue(test==false);
+		db.shutdown();
+
 	}
 	/*
 	 * Prueba añadir descripcion nulo
@@ -158,6 +169,8 @@ public class AñadirLibro {
 		}
 		boolean test=db.addBook("titulo", "autor", "path", "editorial", 0.0,null,"genero");
 		assertTrue(test==false);
+		db.shutdown();
+
 	}
 	/*
 	 * Prueba añadir Precio nulo
@@ -178,6 +191,8 @@ public class AñadirLibro {
 		}
 		boolean test=db.addBook("titulo", "autor", "path", "editorial", 0.0,"descripcion",null);
 		assertTrue(test==false);
+		db.shutdown();
+
 	}
 
 }

@@ -89,8 +89,15 @@ public class PanelAddBook extends JPanel  {
 				if ((title.length()>0)&&(autor.length()>0)&&(precio>0.0)) {
 					Book newBook = new Book(title, autor, path, editorial, precio, descripcion, genero);
 					if (index == -1) {
-		                bookList.add(newBook); 
-		                db.addBook(title, autor, path, editorial, precio, descripcion, genero);
+						try {
+			                db.addBook(title, autor, path, editorial, precio, descripcion, genero);
+			                bookList.add(newBook); 
+						} catch (Exception e1) {
+							final JOptionPane pane = new JOptionPane("Error al añadir el libro. Por favor, intentelo de nuevo");
+						    final JDialog d = pane.createDialog((JFrame)null, "Error");
+						    d.setLocation(grid.getWidth()/2, grid.getHeight()/2);
+						    d.setVisible(true);
+						}
 					}				
 					else if (!bookList.get(index).equals(newBook) && index >= 0) {
 						Book oldBook = bookList.get(index);

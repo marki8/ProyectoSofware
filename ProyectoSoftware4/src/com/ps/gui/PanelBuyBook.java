@@ -55,8 +55,8 @@ public class PanelBuyBook extends Panel {
 
 	private static final long serialVersionUID = 1L;
 	private String user;
-	private String description = "Para ver este libro, debes tener un dispositivo "
-			+ "iOS con iBooks 1.3.1 (o posterior) y iOS 4.3.3 (o posterior).";
+	private String description = "Para ver este libro, debe tener un PC "
+			+ "con Windows XP (o posterior), Mac OS X 10.5 (o posterior) o Linux.";
 	private int pages;
 	private double size;
 	private Date date;
@@ -77,7 +77,11 @@ public class PanelBuyBook extends Panel {
 		try {
 			img = ImageIO.read(new File(book.getPath()));
 		} catch (IOException e) {
-			e.printStackTrace();
+			try {
+				img = ImageIO.read(this.getClass().getResource("/no_cover.png"));
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
 		}
 		// Escala proporcional al tama�o de la imagen
 		Dimension scale = scale(img.getWidth(), img.getHeight());
@@ -135,7 +139,7 @@ public class PanelBuyBook extends Panel {
 		leftPanel.add(j, BorderLayout.WEST);
 
 		// Boton de comprar libro
-		JButton b1 = new JButton(book.getPrecio() + "� Comprar libro");
+		JButton b1 = new JButton(book.getPrecio() + "€ Comprar libro");
 		b1.addActionListener(buyButton(cards, book, db));
 		b1.setFont(new Font("Arial", Font.BOLD, 14));
 		leftPanel.add(b1);
@@ -170,9 +174,9 @@ public class PanelBuyBook extends Panel {
 		leftPanelsub.add(Box.createRigidArea(new Dimension(0, 20)));
 
 		// Mas del autor
-		req = new JLabel("Mas DE " + book.getAutor().toUpperCase());
-		req.setFont(new Font("Helvetica", Font.BOLD, 14));
-		leftPanelsub.add(req);
+		//req = new JLabel("Mas DE " + book.getAutor().toUpperCase());
+		//req.setFont(new Font("Helvetica", Font.BOLD, 14));
+		//leftPanelsub.add(req);
 
 		leftPanel.add(leftPanelsub);
 		return leftPanel;
@@ -221,11 +225,23 @@ public class PanelBuyBook extends Panel {
 		
 		// PestaÃƒÂ±as de detalles y valoraciones
 		JTabbedPane tabbedPane = new JTabbedPane();
-		tabbedPane.addTab("Detalles", null, desc, "Descripci�n");
+		tabbedPane.addTab("Detalles", null, desc, "Descripción");
 		/*
 		 * A�adimos la puntuacion estrellas
 		 */
-		tabbedPane.addTab("Valoraciones", null, new PuntuacionEstrellas(0, 0,db,book,user), "Valoraciones");
+		final JPanel val = new JPanel();
+		val.setLayout(new BoxLayout(val, BoxLayout.Y_AXIS));
+		val.add(Box.createRigidArea(new Dimension(0, 20)));
+		JLabel intro = new JLabel("Añadir puntuación");
+		intro.setFont(new Font("Arial", Font.BOLD, 16));
+		val.add(intro);
+		val.add(Box.createRigidArea(new Dimension(0, 20)));
+		val.add(new PuntuacionEstrellas(0, 0,db,book,user,
+				(int) db.getPuntuacionUser(book.getTitle(), book.getAutor(), user)));
+		JLabel media = new JLabel("Puntuación media " + db.getMedia(book.getTitle(), book.getAutor()));
+		media.setFont(new Font("Arial", Font.PLAIN, 14));
+		val.add(media);
+		tabbedPane.addTab("Valoraciones", null, val, "Valoraciones");
 		tabbedPane.setAlignmentX(LEFT_ALIGNMENT);
 		rightPanel.add(tabbedPane);
 
@@ -274,15 +290,15 @@ public class PanelBuyBook extends Panel {
 					JOptionPane.showMessageDialog(
 							PanelBuyBook.this,
 							"Error al realizar la compra.\n"
-							+ "Por favor, intentelo de nuevo m�s tarde",
+							+ "Por favor, intentelo de nuevo más tarde",
 							"Error", JOptionPane.INFORMATION_MESSAGE);
 				}
 				if (exito) {
 					db.addBookBuy(user, titulo, autor, puntuacion);
 					JOptionPane.showMessageDialog(
 							PanelBuyBook.this,
-							"Usted ha realizado la compra con �xito.\n"
-							+ "Recibira un correo con la informaci�n de la compra",
+							"Usted ha realizado la compra con éxito.\n"
+							+ "Recibira un correo con la información de la compra",
 							"Compra Realizada", JOptionPane.INFORMATION_MESSAGE);
 					CardLayout cl = (CardLayout) (cards.getLayout());
 					cl.show(cards, "GRID");
@@ -337,7 +353,7 @@ public class PanelBuyBook extends Panel {
 		desc.setLayout(new BoxLayout(desc, BoxLayout.Y_AXIS));
 		// Descripcion del libro
 		desc.add(Box.createRigidArea(new Dimension(0, 20)));
-		JLabel d1 = new JLabel("Descripci�n del libro");
+		JLabel d1 = new JLabel("Descripción del libro");
 		d1.setFont(new Font("Arial", Font.BOLD, 16));
 		desc.add(d1, LEFT_ALIGNMENT);
 		// Separacion
@@ -352,7 +368,7 @@ public class PanelBuyBook extends Panel {
 		d2.setFont(new Font("Arial", Font.PLAIN, 12));
 		desc.add(d2, LEFT_ALIGNMENT);
 		// Informacion
-		JLabel d3 = new JLabel("Informacion");
+		JLabel d3 = new JLabel("Información");
 		desc.add(Box.createRigidArea(new Dimension(0, 30)));
 		d3.setFont(new Font("Arial", Font.BOLD, 14));
 		desc.add(d3, LEFT_ALIGNMENT);
@@ -362,9 +378,9 @@ public class PanelBuyBook extends Panel {
 		JTable table = new JTable();
 		SimpleDateFormat formatter = new SimpleDateFormat("dd MMM yyyy");
 		table.setModel(new javax.swing.table.DefaultTableModel(new Object[][] {
-				{ "Idioma", "Espa�ol", "Publicado", formatter.format(date) },
-				{ "Genero", book.getGenero(), "P�ginas", pages },
-				{ "Editorial", book.getEditorial(), "Tama�o",
+				{ "Idioma", "Español", "Publicado", formatter.format(date) },
+				{ "Genero", book.getGenero(), "Páginas", pages },
+				{ "Editorial", book.getEditorial(), "Tamaño",
 						String.format("%.1f", size) + " MB" }, }, new String[] {
 				"Title 1", "Title 2", "Title 3", "Title 4" }));
 

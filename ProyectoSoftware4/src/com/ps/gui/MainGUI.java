@@ -75,7 +75,7 @@ public class MainGUI extends JFrame {
 		try {
 			db = new DbConnector("db_file");
 		} catch (Exception e) {
-			e.printStackTrace();
+			System.exit(0);
 		}
 
 		// Grid de libros
@@ -144,7 +144,7 @@ public class MainGUI extends JFrame {
 							PanelToolBar.checkNavigation("BOOK" + book.getAutor() + book.getTitle());
 							PanelToolBar.STACK.add("BOOK" + book.getAutor() + book.getTitle());
 							PanelToolBar.INDEX++;
-							System.out.println("Seleccion " + book.getAutor() + book.getTitle());
+							//System.out.println("Seleccion " + book.getAutor() + book.getTitle());
 							cards.add(new PanelBuyBook(cards,book, db, grid,user),
 									PanelToolBar.STACK.get(PanelToolBar.STACK.size()-1));
 							CardLayout cl = (CardLayout) (cards.getLayout());
@@ -160,20 +160,22 @@ public class MainGUI extends JFrame {
 
 					} else if (arg0.getButton() == MouseEvent.BUTTON3) { // Clic
 						// derecho
-						JPopupMenu popup = new JPopupMenu();
-						// Editar
-						JMenuItem m = new JMenuItem("Editar");
-						popup.add(m);
-						m.addActionListener(setBook(grid, book, pab));
-						// Borrar
-						m = new JMenuItem("Borrar");
-						popup.add(m);
-						m.addActionListener(deleteBook(grid, book, pab));
-						popup.show(MainGUI.this, arg0.getX(), arg0.getY());
+						if (user.endsWith("admin")) {
+							JPopupMenu popup = new JPopupMenu();
+							// Editar
+							JMenuItem m = new JMenuItem("Editar");
+							popup.add(m);
+							m.addActionListener(setBook(grid, book, pab));
+							// Borrar
+							m = new JMenuItem("Borrar");
+							popup.add(m);
+							m.addActionListener(deleteBook(grid, book, pab));
+							popup.show(MainGUI.this, arg0.getX(), arg0.getY());
+						}
 					}
 				} else { // Si no se hace clic en ningun libro, se deselecciona
 					// todo
-					pab.setAddModifyText("Anadir");
+					pab.setAddModifyText("Añadir");
 					pab.setEditable(true);
 					grid.getSelectionModel().clearSelection();
 				}

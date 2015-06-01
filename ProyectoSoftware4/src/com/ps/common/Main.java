@@ -3,8 +3,6 @@ package com.ps.common;
 import java.awt.Toolkit;
 
 import javax.swing.JFrame;
-import javax.swing.UIManager;
-
 import com.ps.db.DbConnector;
 import com.ps.gui.PanelLogin;
 import com.ps.util.SplashScreen;
@@ -27,7 +25,7 @@ public class Main {
 			try {
 				db = new DbConnector("db_file");
 			} catch (Exception e) {
-				e.printStackTrace();
+				System.exit(0);
 			}
 
 			try {

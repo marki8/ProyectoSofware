@@ -65,7 +65,7 @@ public class PanelLogin extends Panel {
 		contrasena = new JLabel();
 		contrasena.setFont(contrasena.getFont().deriveFont(14f));
 		contrasena.setForeground(new Color(30, 30, 30));
-		contrasena.setText("Contrasena: ");
+		contrasena.setText("Contraseña: ");
 		contrasena.setBackground(Color.BLACK);
 		contrasena.setBounds(20, 60, 150, 30);
 
@@ -123,7 +123,7 @@ public class PanelLogin extends Panel {
 				user = usuarioText.getText();
 				pass = contrasenaText.getText();
 				JFrame gui;
-				System.out.println("Usuario: " + user + " contrasena: " + pass);
+				//System.out.println("Usuario: " + user + " contrasena: " + pass);
 				
 				if (db.userExist(user, pass)) {
 					if (user.equals("admin")) {
@@ -137,8 +137,8 @@ public class PanelLogin extends Panel {
 				} 
 				else {
 					JOptionPane.showMessageDialog(login,
-							"El usuario o la contrasena que ha introducido son erroneos\n"
-									+ "Por favor vuelva a intentarlo", "Error",
+							"El usuario o la contraseña que ha introducido son erroneos.\n"
+									+ "Por favor vuelva a intentarlo.", "Error",
 							JOptionPane.INFORMATION_MESSAGE);
 					contrasenaText.setText("");
 				}

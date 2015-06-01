@@ -1,10 +1,8 @@
 package com.ps.gui;
 
 import java.awt.CardLayout;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -19,7 +17,6 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JSlider;
 import javax.swing.JSplitPane;
@@ -71,7 +68,7 @@ public class PanelOptions extends Panel {
 
 
 		// Titulo
-		JLabel title = new JLabel("Búsqueda Avanzada", SwingUtilities.LEFT);
+		JLabel title = new JLabel("BÃºsqueda Avanzada", SwingUtilities.LEFT);
 		title.setFont(new Font("Helvetica", Font.BOLD, 20));
 		add(title);
 		add(Box.createRigidArea(new Dimension(0, 20)));
@@ -170,7 +167,7 @@ public class PanelOptions extends Panel {
 	    searchLeft.add(Box.createRigidArea(new Dimension(0, 10)));
 		
 		// Genero
-		JLabel labelGenero = new JLabel("Género", SwingUtilities.LEFT);
+		JLabel labelGenero = new JLabel("GÃ©nero", SwingUtilities.LEFT);
 		labelGenero.setFont(new Font("Arial", Font.BOLD, 14));
 		labelGenero.setAlignmentX(LEFT_ALIGNMENT);
 		List<String> list = db.getGeneros();
@@ -190,7 +187,7 @@ public class PanelOptions extends Panel {
 		//searchRight.setMinimumSize(new Dimension(200, 400));
 		
 		// Precio minimo
-		JLabel precioMin = new JLabel("Precio Mínimo", SwingUtilities.LEFT);
+		JLabel precioMin = new JLabel("Precio MÃ­nimo", SwingUtilities.LEFT);
 		precioMin.setFont(new Font("Arial", Font.BOLD, 14));
 		precioMin.setAlignmentX(LEFT_ALIGNMENT);
 		JPanel precioMinLabel = new JPanel();
@@ -210,7 +207,7 @@ public class PanelOptions extends Panel {
 		searchRight.add(Box.createRigidArea(new Dimension(0, 10)));
 		
 		// Precio maximo
-		JLabel precioMax = new JLabel("Precio Máximo", SwingUtilities.LEFT);
+		JLabel precioMax = new JLabel("Precio MÃ¡ximo", SwingUtilities.LEFT);
 		precioMax.setFont(new Font("Arial", Font.BOLD, 14));
 		precioMax.setAlignmentX(LEFT_ALIGNMENT);
 		JPanel precioMaxLabel = new JPanel();
@@ -230,7 +227,7 @@ public class PanelOptions extends Panel {
 	    searchRight.add(Box.createRigidArea(new Dimension(0, 10)));
 		
 		// Puntuacion
-		JLabel labelScore = new JLabel("Puntuación", SwingUtilities.LEFT);
+		JLabel labelScore = new JLabel("PuntuaciÃ³n", SwingUtilities.LEFT);
 		labelScore.setFont(new Font("Arial", Font.BOLD, 14));
 		labelScore.setAlignmentX(LEFT_ALIGNMENT);
 		String[] scores = { "No", "Mayor que 0", "Mayor que 1", "Mayor que 2", "Mayor que 3", "Mayor que 4"};
@@ -262,8 +259,8 @@ public class PanelOptions extends Panel {
         columns.add("Titulo");
         columns.add("Autor");
         columns.add("Editorial");
-        columns.add("Genero");
-        columns.add("Puntuacion");
+        columns.add("GÃ©nero");
+        columns.add("PuntuaciÃ³n");
         columns.add("Precio");
 
         TableModel tableModel = new DefaultTableModel(values.toArray(new Object[][] {}), columns.toArray());

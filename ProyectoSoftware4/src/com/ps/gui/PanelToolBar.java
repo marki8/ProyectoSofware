@@ -263,8 +263,8 @@ public class PanelToolBar extends JToolBar implements Action {
 				checkNavigation("OPTIONS");
 				STACK.add("OPTIONS");
 				INDEX++;
-				System.out.println(STACK.toString());
-				System.out.println("Opciones");
+				//System.out.println(STACK.toString());
+				//System.out.println("Opciones");
 				CardLayout cl = (CardLayout) (cards.getLayout());
 				cl.show(cards, "OPTIONS");
 			}

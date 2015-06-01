@@ -101,11 +101,11 @@ public class DbConnector {
 
 	/**
 	 * Annadir libros a la base de datos.
+	 * @throws SQLException 
 	 */
 	public synchronized boolean addBook(String title, String autor, String path,
-			String editorial, double precio, String descripcion, String genero) {
+			String editorial, double precio, String descripcion, String genero) throws SQLException {
 
-		try {
 			
 			if(title==null){System.out.println("Titulo nulo"); return false;}
 			else if(autor==null){System.out.println("Autor nulo"); return false;}
@@ -125,10 +125,6 @@ public class DbConnector {
 						+ genero + "')");
 				return true;
 			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-			return false;
-		}
 	}
 
 	/**
@@ -649,6 +645,30 @@ public class DbConnector {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	
+	public synchronized double getPuntuacionUser(String title, String autor, String user) {
+		Statement st = null;
+		ResultSet rs = null;
+		double puntuacion = 0.0;
+		try {
+			if(title==null)return puntuacion;
+			else if(autor==null) return puntuacion;
+			else if(user==null) return puntuacion;
+			else{
+			st = conn.createStatement();
+			rs = st.executeQuery("SELECT puntuacion FROM posee WHERE email='" + user
+					+ "'" + "AND title='" + title + "'" + "AND autor='" + autor
+					+ "'");
+			if (rs.next())
+				puntuacion = rs.getDouble(1);
+			st.close();
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return puntuacion;
 	}
 
 	// use for SQL commands CREATE, DROP, INSERT and UPDATE

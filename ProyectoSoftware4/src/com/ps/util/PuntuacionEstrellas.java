@@ -31,12 +31,12 @@ public class PuntuacionEstrellas extends JComponent implements MouseMotionListen
 	private Book book;
 	private String user;
 	
-	public PuntuacionEstrellas(int xpos,int ypos,DbConnector db,Book book,String user){
+	public PuntuacionEstrellas(int xpos,int ypos,DbConnector db,Book book,String user, int puntuacion){
 		try {
 			this.setBounds(xpos, ypos, 5*70, 64);
 			this.EstrellaVacia=ImageIO.read(getClass().getResource("/estrella Vacia.png"));
 			this.Estrella=ImageIO.read(getClass().getResource("/estrella.png"));
-			this.puntuacion=0;
+			this.puntuacion=puntuacion;
 			this.xpos=xpos;
 			this.ypos=ypos;
 			this.Seleccionado=false;
@@ -45,6 +45,7 @@ public class PuntuacionEstrellas extends JComponent implements MouseMotionListen
 			this.db=db;
 			this.book=book;
 			this.user=user;
+			this.setMaximumSize(this.getPreferredSize());
 			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
